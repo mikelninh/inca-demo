@@ -1,0 +1,84 @@
+{
+  "note": "Status und Testzahlen aus echter Code-Sichtung; Beispiel-Outputs wo vorhanden sind echte Aufrufe.",
+  "groups": [
+    {
+      "title": "Heute fahrbar",
+      "subtitle": "echter MCP-Server, echtes Backend, grüne Tests — ein Agent kann sie jetzt aufrufen",
+      "tools": [
+        {
+          "name": "GitLaw",
+          "oneliner": "Faktencheck deutscher Rechtszitate gegen 5.942 echte Gesetze + Zitationsgraph.",
+          "tools_count": 9,
+          "tests": 134,
+          "deployed": "gitlaw-xi.vercel.app",
+          "sample": "verify_citation('§ 999 StGB') → verified:false, reason:'paragraph_not_found'"
+        },
+        {
+          "name": "SafeVoice",
+          "oneliner": "Digitale Gewalt: klassifizieren, Fristen prüfen, Zuständigkeit, Court-Prep-Agent.",
+          "tools_count": 6,
+          "tests": 23,
+          "deployed": "safevoice-vert.vercel.app",
+          "sample": "6 MCP-Tools + /agents.json-Manifest; 5/6 key-frei"
+        },
+        {
+          "name": "elterngeld-mcp",
+          "oneliner": "Elterngeld exakt nach BEEG berechnen — Sätze, Bonus, Caps, mit §-Zitaten.",
+          "tools_count": 5,
+          "tests": 38,
+          "deployed": null,
+          "sample": "compute_elterngeld(2000€ netto, 12 Mon.) → 65% → 1.300€/Mon. → 15.600€"
+        },
+        {
+          "name": "pmm-mcp",
+          "oneliner": "Bundeshaushalt + Rechnungshof-Findings, Anomalie-Erkennung — alles offline.",
+          "tools_count": 6,
+          "tests": 19,
+          "deployed": null,
+          "sample": "get_budget(2025) → 488,7 Mrd € (Arbeit&Soziales 184 Mrd, Verteidigung 53,3 Mrd)"
+        },
+        {
+          "name": "flight-rights-mcp",
+          "oneliner": "EU261-Entschädigung berechnen + 10 echte EuGH-Fälle + Anspruchsschreiben.",
+          "tools_count": 6,
+          "tests": 42,
+          "deployed": null,
+          "sample": "calculate_compensation + check_eu261_applicability + generate_claim_letter"
+        },
+        {
+          "name": "klartext",
+          "oneliner": "Aussagen gegen Weltbank/WHO/OWID/Eurostat grounden — 'nicht erdbar' wenn keine Quelle.",
+          "tools_count": 20,
+          "tests": 81,
+          "deployed": null,
+          "sample": "braucht Netz; Key nur für LLM-Extras"
+        },
+        {
+          "name": "movie-mcp",
+          "oneliner": "Filme nach ihrem emotionalen Bogen filtern und empfehlen.",
+          "tools_count": 4,
+          "tests": 10,
+          "deployed": null,
+          "sample": "film_arc / recommend_by_arc — offline"
+        }
+      ]
+    },
+    {
+      "title": "Teilweise",
+      "subtitle": "echt gebaut, aber durch Key, Mock-Daten oder Paketierung gebremst — gehört nicht ins Schaufenster",
+      "tools": [
+        { "name": "judge-mcp", "oneliner": "LLM-Judge: Artefakte gegen Rubriken bewerten + bis Schwelle iterieren.", "tools_count": 5, "tests": 16, "deployed": null, "sample": "Kern-Tools brauchen OPENAI_API_KEY" },
+        { "name": "wohngeld-mcp", "oneliner": "Wohngeld nach § 19 WoGG (±10%-Näherung).", "tools_count": 6, "tests": 34, "deployed": null, "sample": "hängt an unveröffentlichtem Toolkit" },
+        { "name": "agb-reader-mcp", "oneliner": "AGB-Klauseln gegen §§ 308/309 BGB + Widerspruch; echte Chrome-Extension.", "tools_count": 5, "tests": 25, "deployed": "Chrome-Extension", "sample": "Paketierungs-Bug im Console-Script" },
+        { "name": "grailsense", "oneliner": "Wallet-/Collectible-Archetyp.", "tools_count": 1, "tests": 14, "deployed": null, "sample": "echt nur im Mock-Modus" }
+      ]
+    },
+    {
+      "title": "Fundament",
+      "subtitle": "kein Tool, sondern das Gerüst dahinter",
+      "tools": [
+        { "name": "civic-ai-mcp-toolkit", "oneliner": "Die geteilte create_mcp_server-Bibliothek hinter den zivilen MCPs.", "tools_count": 0, "tests": 19, "deployed": null, "sample": "Library, kein Agent-Tool" }
+      ]
+    }
+  ]
+}

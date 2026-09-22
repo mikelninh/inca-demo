@@ -1,0 +1,725 @@
+{
+ "generated_at": "2026-06-12T11:22:14+00:00",
+ "model": "claude-fable-5",
+ "mode": "fixture",
+ "metrics": {
+  "total": 8,
+  "correct": 7,
+  "decision_accuracy": 0.875,
+  "fraud_recall": 0.5,
+  "fraud_precision": 1.0,
+  "fraud_false_positive_rate": 0.0,
+  "auto_resolved_share": 0.75,
+  "auto_resolved_accuracy": 0.8333333333333334
+ },
+ "cases": [
+  {
+   "claim_id": "HR-2026-001",
+   "line_of_business": "hausrat",
+   "incident_date": "2026-03-02",
+   "reported_date": "2026-03-03",
+   "policy_excerpt": "Versichert sind Schäden durch Leitungswasser, das bestimmungswidrig aus Rohren der Wasserversorgung austritt. Ersatz zum Neuwert. Selbstbeteiligung 150 €.",
+   "fnol_text": "In der Küche ist unter der Spüle ein Zulaufschlauch geplatzt. Das Wasser hat über Nacht den Laminatboden in Küche und Flur durchnässt und aufgequellt. Schaden am Folgetag entdeckt und Klempner gerufen.",
+   "invoice_items": [
+    {
+     "description": "Laminatboden Küche + Flur, Neuverlegung 23 qm",
+     "amount_eur": 1840.0
+    }
+   ],
+   "attachments": [
+    "Fotos des aufgequollenen Bodens",
+    "Klempnerrechnung Schlauchtausch"
+   ],
+   "expected_decision": "pay",
+   "ground_truth_note": "Klarer gedeckter Leitungswasserschaden, plausible Position.",
+   "is_fraudulent": false,
+   "decision": "pay",
+   "payout_eur": 1840.0,
+   "correct": true,
+   "receipt": {
+    "rationale": "Gedeckt; Positionen plausibel. Auszahlung: 1840.00 €.",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.92,
+      "summary": "Geplatzter Zulaufschlauch unter der Spüle ist ein klassischer Leitungswasserschaden. Folgeschaden am Bodenbelag ist mitversichert, Ersatz zum Neuwert.",
+      "sources": [
+       "Leitungswasser-Klausel: bestimmungswidriger Austritt aus einem Rohr der Wasserversorgung"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.9,
+      "summary": "Plausibler Hergang, zeitnahe Meldung, Belege vorhanden. Keine Auffälligkeiten.",
+      "sources": []
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.88,
+      "summary": "23 qm Laminat in Küche und Flur passen zum geschilderten Wasseraustritt; Betrag marktüblich.",
+      "sources": []
+     }
+    ],
+    "blocked_actions": [],
+    "human_verification_required": [],
+    "uncertainty_notes": []
+   }
+  },
+  {
+   "claim_id": "HR-2026-002",
+   "line_of_business": "hausrat",
+   "incident_date": "2026-02-18",
+   "reported_date": "2026-02-19",
+   "policy_excerpt": "Versichert sind Schäden durch Leitungswasser. Ersatz nur für Sachen, die durch das versicherte Ereignis beschädigt wurden. Selbstbeteiligung 150 €.",
+   "fnol_text": "Im Badezimmer ist die Anschlussleitung der Waschmaschine undicht geworden, Wasser stand auf dem Badboden. Geltend gemacht werden der beschädigte Badezimmerschrank sowie der Fernseher aus dem Wohnzimmer.",
+   "invoice_items": [
+    {
+     "description": "Badezimmer-Unterschrank, wassergeschädigt",
+     "amount_eur": 1400.0
+    },
+    {
+     "description": "55-Zoll-Fernseher Wohnzimmer",
+     "amount_eur": 1200.0
+    }
+   ],
+   "attachments": [
+    "Foto Badboden mit Wasser",
+    "Kaufbeleg Fernseher"
+   ],
+   "expected_decision": "pay_reduced",
+   "ground_truth_note": "Badschrank gedeckt; Fernseher aus anderem Raum nicht plausibel vom Badschaden betroffen — Kürzung, kein Betrugsfall.",
+   "is_fraudulent": false,
+   "decision": "pay_reduced",
+   "payout_eur": 1400.0,
+   "correct": true,
+   "receipt": {
+    "rationale": "Gedeckt; Kürzung um 1200.00 € auf nicht plausibel betroffene Positionen. Auszahlung: 1400.00 €.",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.9,
+      "summary": "Wasseraustritt im Bad ist gedeckt. Ersatz nur für Sachen, die durch das Ereignis beschädigt wurden.",
+      "sources": [
+       "Leitungswasser-Klausel: undichte Anschlussleitung der Waschmaschine"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.85,
+      "summary": "Hergang plausibel. Die Mitabrechnung eines Fernsehers aus einem anderen Raum ist eher eine Frage der Schadenhöhe als ein Betrugsindiz.",
+      "sources": []
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.82,
+      "summary": "Badezimmer-Unterschrank ist plausibel betroffen und gedeckt. Der Fernseher steht im Wohnzimmer und kann durch den Wasseraustritt im Bad nicht beschädigt worden sein.",
+      "sources": [
+       "55-Zoll-Fernseher Wohnzimmer — nicht plausibel vom Wasserschaden im Bad betroffen"
+      ]
+     }
+    ],
+    "blocked_actions": [],
+    "human_verification_required": [],
+    "uncertainty_notes": []
+   }
+  },
+  {
+   "claim_id": "HR-2026-003",
+   "line_of_business": "hausrat",
+   "incident_date": "2026-01-12",
+   "reported_date": "2026-01-13",
+   "policy_excerpt": "Versichert sind Feuer, Leitungswasser, Sturm und Hagel. Elementarschäden (u.a. Überschwemmung, Rückstau, Starkregen) sind nur mit dem Zusatzbaustein 'Elementar' versichert. Dieser Vertrag enthält den Baustein NICHT.",
+   "fnol_text": "Nach tagelangem Starkregen ist der Bach über die Ufer getreten und das Wasser stand 40 cm hoch im Erdgeschoss. Möbel und Bodenbeläge sind zerstört.",
+   "invoice_items": [
+    {
+     "description": "Möbel und Bodenbeläge Erdgeschoss",
+     "amount_eur": 8000.0
+    }
+   ],
+   "attachments": [
+    "Fotos überfluteter Räume",
+    "Wetterbericht Starkregen"
+   ],
+   "expected_decision": "decline",
+   "ground_truth_note": "Überschwemmung ist Elementarschaden; Baustein nicht eingeschlossen -> keine Deckung.",
+   "is_fraudulent": false,
+   "decision": "decline",
+   "payout_eur": 0.0,
+   "correct": true,
+   "receipt": {
+    "rationale": "Kein Versicherungsschutz. Grundlage: Elementarbaustein nicht eingeschlossen — Überschwemmung daher nicht versichert",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.9,
+      "summary": "Über die Ufer getretener Bach ist eine Überschwemmung und damit ein Elementarschaden. Der dafür nötige Zusatzbaustein ist in diesem Vertrag ausdrücklich nicht enthalten.",
+      "sources": [
+       "Elementarbaustein nicht eingeschlossen — Überschwemmung daher nicht versichert"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.88,
+      "summary": "Schadenbild durch Wetterlage belegt, keine Auffälligkeiten. Frage ist allein die Deckung, nicht die Redlichkeit.",
+      "sources": []
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.7,
+      "summary": "Positionen plausibel, aber ohne Bedeutung, da kein Versicherungsschutz besteht.",
+      "sources": []
+     }
+    ],
+    "blocked_actions": [],
+    "human_verification_required": [],
+    "uncertainty_notes": []
+   }
+  },
+  {
+   "claim_id": "HR-2026-004",
+   "line_of_business": "hausrat",
+   "incident_date": "2026-04-06",
+   "reported_date": "2026-04-07",
+   "policy_excerpt": "Versichert ist Einbruchdiebstahl. Obliegenheit: unverzügliche Anzeige bei der Polizei und Einreichung einer Stehlgutliste. Selbstbeteiligung 150 €.",
+   "fnol_text": "Bei mir wurde eingebrochen, während ich im Urlaub war. Gestohlen wurden Schmuck und Bargeld. Eine Stehlgutliste reiche ich nach, eine polizeiliche Anzeige habe ich noch nicht gemacht.",
+   "invoice_items": [
+    {
+     "description": "Schmuck (geschätzt)",
+     "amount_eur": 10000.0
+    },
+    {
+     "description": "Bargeld",
+     "amount_eur": 2000.0
+    }
+   ],
+   "attachments": [],
+   "expected_decision": "refer_to_human",
+   "ground_truth_note": "Mehrere Indizien: Meldung 4 Tage nach Vertragsbeginn, keine polizeiliche Anzeige, hohe runde Werte ohne Belege. Forensische Prüfung.",
+   "is_fraudulent": true,
+   "decision": "refer_to_human",
+   "payout_eur": 0.0,
+   "correct": true,
+   "receipt": {
+    "rationale": "Hohes Betrugsrisiko: Fall geht an die forensische Prüfung, keine automatische Regulierung.",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.7,
+      "summary": "Einbruchdiebstahl ist gedeckt. Die offene Obliegenheit (polizeiliche Anzeige) und die Plausibilität werden gesondert geprüft.",
+      "sources": [
+       "Einbruchdiebstahl grundsätzlich versichert"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.86,
+      "summary": "Kombination aus Meldung kurz nach Vertragsbeginn, fehlender Anzeige und unbelegten Rundwerten ergibt ein hohes Betrugsrisiko. Kein Urteil, sondern Prüfauftrag.",
+      "sources": [
+       "Schadenmeldung nur 4 Tage nach Vertragsbeginn",
+       "Keine polizeiliche Anzeige trotz behauptetem Einbruch",
+       "Hohe runde Wertangaben (Schmuck 10.000 €, Bargeld 2.000 €) ohne Belege"
+      ]
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.5,
+      "summary": "Ohne Belege und Stehlgutliste sind die Beträge nicht überprüfbar.",
+      "sources": [
+       "Wertangaben ohne Kaufbelege nicht verifizierbar"
+      ]
+     }
+    ],
+    "blocked_actions": [
+     {
+      "action": "Automatische Regulierung oder Ablehnung",
+      "reason": "Hohes Betrugsrisiko — forensische und menschliche Prüfung erforderlich. Die Pipeline entscheidet hier bewusst nicht selbst."
+     }
+    ],
+    "human_verification_required": [
+     "Betrugsindiz: Schadenmeldung nur 4 Tage nach Vertragsbeginn",
+     "Betrugsindiz: Keine polizeiliche Anzeige trotz behauptetem Einbruch",
+     "Betrugsindiz: Hohe runde Wertangaben (Schmuck 10.000 €, Bargeld 2.000 €) ohne Belege"
+    ],
+    "uncertainty_notes": []
+   }
+  },
+  {
+   "claim_id": "HR-2026-005",
+   "line_of_business": "hausrat",
+   "incident_date": "2026-03-20",
+   "reported_date": "2026-03-27",
+   "policy_excerpt": "Versichert ist Einbruchdiebstahl. Obliegenheit: Anzeige bei der Polizei mit Aktenzeichen. Ersatz zum Neuwert, Selbstbeteiligung 150 €.",
+   "fnol_text": "Es wurde bei mir eingebrochen, die Terrassentür war aufgehebelt. Ein Laptop und eine Kamera sind weg. Genaues Datum weiß ich nicht mehr sicher, war irgendwann letzte Woche.",
+   "invoice_items": [
+    {
+     "description": "Laptop",
+     "amount_eur": 1800.0
+    },
+    {
+     "description": "Spiegelreflexkamera",
+     "amount_eur": 1200.0
+    }
+   ],
+   "attachments": [
+    "Foto aufgehebelte Terrassentür"
+   ],
+   "expected_decision": "refer_to_human",
+   "ground_truth_note": "Einbruch plausibel, aber polizeiliches Aktenzeichen und genaues Schadendatum fehlen -> nicht abschließend entscheidbar.",
+   "is_fraudulent": false,
+   "decision": "refer_to_human",
+   "payout_eur": 0.0,
+   "correct": true,
+   "receipt": {
+    "rationale": "Deckung nicht abschließend beurteilbar (fehlende Angaben oder Konfidenz unter Schwelle).",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.45,
+      "summary": "Aufgehebelte Terrassentür spricht für einen gedeckten Einbruch. Ohne polizeiliches Aktenzeichen und ohne gesichertes Schadendatum lässt sich die Deckung aber nicht abschließend bestätigen.",
+      "sources": [
+       "Einbruchdiebstahl gedeckt; Obliegenheit polizeiliche Anzeige mit Aktenzeichen offen"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.6,
+      "summary": "Einbruchspuren dokumentiert, Schadenbild plausibel. Die fehlenden Angaben sind eher eine Deckungs- als eine Betrugsfrage.",
+      "sources": []
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.7,
+      "summary": "Laptop und Kamera plausibel; endgültige Bewertung erst nach Belegeinreichung.",
+      "sources": []
+     }
+    ],
+    "blocked_actions": [],
+    "human_verification_required": [
+     "Deckung: Polizeiliches Aktenzeichen / Anzeige",
+     "Deckung: Gesichertes Schadendatum"
+    ],
+    "uncertainty_notes": [
+     "Deckungskonfidenz nur 45% — unter Schwelle 60%"
+    ]
+   }
+  },
+  {
+   "claim_id": "KFZ-2026-001",
+   "line_of_business": "kfz_kasko",
+   "incident_date": "2026-05-04",
+   "reported_date": "2026-05-05",
+   "policy_excerpt": "Teilkasko: versichert sind u.a. Glasbruch, Diebstahl, Wildschaden, Brand. Selbstbeteiligung 150 € bei Glasbruch (Reparatur ohne SB).",
+   "fnol_text": "Auf der Autobahn ist ein Steinschlag in die Windschutzscheibe gegangen, der Riss ist über das Sichtfeld gewandert. Die Werkstatt hat die Scheibe komplett getauscht.",
+   "invoice_items": [
+    {
+     "description": "Austausch Windschutzscheibe inkl. Einbau und Kalibrierung",
+     "amount_eur": 690.0
+    }
+   ],
+   "attachments": [
+    "Werkstattrechnung",
+    "Foto gerissene Scheibe"
+   ],
+   "expected_decision": "pay",
+   "ground_truth_note": "Glasbruch in Teilkasko eindeutig gedeckt, Position plausibel. Zeigt: Pipeline ist spartenagnostisch.",
+   "is_fraudulent": false,
+   "decision": "pay",
+   "payout_eur": 690.0,
+   "correct": true,
+   "receipt": {
+    "rationale": "Gedeckt; Positionen plausibel. Auszahlung: 690.00 €.",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.93,
+      "summary": "Steinschlag mit durchgehendem Riss in der Windschutzscheibe ist ein klassischer Glasbruchschaden und in der Teilkasko gedeckt.",
+      "sources": [
+       "Teilkasko: Glasbruch eingeschlossen"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.9,
+      "summary": "Alltäglicher Steinschlag, Werkstattrechnung und Foto vorhanden. Keine Auffälligkeiten.",
+      "sources": []
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.9,
+      "summary": "Scheibentausch inkl. Einbau und Kalibrierung ist marktüblich und passt zum Schaden.",
+      "sources": []
+     }
+    ],
+    "blocked_actions": [],
+    "human_verification_required": [],
+    "uncertainty_notes": []
+   }
+  },
+  {
+   "claim_id": "KFZ-2026-002",
+   "line_of_business": "kfz_kasko",
+   "incident_date": "2026-04-22",
+   "reported_date": "2026-04-22",
+   "policy_excerpt": "Vollkasko: versichert sind auch selbstverschuldete Unfallschäden. Selbstbeteiligung 500 €. Reparatur nach Gutachten.",
+   "fnol_text": "Ich bin beim Abbiegen auf nasser Fahrbahn ins Schleudern geraten und gegen einen Poller gefahren. Front und linke Seite des Fahrzeugs sind stark beschädigt. Gutachten liegt vor.",
+   "invoice_items": [
+    {
+     "description": "Reparatur Front und Seitenteil links lt. Gutachten",
+     "amount_eur": 8400.0
+    }
+   ],
+   "attachments": [
+    "Sachverständigengutachten",
+    "Unfallfotos",
+    "Werkstattkostenvoranschlag"
+   ],
+   "expected_decision": "pay",
+   "ground_truth_note": "Gedeckter Vollkaskoschaden, plausibel. Betrag über Auto-Freigabegrenze -> Vier-Augen-Freigabe geblockt, Entscheidung bleibt AUSZAHLEN.",
+   "is_fraudulent": false,
+   "decision": "pay",
+   "payout_eur": 8400.0,
+   "correct": true,
+   "receipt": {
+    "rationale": "Gedeckt; Positionen plausibel. Auszahlung: 8400.00 €.",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.9,
+      "summary": "Schleudern auf nasser Fahrbahn mit Anstoß gegen einen Poller ist ein gedeckter Vollkasko-Unfall. Gutachten liegt vor.",
+      "sources": [
+       "Vollkasko: selbstverschuldeter Unfallschaden eingeschlossen, abzüglich SB 500 €"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.85,
+      "summary": "Hergang, Gutachten und Fotos konsistent. Keine Indizien für Manipulation.",
+      "sources": []
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.85,
+      "summary": "Reparaturumfang an Front und linker Seite deckt sich mit dem Gutachten und dem geschilderten Anstoß.",
+      "sources": []
+     }
+    ],
+    "blocked_actions": [
+     {
+      "action": "Automatische Auszahlung",
+      "reason": "Betrag 8400.00 € über Auto-Freigabegrenze 5000 € — Vier-Augen-Freigabe nötig."
+     }
+    ],
+    "human_verification_required": [
+     "Zahlungsfreigabe über 5000 € manuell bestätigen"
+    ],
+    "uncertainty_notes": []
+   }
+  },
+  {
+   "claim_id": "KFZ-2026-003",
+   "line_of_business": "kfz_kasko",
+   "incident_date": "2026-05-09",
+   "reported_date": "2026-05-10",
+   "policy_excerpt": "Vollkasko: versichert sind selbstverschuldete Unfallschäden. Nicht ersetzt werden Vorschäden und nicht unfallbedingte Mängel. Selbstbeteiligung 500 €.",
+   "fnol_text": "Beim Ausparken bin ich leicht gegen eine Mauer gestoßen, dabei ist die hintere Stoßstange beschädigt worden. Die Werkstatt repariert Stoßstange, Heckklappe und Auspuffanlage.",
+   "invoice_items": [
+    {
+     "description": "Stoßstange hinten",
+     "amount_eur": 1200.0
+    },
+    {
+     "description": "Heckklappe",
+     "amount_eur": 1800.0
+    },
+    {
+     "description": "Auspuffanlage",
+     "amount_eur": 1200.0
+    }
+   ],
+   "attachments": [
+    "Werkstattrechnung"
+   ],
+   "expected_decision": "refer_to_human",
+   "ground_truth_note": "Leichtes Ausparken erklärt keine Heckklappen- und Auspuffschäden -> Verdacht auf mitabgerechnete Vorschäden. Sollte zur Prüfung. (Bewusst als verpasstes Signal angelegt, um den Eval-Harness zu demonstrieren.)",
+   "is_fraudulent": true,
+   "decision": "pay_reduced",
+   "payout_eur": 1200.0,
+   "correct": false,
+   "receipt": {
+    "rationale": "Gedeckt; Kürzung um 3000.00 € auf nicht plausibel betroffene Positionen. Auszahlung: 1200.00 €.",
+    "traces": [
+     {
+      "agent": "Deckungs- & Haftungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.84,
+      "summary": "Anstoß beim Ausparken ist ein gedeckter Vollkasko-Vorfall. Nicht unfallbedingte Positionen sind allerdings ausgeschlossen.",
+      "sources": [
+       "Vollkasko: selbstverschuldeter Unfallschaden eingeschlossen"
+      ]
+     },
+     {
+      "agent": "Betrugsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.55,
+      "summary": "Es gibt Indizien für nicht unfallbedingte Positionen, die Datenlage reicht aus meiner Sicht aber nicht für eine hohe Risikoeinstufung.",
+      "sources": [
+       "Reparaturumfang (Heckklappe, Auspuffanlage) passt nicht zum geschilderten leichten Ausparkschaden",
+       "Möglicher mitabgerechneter Vorschaden"
+      ]
+     },
+     {
+      "agent": "Rechnungsprüfung",
+      "model": "claude-fable-5",
+      "mode": "fixture",
+      "confidence": 0.7,
+      "summary": "Nur die hintere Stoßstange ist durch den geschilderten Hergang erklärbar. Heckklappe und Auspuff deuten auf nicht unfallbedingte bzw. Vorschäden hin.",
+      "sources": [
+       "Heckklappe — bei einem Anstoß der hinteren Stoßstange nicht plausibel beschädigt",
+       "Auspuffanlage — kein nachvollziehbarer Zusammenhang mit dem Ausparkschaden"
+      ]
+     }
+    ],
+    "blocked_actions": [],
+    "human_verification_required": [
+     "Betrugsindiz (mittel): Reparaturumfang (Heckklappe, Auspuffanlage) passt nicht zum geschilderten leichten Ausparkschaden",
+     "Betrugsindiz (mittel): Möglicher mitabgerechneter Vorschaden"
+    ],
+    "uncertainty_notes": [
+     "Mittleres Betrugsrisiko — stichprobenartige Nachprüfung empfohlen"
+    ]
+   }
+  }
+ ],
+ "benchmark": {
+  "n": 48,
+  "kind": "synthetic_selftest",
+  "disclaimer": "Selbsttest des Harness auf synthetischen Daten: Die Ground-Truth ist per Konstruktion bekannt, die Agent-Verdikte kommen aus einem dokumentierten Fehlermodell, das die ERWARTETE Wirkung der v2-Prompt-Änderung abbildet. Die Entscheidungslogik und alle Kennzahlen sind echt — die Differenz v1→v2 ist hier projiziert, nicht gemessen. Die echte Zahl liefert `--live` mit Key.",
+  "coverage_floor": 0.6,
+  "prompts": {
+   "v1": "Du bist Betrugsanalyst für einen deutschen Kompositversicherer. Bewerte das Betrugsrisiko des Falls anhand objektiver Indizien aus Hergang, Belegen und Timing. Du beschuldigst niemanden — du machst Indizien sichtbar und schätzt ein Risiko ein. Schwache oder fehlende Indizien bedeuten niedriges Risiko; konstruiere keine Signale. Ein hohes Risiko ist ein Prüfauftrag an einen Menschen, keine Ablehnung.",
+   "v2": "Du bist Betrugsanalyst für einen deutschen Kompositversicherer. Bewerte das Betrugsrisiko des Falls anhand objektiver Indizien aus Hergang, Belegen und Timing. Du beschuldigst niemanden — du machst Indizien sichtbar und schätzt ein Risiko ein. Schwache oder fehlende Indizien bedeuten niedriges Risiko; konstruiere keine Signale. Ein hohes Risiko ist ein Prüfauftrag an einen Menschen, keine Ablehnung.\n\nKalibrierung der Risikostufe (wichtig):\n- 'high' bedeutet 'gehört zur forensischen Prüfung durch einen Menschen', nicht 'sicher Betrug'. Stufe im Zweifel eher hoch ein, wenn ein Mensch hinschauen sollte.\n- Achte besonders auf KOMBINATIONEN: Mehrere voneinander unabhängige mittelschwere Auffälligkeiten ergeben zusammen in der Regel ein hohes Risiko — stufe sie dann als 'high' ein, nicht als 'medium'. Ein einzelnes schwaches Indiz bleibt niedrig.\n- Beispiele für 'high': Hinweise auf Vorschäden plus ein Schadenbild, das nicht zum geschilderten Hergang passt; Meldung kurz nach Vertragsbeginn plus fehlende Belege plus runde Wertangaben."
+  },
+  "versions": {
+   "v1": {
+    "label": "v1 · Basis-Prompts",
+    "note": "Drei Agenten, generische System-Prompts. Betrugssignale unterhalb 'eindeutig' werden oft als mittel statt hoch eingestuft.",
+    "metrics": {
+     "accuracy": 0.7291666666666666,
+     "fraud_recall": 0.4,
+     "fraud_precision": 1.0,
+     "fraud_fp": 0.0
+    },
+    "confusion": {
+     "labels": [
+      "pay",
+      "pay_reduced",
+      "decline",
+      "refer_to_human"
+     ],
+     "matrix": [
+      [
+       18,
+       0,
+       2,
+       0
+      ],
+      [
+       4,
+       7,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       5,
+       0
+      ],
+      [
+       5,
+       0,
+       1,
+       5
+      ]
+     ]
+    },
+    "calibration": [
+     {
+      "lo": 0.0,
+      "hi": 0.2,
+      "n": 12,
+      "pred": 0.06449872041644794,
+      "actual": 0.0
+     },
+     {
+      "lo": 0.2,
+      "hi": 0.4,
+      "n": 21,
+      "pred": 0.3120372082621866,
+      "actual": 0.047619047619047616
+     },
+     {
+      "lo": 0.4,
+      "hi": 0.6,
+      "n": 8,
+      "pred": 0.5206394600197221,
+      "actual": 0.375
+     },
+     {
+      "lo": 0.6,
+      "hi": 0.8,
+      "n": 6,
+      "pred": 0.702109026316608,
+      "actual": 0.8333333333333334
+     },
+     {
+      "lo": 0.8,
+      "hi": 1.0,
+      "n": 1,
+      "pred": 0.8918573982828234,
+      "actual": 1.0
+     }
+    ]
+   },
+   "v2": {
+    "label": "v2 · + Indizien-Agent & Severity-Kalibrierung",
+    "note": "Zusätzlicher Indizien-Check, an echten Fällen kalibrierte Schwellen und Few-shot-Beispiele für Grenzfälle. Trennt Betrug deutlich schärfer von ehrlichen Fällen.",
+    "metrics": {
+     "accuracy": 0.8958333333333334,
+     "fraud_recall": 0.8,
+     "fraud_precision": 1.0,
+     "fraud_fp": 0.0
+    },
+    "confusion": {
+     "labels": [
+      "pay",
+      "pay_reduced",
+      "decline",
+      "refer_to_human"
+     ],
+     "matrix": [
+      [
+       20,
+       0,
+       0,
+       0
+      ],
+      [
+       2,
+       9,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       5,
+       0
+      ],
+      [
+       2,
+       0,
+       0,
+       9
+      ]
+     ]
+    },
+    "calibration": [
+     {
+      "lo": 0.0,
+      "hi": 0.2,
+      "n": 34,
+      "pred": 0.0834752168736802,
+      "actual": 0.0
+     },
+     {
+      "lo": 0.2,
+      "hi": 0.4,
+      "n": 4,
+      "pred": 0.24489407396828594,
+      "actual": 0.0
+     },
+     {
+      "lo": 0.4,
+      "hi": 0.6,
+      "n": 0,
+      "pred": 0.5,
+      "actual": null
+     },
+     {
+      "lo": 0.6,
+      "hi": 0.8,
+      "n": 5,
+      "pred": 0.7299084516716496,
+      "actual": 1.0
+     },
+     {
+      "lo": 0.8,
+      "hi": 1.0,
+      "n": 5,
+      "pred": 0.8811240907868119,
+      "actual": 1.0
+     }
+    ]
+   }
+  },
+  "lift": {
+   "recall": {
+    "v1": 0.4,
+    "v2": 0.8
+   },
+   "accuracy": {
+    "v1": 0.7291666666666666,
+    "v2": 0.8958333333333334
+   },
+   "fp": {
+    "v1": 0.0,
+    "v2": 0.0
+   }
+  }
+ }
+}

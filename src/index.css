@@ -1,0 +1,140 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-cream: #f5f4f0;
+  --color-softwhite: #eae8e2;
+  --color-hairline: #d9d5ce;
+  --color-ink: #050102;
+  --color-core: #9ab50d;
+  --color-core-deep: #7b910a;
+  --color-mist: #dfed93;
+  --color-sage: #55613a;
+  --color-darkgreen: #2f3512;
+  --color-signal: #ff611b;
+  --color-signal-deep: #cc4e16;
+  --color-maroon: #3b0619;
+  --color-muted: #4a4a46;
+  --color-faint: #7a7872;
+
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-cream text-ink font-sans antialiased;
+}
+
+h1, h2, h3 {
+  @apply font-serif font-normal;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 em, h2 em {
+  @apply text-core;
+  font-style: italic; /* Instrument Serif italic */
+}
+
+::selection {
+  background: var(--color-mist);
+  color: var(--color-darkgreen);
+}
+
+/* Feines Korn über allem — Materialität statt flacher Flächen */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  z-index: 70;
+  background: var(--color-core);
+  transform-origin: left;
+}
+
+.sec-num {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  z-index: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(6rem, 12vw, 11rem);
+  line-height: 1;
+  color: var(--color-hairline);
+  user-select: none;
+  pointer-events: none;
+}
+
+.eyebrow {
+  @apply font-mono text-xs uppercase text-faint;
+  letter-spacing: 0.14em;
+}
+
+.lift {
+  transition:
+    transform 200ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(47, 53, 18, 0.1);
+}
+
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  background: var(--color-core);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.pill-cta {
+  @apply inline-block rounded-full bg-signal px-7 py-3 font-mono text-sm text-white;
+  letter-spacing: 0.06em;
+  transition: background 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+.pill-cta:hover { @apply bg-signal-deep; }
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 360ms cubic-bezier(0.2, 0, 0, 1), transform 360ms cubic-bezier(0.2, 0, 0, 1);
+}
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.live-dot {
+  @apply inline-block h-2 w-2 rounded-full bg-core;
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}

@@ -1,0 +1,149 @@
+{
+  "source": "gitlaw_mcp (5.942 Gesetze, live aufgerufen)",
+  "cases": [
+    {
+      "tool": "verify_citation",
+      "input": {
+        "citation": "§ 185 StGB"
+      },
+      "label": "Echtes Zitat — Beleidigung",
+      "result": {
+        "verified": true,
+        "citation_parsed": {
+          "marker": "§",
+          "number": "185",
+          "subsection": null,
+          "abbreviation": "StGB"
+        },
+        "law": {
+          "name": "Strafgesetzbuch",
+          "abbreviation": "StGB"
+        },
+        "paragraph": {
+          "number": "§ 185",
+          "title": "Beleidigung",
+          "text": "Die Beleidigung wird mit Freiheitsstrafe bis zu einem Jahr oder mit Geldstrafe und, wenn die Beleidigung öffentlich, in einer Versammlung, durch Verbreiten eines Inhalts (§ 11 Absatz 3) oder mittels einer Tätlichkeit begangen wird, mit Freiheitsstrafe bis zu zwei Jahren oder mit Geldstrafe bestraft."
+        },
+        "source": "laws/stgb.md"
+      }
+    },
+    {
+      "tool": "verify_citation",
+      "input": {
+        "citation": "§ 263a StGB"
+      },
+      "label": "Echtes Zitat — Computerbetrug",
+      "result": {
+        "verified": true,
+        "citation_parsed": {
+          "marker": "§",
+          "number": "263a",
+          "subsection": null,
+          "abbreviation": "StGB"
+        },
+        "law": {
+          "name": "Strafgesetzbuch",
+          "abbreviation": "StGB"
+        },
+        "paragraph": {
+          "number": "§ 263a",
+          "title": "Computerbetrug",
+          "text": "(1) Wer in der Absicht, sich oder einem Dritten einen rechtswidrigen Vermögensvorteil zu verschaffen, das Vermögen eines anderen dadurch beschädigt, daß er das Ergebnis eines Datenverarbeitungsvorgangs durch unrichtige Gestaltung des Programms, durch Verwendung unrichtiger oder unvollständiger Daten, durch unbefugte Verwendung von Daten oder sonst durch unbefugte Einwirkung auf den Ablauf beeinflußt, wird mit Freiheitsstrafe bis zu fünf Jahren oder mit Geldstrafe bestraft.\n\n(2) § 263 Abs. 2 bis 6 gilt entsprechend.\n\n(3) Wer eine Straftat nach Absatz 1 vorbereitet, indem er\n\n1. Computerprogramme, deren Zweck die Begehung einer solchen Tat ist, herstellt, sich oder einem anderen verschafft, feilhält, verwahrt oder einem anderen überlässt oder\n\n2. Passwörter oder sonstige Sicherungscodes, die zur Begehung einer solchen Tat geeignet sind, herstellt, sich oder einem anderen verschafft, feilhält, verwahrt oder einem anderen überlässt,\n\n(4) In den Fällen des Absatzes 3 gilt § 149 Abs. 2 und 3 entsprechend."
+        },
+        "source": "laws/stgb.md"
+      }
+    },
+    {
+      "tool": "verify_citation",
+      "input": {
+        "citation": "Art. 5 GG"
+      },
+      "label": "Echtes Zitat — Meinungsfreiheit",
+      "result": {
+        "verified": true,
+        "citation_parsed": {
+          "marker": "Art",
+          "number": "5",
+          "subsection": null,
+          "abbreviation": "GG"
+        },
+        "law": {
+          "name": "Grundgesetz für die Bundesrepublik Deutschland",
+          "abbreviation": "GG"
+        },
+        "paragraph": {
+          "number": "Art 5",
+          "title": null,
+          "text": "(1) Jeder hat das Recht, seine Meinung in Wort, Schrift und Bild frei zu äußern und zu verbreiten und sich aus allgemein zugänglichen Quellen ungehindert zu unterrichten. Die Pressefreiheit und die Freiheit der Berichterstattung durch Rundfunk und Film werden gewährleistet. Eine Zensur findet nicht statt.\n\n(2) Diese Rechte finden ihre Schranken in den Vorschriften der allgemeinen Gesetze, den gesetzlichen Bestimmungen zum Schutze der Jugend und in dem Recht der persönlichen Ehre.\n\n(3) Kunst und Wissenschaft, Forschung und Lehre sind frei. Die Freiheit der Lehre entbindet nicht von der Treue zur Verfassung."
+        },
+        "source": "laws/gg.md"
+      }
+    },
+    {
+      "tool": "verify_citation",
+      "input": {
+        "citation": "§ 999 StGB"
+      },
+      "label": "Halluzination — Paragraph existiert nicht",
+      "result": {
+        "verified": false,
+        "reason": "paragraph_not_found",
+        "input": "§ 999 StGB",
+        "law": {
+          "name": "Strafgesetzbuch",
+          "abbreviation": "StGB"
+        },
+        "source": "stgb.md",
+        "hint": "StGB exists, but '§ 999' was not found in the corpus. The paragraph may have been repealed, renumbered, or the citation may be wrong."
+      }
+    },
+    {
+      "tool": "verify_citation",
+      "input": {
+        "citation": "§ 185 XYZ"
+      },
+      "label": "Halluzination — Gesetz existiert nicht",
+      "result": {
+        "verified": false,
+        "reason": "law_not_found",
+        "input": "§ 185 XYZ",
+        "law_abbreviation_searched": "XYZ",
+        "available_count": 5942
+      }
+    },
+    {
+      "tool": "verify_citation",
+      "input": {
+        "citation": "Mit freundlichen Grüßen"
+      },
+      "label": "Kein Zitat — nicht parsebar",
+      "result": {
+        "verified": false,
+        "reason": "could_not_parse",
+        "input": "Mit freundlichen Grüßen",
+        "hint": "Expected format: '§ 185 StGB' or 'Art. 5 GG'."
+      }
+    },
+    {
+      "tool": "lookup_paragraph",
+      "input": {
+        "law": "BGB",
+        "paragraph": "823"
+      },
+      "label": "Exakter Lookup — Schadensersatz",
+      "result": {
+        "verified": true,
+        "law": {
+          "name": "Bürgerliches Gesetzbuch",
+          "abbreviation": "BGB"
+        },
+        "paragraph": {
+          "number": "§ 823",
+          "title": "Schadensersatzpflicht",
+          "text": "(1) Wer vorsätzlich oder fahrlässig das Leben, den Körper, die Gesundheit, die Freiheit, das Eigentum oder ein sonstiges Recht eines anderen widerrechtlich verletzt, ist dem anderen zum Ersatz des daraus entstehenden Schadens verpflichtet.\n\n(2) Die gleiche Verpflichtung trifft denjenigen, welcher gegen ein den Schutz eines anderen bezweckendes Gesetz verstößt. Ist nach dem Inhalt des Gesetzes ein Verstoß gegen dieses auch ohne Verschulden möglich, so tritt die Ersatzpflicht nur im Falle des Verschuldens ein."
+        },
+        "source": "laws/bgb.md"
+      }
+    }
+  ]
+}

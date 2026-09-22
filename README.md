@@ -6,3 +6,5 @@ Public deployment mirror of a synthetic AI-operations application demo.
 - No production/customer data
 - No API keys or backend secrets
 - Built to demonstrate failure → review → regression → rerun
+
+Deployment target: GitHub Pages (`/inca-demo/`).

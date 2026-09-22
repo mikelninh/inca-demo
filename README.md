@@ -8,3 +8,5 @@ Public deployment mirror of a synthetic AI-operations application demo.
 - Built to demonstrate failure → review → regression → rerun
 
 Deployment target: GitHub Pages (`/inca-demo/`).
+
+Pages source: GitHub Actions.

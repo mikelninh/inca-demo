@@ -290,22 +290,11 @@ export default function ClaimsApp() {
               <p className="section-kicker">03 / {t.resultTitle}</p>
               <h2 id="result-title">{t.decisionIntro}</h2>
             </div>
-            <div className="rule-actions">
-              {ruleApplied ? (
-                <button className="secondary-button" type="button" onClick={() => setRuleApplied(false)}>
-                  <span aria-hidden="true">↶</span> {t.reset}
-                </button>
-              ) : (
-                <button className="primary-button" type="button" onClick={() => setRuleApplied(true)}>
-                  {t.apply} <span aria-hidden="true">→</span>
-                </button>
-              )}
-            </div>
           </div>
           <div className="metric-row" aria-live="polite" aria-atomic="true">
-            <div className="metric"><span className="metric-name">{t.accuracy}</span><strong>{current.correct} / {demo.cases.length}</strong><span className="metric-change">{ruleApplied ? '7 → 8' : '7 / 8'} · {t.note}</span></div>
-            <div className="metric"><span className="metric-name">{t.missed}</span><strong>{current.missed}</strong><span className="metric-change">{ruleApplied ? '1 → 0' : '1'} · {t.note}</span></div>
-            <div className="metric"><span className="metric-name">{t.automation}</span><strong>{String(current.autoPct).replace('.', lang === 'de' ? ',' : '.')}%</strong><span className="metric-change">{ruleApplied ? '75 → 62,5%' : '75%'} · {t.note}</span></div>
+            <div className="metric"><span className="metric-name">{t.accuracy}</span><strong>{current.correct} / {demo.cases.length}</strong><span className="metric-change">{ruleApplied ? `${before.correct} → ${after.correct}` : `${before.correct} / ${demo.cases.length}`} · {t.note}</span></div>
+            <div className="metric"><span className="metric-name">{t.missed}</span><strong>{current.missed}</strong><span className="metric-change">{ruleApplied ? `${before.missed} → ${after.missed}` : String(before.missed)} · {t.note}</span></div>
+            <div className="metric"><span className="metric-name">{t.automation}</span><strong>{String(current.autoPct).replace('.', lang === 'de' ? ',' : '.')}%</strong><span className="metric-change">{ruleApplied ? `${String(before.autoPct).replace('.', lang === 'de' ? ',' : '.')} → ${String(after.autoPct).replace('.', lang === 'de' ? ',' : '.')}%` : `${before.autoPct}%`} · {t.note}</span></div>
           </div>
           <p className="metric-disclaimer">{t.metricsHint}</p>
         </section>
@@ -333,7 +322,7 @@ export default function ClaimsApp() {
 
         <footer className="site-footer">
           <span>{t.about}</span>
-          <p>{t.footer}</p>
+          <p>{t.footer} · <a href="mailto:mikel_ninh@yahoo.de">Say hello ↗</a></p>
           <a href="https://github.com/mikelninh/inca-demo" target="_blank" rel="noopener noreferrer">
             {t.source} ↗
           </a>

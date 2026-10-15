@@ -70,7 +70,7 @@ const de = {
     titlePre: 'Keine Klausel ',
     titleEm: 'aus dem Modellgedächtnis.',
     intro:
-      'Nicht „was denkt das Modell?", sondern „welche Klausel trägt die Entscheidung?". Mein GitLaw-MCP verifiziert Rechtszitate gegen 5.942 echte Gesetze — dieselbe Mechanik, die eure Deckungsprüfung zitierfest machen würde.',
+      'Nicht „was denkt das Modell?", sondern „welche Klausel trägt die Entscheidung?". Mein GitLaw-MCP verifiziert Rechtszitate gegen thousands of echte Gesetze — dieselbe Mechanik, die eure Deckungsprüfung zitierfest machen würde.',
     toolTitle: 'Die Tool-Schicht — echte Aufrufe, key-frei reproduzierbar',
     agentTitle: 'Der Agent-Lauf',
     agentNotRun:
@@ -96,7 +96,7 @@ const de = {
     points: [
       {
         title: 'Berlin, sofort',
-        body: 'Vor Ort, deutschsprachig, DSGVO im Reflex — Legal-Tech für deutsche Nutzer baue ich seit Jahren.',
+        body: 'Vor Ort, deutschsprachig, DSGVO im Reflex — Ich lerne und baue an AI- und Legal-Tech-Workflows und bringe praktische Operations-Erfahrung mit.',
       },
       {
         title: 'Loop-Denke',
@@ -122,9 +122,9 @@ const de = {
     learnIntro:
       'Die Methode steht. Die Skalierungs-Narben holt man sich nur im Maschinenraum. Drei erste Fragen:',
     learn: [
-      'Wie triagiert ihr Edge-Cases bei echtem Volumen — wer entscheidet, welcher von 250+ Agenten ein Update bekommt?',
+      'Wie triagiert ihr Edge-Cases bei echtem Volumen — wer entscheidet, wann ein Agent oder eine Regel angepasst werden sollte?',
       'Wie haltet ihr so viele Prompts im Team konsistent — Ownership, Review, Regressionsschutz?',
-      'Was hat euch der Weg von der Demo zu 180.000 Schäden über Evals gelehrt, das in keinem Paper steht?',
+      'Welche Qualitätschecks haben sich beim Schritt von Pilot zu echten Schadenfällen besonders bewährt?',
     ],
     mail: 'Mail an Mikel',
     linkedin: 'LinkedIn',
@@ -204,7 +204,7 @@ const en: typeof de = {
     titlePre: 'No clause ',
     titleEm: 'from model memory.',
     intro:
-      'Not "what does the model think?" but "which clause supports the decision?". My GitLaw MCP verifies legal citations against 5,942 real statutes — the same mechanics that would make your coverage checks citation-proof.',
+      'Not "what does the model think?" but "which clause supports the decision?". My GitLaw MCP verifies legal citations against thousands of real statutes — the same mechanics that would make your coverage checks citation-proof.',
     toolTitle: 'The tool layer — real calls, reproducible without a key',
     agentTitle: 'The agent run',
     agentNotRun:
@@ -230,7 +230,7 @@ const en: typeof de = {
     points: [
       {
         title: 'Berlin, now',
-        body: 'On site, German-speaking, GDPR as a reflex — I have been building legal tech for German users for years.',
+        body: 'On site, German-speaking, GDPR as a reflex — I work hands-on on AI and legal-tech workflows and bring practical operations experience.',
       },
       {
         title: 'Loop thinking',
@@ -256,9 +256,9 @@ const en: typeof de = {
     learnIntro:
       'The method is in place. Scaling scars you only earn in the engine room. Three first questions:',
     learn: [
-      'How do you triage edge cases at real volume — who decides which of 250+ agents gets an update?',
+      'How do you triage edge cases at real volume — who decides when an agent or policy needs an update?',
       'How do you keep that many prompts consistent across a team — ownership, review, regression protection?',
-      'What did the road from demo to 180,000 claims teach you about evals that is in no paper?',
+      'Which quality checks turned out to matter most when moving from a pilot to real claims?',
     ],
     mail: 'Email Mikel',
     linkedin: 'LinkedIn',

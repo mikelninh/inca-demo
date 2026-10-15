@@ -3,6 +3,7 @@ import loop from '../data/loop.json'
 import { useLang } from '../i18n'
 import { useReveal } from '../motion'
 import type { LoopData } from '../types'
+import { applyScopeGuardrail } from '../escalationRule'
 
 const data = loop as unknown as LoopData
 const TARGET_ID = 'KFZ-2026-003'
@@ -11,7 +12,7 @@ type Stage = 0 | 1 | 2 | 3
 
 function evaluate(corrected: boolean) {
   const rows = data.cases.map((c) => ({
-    decision: corrected && c.claim_id === TARGET_ID ? c.expected_decision : c.decision,
+    decision: corrected ? applyScopeGuardrail(c).decision : c.decision,
     expected: c.expected_decision,
     fraud: c.is_fraudulent,
   }))
@@ -63,7 +64,7 @@ export default function OperatorLoop() {
       titlePre: 'Der Fehler ist nicht das Ende. ',
       titleEm: 'Er wird zum Test.',
       intro:
-        'Ein absichtlich verpasstes Signal aus dem bestehenden Fixture-Set. Nicht verstecken: finden, prüfen, absichern, neu messen.',
+        'Ein synthetischer Fall mit einer fehlerhaften Entscheidung. Evidenz prüfen, eine begrenzte Regel ableiten, danach alle Fälle erneut testen.',
       steps: ['QA findet Fehler', 'Operator prüft', 'Regression sperrt ab', 'Harness läuft neu'],
       current: 'Aktuelle Entscheidung',
       expected: 'Erwartete Entscheidung',
@@ -72,18 +73,18 @@ export default function OperatorLoop() {
         'Der Harness erkennt einen Decision-Mismatch. Ein verdächtiger Schaden würde automatisch teilweise reguliert, obwohl die Ground Truth eine menschliche Prüfung verlangt.',
       review: 'Root Cause Review',
       reviewBody:
-        'Der Betrugs-Agent sah das richtige Signal, aber mit zu wenig Konfidenz. Gleichzeitig markierte die Rechnungsprüfung Heckklappe und Auspuff als unplausibel. Das System hatte genug Warnzeichen — aber keine harte Eskalationsregel.',
+        'Der gespeicherte synthetische Trace nennt ein schwaches Risikosignal; die Rechnungsprüfung markiert Heckklappe und Auspuff als unplausibel. Für diese Konstellation fehlt im Baseline-Ergebnis die Eskalation.',
       guardrail: 'Regression Guardrail',
       guardrailBody:
-        'Demo-Regel: Wenn Reparaturumfang und Schadenhergang deutlich kollidieren und ein Fraud-Signal vorliegt, darf der Fall nicht automatisch reguliert werden. Er geht an einen Menschen.',
+        'Illustrative Regel: Ein leichter Stoßstangenschaden mit deutlich erweitertem Reparaturumfang und dokumentiertem Widerspruch aus der Rechnungsprüfung wird zur menschlichen Prüfung eskaliert. Keine Entscheidung über Betrug oder Deckung.',
       rerun: 'Deterministischer Re-run',
       rerunBody:
-        'Der Browser berechnet dieselben 8 Fixtures erneut — mit genau einer Korrektur: KFZ-2026-003 wird auf die erwartete Eskalation gesetzt. Keine Modell- oder API-Zahlen erfunden.',
+        'Der Browser wertet alle 8 Fixtures neu aus. Eine eng begrenzte, dokumentierte Regel prüft Reparaturumfang, Hergang und Hinweise aus der Rechnungsprüfung – ohne Claim-ID oder erwartetes Ergebnis zu verwenden. Die Zahlen sind synthetisch, kein Modell-Benchmark.',
       reviewButton: 'Fall prüfen',
       lockButton: 'Als Regression-Gate sperren',
       rerunButton: '8 Fixtures neu auswerten',
       resetButton: 'Loop nochmal durchspielen',
-      signal: 'Gefundenes Signal',
+      signal: 'Synthetisches Signal',
       confidence: 'Konfidenz',
       before: 'vorher',
       after: 'nachher',
@@ -100,7 +101,7 @@ export default function OperatorLoop() {
       titlePre: 'A failure is not the end. ',
       titleEm: 'It becomes a test.',
       intro:
-        'One deliberately missed signal from the existing fixture set. Do not hide it: detect, review, guard, measure again.',
+        'A synthetic case with an incorrect decision. Inspect the evidence, add a limited rule, then re-evaluate every fixture.',
       steps: ['QA catches it', 'Operator reviews', 'Regression guards it', 'Harness reruns'],
       current: 'Current decision',
       expected: 'Expected decision',
@@ -109,18 +110,18 @@ export default function OperatorLoop() {
         'The harness detects a decision mismatch. A suspicious claim would be partially auto-settled even though the ground truth requires human review.',
       review: 'Root cause review',
       reviewBody:
-        'The fraud agent saw the right signal, but with low confidence. At the same time, invoice review flagged the trunk lid and exhaust as implausible. The system had enough warning signs — but no hard escalation rule.',
+        'The saved synthetic trace shows a weak risk signal; invoice review flags the trunk lid and exhaust as implausible. This combination is missing a review escalation in the baseline result.',
       guardrail: 'Regression guardrail',
       guardrailBody:
-        'Demo rule: when repair scope materially conflicts with the incident narrative and a fraud signal exists, the claim cannot auto-settle. It goes to a human.',
+        'Illustrative rule: when a low-impact bumper incident has a wider repair invoice and invoice review documents the discrepancy, the case is escalated for human review. No fraud or coverage determination.',
       rerun: 'Deterministic rerun',
       rerunBody:
-        'The browser recomputes the same 8 fixtures with exactly one correction: KFZ-2026-003 is set to the expected escalation. No invented model or API metrics.',
+        'The browser re-evaluates all 8 fixtures. A deliberately narrow, documented rule checks repair scope, incident description, and invoice-review evidence without reading claim IDs or expected labels. Synthetic metrics only; not a model benchmark.',
       reviewButton: 'Review case',
       lockButton: 'Lock as regression gate',
       rerunButton: 'Re-evaluate 8 fixtures',
       resetButton: 'Run the loop again',
-      signal: 'Detected signal',
+      signal: 'Synthetic signal',
       confidence: 'Confidence',
       before: 'before',
       after: 'after',

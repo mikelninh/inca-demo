@@ -1,57 +1,38 @@
-# INCA AI Operations Demo
+# Claims Ops Loop — AI Operations work sample
 
-A small, public proof-of-work for **AI Operations**: how to take an agentic workflow from a failure, through human review and a regression guardrail, to a measurable rerun.
+**[Try the public demo](https://mikelninh.github.io/inca-demo/)** · [Source](https://github.com/mikelninh/inca-demo)
 
-**Live demo:** https://mikelninh.github.io/inca-demo/
+A small, transparent exercise about a simple question: **what happens after a system makes the wrong call?** Designed to be understandable without an insurance or AI background.
 
-## What to look at
+## What you do
 
-The core loop is deliberately narrow:
+1. **Read one synthetic claim.** The reported parking accident, invoice items and saved review note are visible together.
+2. **Compare the decision.** A baseline fixture proposes partial payment, despite a documented mismatch between the incident and additional repairs.
+3. **Test the extra check.** A deliberately narrow, deterministic rule checks the incident narrative, wider repair scope and invoice-review evidence. Matching cases are routed to a human.
+4. **See the trade-off.** The same eight hand-written cases are evaluated again. In this fixture set, label agreement rises from 7/8 to 8/8; one missed labelled risk case becomes zero; the share without human review falls from 75% to 62.5%.
 
-**Synthetic decision → QA detects mismatch → evidence review → narrow, rule-based escalation → deterministic rerun**
+The main example is `KFZ-2026-003`. You can also inspect the other seven cases, switch language and reset the comparison.
 
-One synthetic claim, `KFZ-2026-003`, is intentionally wrong. The demo makes the failure visible, shows the evidence behind it, shows a scoped repair-scope guardrail, then recomputes the same fixture set so the trade-off is inspectable rather than hand-waved.
+## Scope and limits
 
-This is meant to demonstrate the work around an AI system — **evaluation, review queues, failure analysis, guardrails and measurable iteration** — not to pretend a toy front end is a production claims platform.
+- **All cases, decisions, review notes and labels are synthetic.** No real customers or insurer data.
+- **No live AI is called.** The saved 'agent' traces are examples, not proof of a Claude API run.
+- The narrow check **does not read claim IDs, the expected label, ground truth or the fraud flag**. See `src/escalationRule.ts`.
+- Passing eight hand-written examples is not evidence of real-world accuracy, calibration or suitability for claims settlement.
+- Real insurance work needs domain experts, validated contract clauses, quality monitoring, access control, auditability, independently evaluated data and explicit human responsibility.
 
-## Why this exists
+## Why I built this
 
-Agentic systems become useful when failures create better operations instead of disappearing into anecdotes.
+I wanted to show how I'd approach the operational part: **look at the actual case, understand the exception, document a review rule, turn the problem into a regression check, and measure the cost of taking the safer route**. The useful part is not the model making a confident guess.
 
-The demo focuses on four questions:
-
-1. **Can we see why a decision happened?**
-2. **Can a human review the right cases quickly?**
-3. **Can a failure become a repeatable regression test?**
-4. **Can we rerun the same evidence and show what changed?**
-
-## Evidence & boundaries
-
-- All claims, traces and metrics are **synthetic fixtures**
-- No production or customer data
-- No backend API keys or secrets
-- No model/API calls are executed in the browser; stored traces are illustrative, not real Claude responses
-- An existing Claude Pro or ChatGPT subscription is not an API credential
-- The rerun is deterministic and reproducible in the browser; the rule does not inspect claim IDs, expected labels or fraud ground truth
-- The rule is deliberately narrow (low-impact vehicle incident, broader repair scope, documented invoice conflict) and is not insurer-approved
-- Metrics shown are computed from the included fixture set; they are **not production-performance claims**
-
-## Stack
-
-React 19 · TypeScript · Vite · Vitest · GitHub Actions · GitHub Pages
-
-The repository is intentionally simple: the interesting part is the operational loop, not infrastructure theatre.
-
-## Run locally
+## Run it yourself
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Then open the local Vite URL.
-
-For the same checks used in deployment:
+For the checks used on every GitHub Pages deployment:
 
 ```bash
 npx tsc --noEmit
@@ -59,33 +40,8 @@ npx vitest run
 npm run build
 ```
 
-## Deployment
+The tests include a changed claim ID, contradictory expected labels, normal cases, missing mismatch evidence and already-escalated decisions. They are deterministic unit tests, not a live benchmark.
 
-Every push to `main` runs:
+**Tech:** React · TypeScript · Vite · Vitest · GitHub Actions · GitHub Pages.
 
-1. clean install
-2. TypeScript check
-3. Vitest
-4. production build
-5. GitHub Pages deployment
-
-See `.github/workflows/deploy.yml`.
-
-## Design trade-off
-
-The showcased generalizable rule (see `src/escalationRule.ts`) deliberately reduces auto-resolution on this eight-case synthetic fixture set. Its tests include changed IDs, deliberately misleading expected labels, ordinary claims and missing evidence. That is the point: optimisation is not “maximise automation”; it is **make the cost of automation visible and choose the safer operating point with evidence**.
-
----
-
-Built as a concise proof-of-work around the kind of **Ops × Agents × Evals** loop I would want to operate in a real team.
-
-## Operational hand-off / short SOP
-
-1. **Intake:** inspect the supplied incident narrative, invoice positions and review trace. Do not use personal/customer data in this public demo.
-2. **QA:** compare the stored decision to the synthetic label; a mismatch creates a review candidate (the label is an evaluation target, never an input to the guardrail).
-3. **Review:** note the invoice narrative conflict and why auto-settlement may be unsafe; do not accuse a person of fraud.
-4. **Policy:** apply the narrow scope-conflict escalation from `src/escalationRule.ts`; cases matching it are referred to a human, not paid or declined automatically.
-5. **Release gate:** rerun all synthetic fixtures and regression tests, track decision accuracy, false negatives and auto-resolution trade-off.
-6. **Human sign-off:** a real insurer would need policy/legal review, richer test data, audited operating procedures, access control, measured latency/cost and independent production validation before use.
-
-**What this does not prove:** live Claude evaluation, calibrated fraud accuracy, real customer outcomes or production suitability. The UI contains a guided operator loop over saved fixtures, not a deployed claims-processing backend.
+**Built by:** Michael Ninh · Berlin · [GitHub](https://github.com/mikelninh)

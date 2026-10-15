@@ -9,8 +9,8 @@ type Language = 'de' | 'en'
 const CONTENT = {
   de: {
     eyebrow: 'ARBEITSPROBE · AI OPERATIONS',
-    title: 'Würdest du diese Rechnung einfach bezahlen?'
-    intro: 'Ein kleiner Parkunfall, aber eine überraschend grosse Reparaturrechnung. Die ursprüngliche Entscheidung lautet: teilweise auszahlen. Wir prüfen, ob das reicht.'
+    title: 'Würdest du diese Rechnung einfach bezahlen?',
+    intro: 'Ein kleiner Parkunfall, aber eine überraschend grosse Reparaturrechnung. Die ursprüngliche Entscheidung lautet: teilweise auszahlen. Wir prüfen, ob das reicht.',
     banner: 'Interaktive Arbeitsprobe · 8 fiktive Fälle · keine echten Modellaufrufe',
     choose: 'Fall auswählen',
     mismatch: 'Abweichung',
@@ -40,7 +40,7 @@ const CONTENT = {
     rule1: 'Leichter Stoßstangenschaden im gemeldeten Hergang',
     rule2: 'Weitere Reparaturpositionen in der Rechnung',
     rule3: 'Dokumentierter Widerspruch aus der Rechnungsprüfung',
-    ruleOutro: 'Wenn ein kleiner Parkrempler und die geltend gemachten Reparaturen nicht zusammenpassen, geben wir den Fall zur menschlichen Prüfung. Die Entscheidung über eine Auszahlung trifft hier kein AI-Modell.'
+    ruleOutro: 'Wenn ein kleiner Parkrempler und die geltend gemachten Reparaturen nicht zusammenpassen, geben wir den Fall zur menschlichen Prüfung. Die Entscheidung über eine Auszahlung trifft hier kein AI-Modell.',
     how: 'Über dieses Experiment',
     caveat: 'Die Fälle, Prüfhinweise und bisherigen Entscheidungen sind synthetisch. Keine Kundendaten, kein Live-Claude, keine Versicherungsentscheidung. Die Zusatzregel ist bewusst eng gefasst und muss für echte Abläufe fachlich geprüft werden.',
     source: 'Quellcode und Tests',
@@ -58,8 +58,8 @@ const CONTENT = {
   },
   en: {
     eyebrow: 'WORK SAMPLE · AI OPERATIONS',
-    title: 'Would you pay this invoice straight away?'
-    intro: 'A minor parking accident, but a surprisingly extensive repair invoice. The saved decision says: pay part of it. Let’s check whether that is enough.'
+    title: 'Would you pay this invoice straight away?',
+    intro: 'A minor parking accident, but a surprisingly extensive repair invoice. The saved decision says: pay part of it. Let’s check whether that is enough.',
     banner: '8 fictional claims · fixed fixtures · no live model calls',
     choose: 'Choose a case',
     mismatch: 'Mismatch',
@@ -89,7 +89,7 @@ const CONTENT = {
     rule1: 'A low-impact bumper incident in the reported narrative',
     rule2: 'Additional repair items on the invoice',
     rule3: 'Documented mismatch in the invoice-review note',
-    ruleOutro: 'When a minor accident and a much wider repair invoice do not fit together, we send the case to a person for review. No AI model makes a payment decision here.'
+    ruleOutro: 'When a minor accident and a much wider repair invoice do not fit together, we send the case to a person for review. No AI model makes a payment decision here.',
     how: 'About this exercise',
     caveat: 'All claims, review notes and baseline decisions are synthetic. No customer data, no live Claude call, no insurance decision. The additional rule is deliberately narrow and requires domain review before any real-world use.',
     source: 'Source code & tests',

@@ -141,6 +141,20 @@ button:focus-visible, a:focus-visible, summary:focus-visible {
   .explainer { grid-template-columns: 1fr; gap: 19px; }
   .site-footer { align-items: start; }
 }
+.inline-action { display:flex;align-items:center;flex-wrap:wrap;gap:15px;margin:17px 0 4px; }
+.inline-action .primary-button,.inline-action .secondary-button { min-height:43px; }
+.action-hint { max-width:420px;color:#81909d;font-size:10.5px;line-height:1.55; }
+.results { margin-top:20px; }
+.results-heading { align-items:flex-start; }
+.detail-panel .decision-row { margin-top:18px; }
+.detail-panel .claim-block { border-top:1px solid #edf0f4;margin-top:18px; }
+.site-footer p a { color:#547392;text-decoration:none;font-weight:650; }
+.site-footer p a:hover { text-decoration:underline; }
+@media(max-width:620px) {
+  .inline-action { align-items:stretch;flex-direction:column;gap:8px; }
+  .action-hint { font-size:10px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after { animation: none!important; transition: none!important; scroll-behavior: auto!important; }
 }

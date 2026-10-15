@@ -7,6 +7,6 @@ export default defineConfig({
   base: '/inca-demo/',
   plugins: [react(), tailwindcss()],
   test: {
-    include: ['tests/**/*.test.ts'],
+    include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
   },
 })

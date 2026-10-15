@@ -70,7 +70,7 @@ const de = {
     titlePre: 'Keine Klausel ',
     titleEm: 'aus dem Modellgedächtnis.',
     intro:
-      'Nicht „was denkt das Modell?", sondern „welche Klausel trägt die Entscheidung?". Mein GitLaw-MCP verifiziert Rechtszitate gegen thousands of echte Gesetze — dieselbe Mechanik, die eure Deckungsprüfung zitierfest machen würde.',
+      'Nicht „was denkt das Modell?", sondern „welche Klausel trägt die Entscheidung?". Mein GitLaw-MCP hilft dabei, Zitate aus deutschen Gesetzestexten überprüfbar zu machen. In der Versicherungsprüfung wäre dieselbe Nachvollziehbarkeit wichtig – die tatsächlichen Vertragsklauseln müssen dabei separat geprüft werden.',
     toolTitle: 'Die Tool-Schicht — echte Aufrufe, key-frei reproduzierbar',
     agentTitle: 'Der Agent-Lauf',
     agentNotRun:
@@ -96,7 +96,7 @@ const de = {
     points: [
       {
         title: 'Berlin, sofort',
-        body: 'Vor Ort, deutschsprachig, DSGVO im Reflex — Ich lerne und baue an AI- und Legal-Tech-Workflows und bringe praktische Operations-Erfahrung mit.',
+        body: 'Berlin-based, deutsch- und englischsprachig. Eigene AI-Projekte und operative Erfahrung aus Gründung, Produkt und Teamarbeit.',
       },
       {
         title: 'Loop-Denke',
@@ -204,7 +204,7 @@ const en: typeof de = {
     titlePre: 'No clause ',
     titleEm: 'from model memory.',
     intro:
-      'Not "what does the model think?" but "which clause supports the decision?". My GitLaw MCP verifies legal citations against thousands of real statutes — the same mechanics that would make your coverage checks citation-proof.',
+      'Not "what does the model think?" but "which clause supports the decision?". My GitLaw MCP makes citations from German law sources inspectable. Insurance coverage needs the same traceability, with policy clauses checked separately.',
     toolTitle: 'The tool layer — real calls, reproducible without a key',
     agentTitle: 'The agent run',
     agentNotRun:
@@ -230,7 +230,7 @@ const en: typeof de = {
     points: [
       {
         title: 'Berlin, now',
-        body: 'On site, German-speaking, GDPR as a reflex — I work hands-on on AI and legal-tech workflows and bring practical operations experience.',
+        body: 'Berlin-based, fluent in German and English, with hands-on AI projects and experience across product, operations and running a business.',
       },
       {
         title: 'Loop thinking',

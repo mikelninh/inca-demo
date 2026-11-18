@@ -1,0 +1,25 @@
+name: Verify published INCA research demo
+on:
+  workflow_run:
+    workflows: [Deploy demo]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+jobs:
+  live-study:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Install supported Chromium
+        run: npx playwright install chromium
+      - name: Exercise the PUBLIC GitHub Pages pilot, including local-only export
+        run: npx playwright test --config=playwright.live.config.ts

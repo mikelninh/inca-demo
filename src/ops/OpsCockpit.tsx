@@ -87,7 +87,7 @@ export default function OpsCockpit(){
       <aside className="tower-queue" aria-label="Fallwarteschlange">
        <div className="tower-pane-top"><div><small>INBOX</small><h3>Schadenakten</h3></div><span className="tower-count">{cases.length}</span></div>
        <div className="tower-queue-list">
-        {cases.map((c,i)=>{
+        {cases.map((c)=>{
          const selectedCase=selectedId===c.claim_id
          const suggested=simulateRun(c)
          return <button key={c.claim_id} type="button" onClick={()=>chooseCase(c.claim_id)}

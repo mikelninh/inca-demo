@@ -69,5 +69,5 @@ if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUM
 if(report.sample_size!==8||report.baseline.correct!==7||report.assisted.correct!==8||
  report.baseline.critical_missed_referrals!==1||report.assisted.critical_missed_referrals!==0||
  report.exact_provenance.invalid_cases!==0||
- !report.human_trial.actionable_real_world_workload_claim===false)
+ report.human_trial.actionable_real_world_workload_claim !== false)
  process.exitCode=1;

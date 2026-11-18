@@ -168,6 +168,7 @@ export default function ClaimsApp() {
         <div className="site-bar-inner">
           <a className="brand" href="#top">Michael Ninh <span>/ AI Operations</span></a>
           <div className="bar-actions">
+            <a className="quiet-link" href="?study=1" title="Try the controlled reviewer A/B experiment">Research Taste / Test ↗</a>
             <a className="quiet-link" href="https://github.com/mikelninh/inca-demo" target="_blank" rel="noopener noreferrer">
               {t.source} <span aria-hidden="true">↗</span>
             </a>

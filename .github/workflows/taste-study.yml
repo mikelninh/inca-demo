@@ -23,8 +23,14 @@ jobs:
         run: |
           npx tsc --noEmit
           npm run build
+      - name: Playwright browser end-to-end review task
+        run: |
+          npx playwright install chromium
+          npx playwright test
       - name: Publish synthetic baseline vs proposed decision metrics
-        run: node --experimental-strip-types rsi/study/run.mjs
+        run: |
+          node --experimental-strip-types rsi/study/run.mjs
+          node --experimental-strip-types rsi/study/analyse.mjs
       - name: Preserve auditable JSON and build preview
         if: always()
         uses: actions/upload-artifact@v4

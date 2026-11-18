@@ -15,7 +15,6 @@ const LABELS:Record<Decision,string>={
  decline:'Ablehnen / Decline',refer_to_human:'Manuell prüfen / Human review'
 }
 const decisions:Decision[]=['pay','pay_reduced','decline','refer_to_human']
-const percent=(value:number|null)=>value===null?'—':Math.round(value*100)+'%'
 const secs=(value:number|null)=>value===null?'—':(value/1000).toFixed(1)+'s'
 
 export default function ResearchStudy(){
@@ -76,7 +75,7 @@ export default function ResearchStudy(){
    }
    setRecords(list=>[...list,recorded])
    setIndex(v=>v+1);setDecision('');setRating('');setFocusField('');setSourceJumps(0)
-   window.scrollTo({top:0,behavior:'instant'})
+   window.scrollTo({top:0,behavior:'auto'})
  }
  function exportSession(){
    if(!complete||seed===null)return
@@ -105,9 +104,9 @@ export default function ResearchStudy(){
  return <div className="research-page">
   <header className="research-nav">
    <div className="research-nav-inner">
-    <a href="/" className="research-brand">INCA <span>/ RESEARCH TASTE</span></a>
+    <a href={import.meta.env.BASE_URL} className="research-brand">INCA <span>/ RESEARCH TASTE</span></a>
     <span className="research-edition">OPERATIONS LAB · v0.1</span>
-    <a href="/" className="research-back">← Zur Arbeitsprobe</a>
+    <a href={import.meta.env.BASE_URL} className="research-back">← Zur Arbeitsprobe</a>
    </div>
   </header>
   <main className="research-container">

@@ -1,0 +1,42 @@
+name: INCA Research Taste — review study and traceability
+on:
+  push:
+    branches: [feature/taste-ops-traceability-study]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  study-preflight:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Test source provenance, randomisation and existing claim logic
+        run: npx vitest run
+      - name: Typecheck and build review interface
+        run: |
+          npx tsc --noEmit
+          npm run build
+      - name: Playwright browser end-to-end review task
+        run: |
+          npx playwright install chromium
+          npx playwright test
+      - name: Publish synthetic baseline vs proposed decision metrics
+        run: |
+          node --experimental-strip-types rsi/study/run.mjs
+          node --experimental-strip-types rsi/study/analyse.mjs
+      - name: Preserve auditable JSON and build preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inca-research-taste-evidence
+          path: |
+            rsi/study/out/latest.json
+            dist/
+          if-no-files-found: warn

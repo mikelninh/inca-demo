@@ -1,5 +1,7 @@
 import ClaimsApp from './ClaimsApp'
+import ResearchStudy from './research/ResearchStudy'
 
 export default function App() {
-  return <ClaimsApp />
+  const studyMode=new URLSearchParams(window.location.search).get('study')==='1'
+  return studyMode ? <ResearchStudy/> : <ClaimsApp/>
 }

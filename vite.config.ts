@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/inca-demo/',
+  // Vercel serves the isolated preview from /; GitHub Pages from /inca-demo/.
+  base: process.env.VERCEL === '1' ? '/' : '/inca-demo/',
   plugins: [react(), tailwindcss()],
   test: {
     include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],

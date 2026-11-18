@@ -4,9 +4,10 @@ import fs from 'node:fs/promises'
 test('a first-time reviewer completes all eight synthetic cases and voluntarily exports local results',async({page})=>{
   const externalWrites:string[]=[]
   const unexpectedHosts:string[]=[]
+  const allowedOrigin=new URL(test.info().project.use.baseURL||'http://127.0.0.1:4173').origin
   page.on('request',r=>{
     if(['POST','PUT','PATCH','DELETE'].includes(r.method()))externalWrites.push(r.url())
-    if(!r.url().startsWith('http://127.0.0.1:4173/'))unexpectedHosts.push(r.url())
+    if(!r.url().startsWith(allowedOrigin+'/'))unexpectedHosts.push(r.url())
   })
   await page.goto('/inca-demo/?study=1')
   await expect(page.getByRole('heading',{name:/Correct decisions/})).toBeVisible()

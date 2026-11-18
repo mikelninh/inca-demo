@@ -1,0 +1,36 @@
+name: RSI 2.0 — INCA shared evaluation
+on:
+  push:
+    branches: [feature/rsi-2-integration]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  claims-loop-precheck:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout pinned shared RSI engine
+        uses: actions/checkout@v4
+        with:
+          repository: mikelninh/animal-voices-os
+          ref: 979ef48c3fa39890b449703a92a3e370b7119788
+          path: rsi-core
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run same engine against actual INCA escalation code
+        run: node --experimental-strip-types rsi/evaluate.mjs
+      - name: Verify original INCA rule tests
+        run: |
+          npm ci
+          npx vitest run src/escalationRule.test.ts
+      - name: Upload anonymised decision evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inca-rsi-evaluation
+          path: rsi/out/latest.json
+          if-no-files-found: warn

@@ -1,7 +1,7 @@
 import {useEffect,useRef,useState} from 'react'
 import loop from '../data/loop.json'
 import {applyScopeGuardrail} from '../escalationRule'
-import type {Decision,LoopCase,LoopData} from '../types'
+import type {Decision,LoopData} from '../types'
 import {evidenceLedger,auditEvidenceLedger} from './evidence'
 import {allocateCases,compareTrial,countedActiveTime} from './study'
 import type {Assignment,SourceRating,TrialResult} from './study'

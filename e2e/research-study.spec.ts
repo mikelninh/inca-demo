@@ -3,8 +3,10 @@ import fs from 'node:fs/promises'
 
 test('a first-time reviewer completes all eight synthetic cases and voluntarily exports local results',async({page})=>{
   const externalWrites:string[]=[]
+  const unexpectedHosts:string[]=[]
   page.on('request',r=>{
     if(['POST','PUT','PATCH','DELETE'].includes(r.method()))externalWrites.push(r.url())
+    if(!r.url().startsWith('http://127.0.0.1:4173/'))unexpectedHosts.push(r.url())
   })
   await page.goto('/inca-demo/?study=1')
   await expect(page.getByRole('heading',{name:/Correct decisions/})).toBeVisible()
@@ -25,7 +27,7 @@ test('a first-time reviewer completes all eight synthetic cases and voluntarily 
   await expect(page.getByText('Dein Test ist abgeschlossen.')).toBeVisible()
   await expect(page.getByText(/keine kausale Zeitersparnis/)).toBeVisible()
   const downloadPromise=page.waitForEvent('download')
-  await page.getByRole('button',{name:/Anonymisierte Ergebnisse exportieren/}).click()
+  await page.getByRole('button',{name:/Ergebnisse ohne Namen exportieren/}).click()
   const download=await downloadPromise
   const contents=JSON.parse(await fs.readFile(await download.path() as string,'utf8'))
   expect(contents.schema).toBe('inca-review-trial-0.1')
@@ -36,4 +38,5 @@ test('a first-time reviewer completes all eight synthetic cases and voluntarily 
   expect(contents.summary.actionable_real_world_workload_claim).toBe(false)
   expect(JSON.stringify(contents)).not.toContain('fnol_text')
   expect(externalWrites).toEqual([])
+  expect(unexpectedHosts).toEqual([])
 })

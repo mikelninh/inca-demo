@@ -201,8 +201,8 @@ export default function ResearchStudy(){
       <div><span>Belegte Zeitersparnis</span><strong>Unbekannt</strong><small>Mehrere unabhängige Reviewer + gleiche Fallmischung erforderlich</small></div>
     </div>
     <div className="research-export">
-      <div><h3>Freiwilliger Datenexport</h3><p>Die JSON-Datei enthält nur Testfall-IDs, zugewiesene Ansicht, Entscheidungen, aktive Zeit, Belegurteile und zusammengefasste Kennzahlen — keine Namen, keine Originaltexte und keine Zugangsdaten.</p></div>
-      <button type="button" className="research-primary" onClick={exportSession}>Anonymisierte Ergebnisse exportieren <span aria-hidden="true">↓</span></button>
+      <div><h3>Freiwilliger Datenexport</h3><p>Die JSON-Datei enthält nur Testfall-IDs, zugewiesene Ansicht, Entscheidungen, aktive Zeit, Belegurteile und zusammengefasste Kennzahlen — keine Namen, keine Originaltexte und keine Zugangsdaten. Session-Kennung und Bearbeitungszeiten können dennoch indirekte Kennungen sein.</p></div>
+      <button type="button" className="research-primary" onClick={exportSession}>Ergebnisse ohne Namen exportieren <span aria-hidden="true">↓</span></button>
     </div>
     <p role="status" className="research-caution">{status}</p>
    </section>}

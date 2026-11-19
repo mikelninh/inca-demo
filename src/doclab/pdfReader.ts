@@ -41,9 +41,10 @@ export async function parsePdfBytes(
         text+=value
         const t=item.transform
         const height=Math.abs(t[3])||Math.abs(t[0])||12
-        const [x0,y0,x1,y1]=viewport.convertToViewportRectangle([
-          t[4],t[5],t[4]+item.width,t[5]+height
-        ])
+        const matrix=viewport.transform
+        const project=(x:number,y:number)=>[matrix[0]*x+matrix[2]*y+matrix[4],matrix[1]*x+matrix[3]*y+matrix[5]]
+        const [x0,y0]=project(t[4],t[5])
+        const [x1,y1]=project(t[4]+item.width,t[5]+height)
         const left=Math.min(x0,x1)/viewport.width,top=Math.min(y0,y1)/viewport.height
         const width=Math.abs(x1-x0)/viewport.width,boxHeight=Math.abs(y1-y0)/viewport.height
         if([left,top,width,boxHeight].every(Number.isFinite)&&width>0&&boxHeight>0&&

@@ -45,7 +45,6 @@ export async function drawPdfPage(
 ):Promise<void>{
   const loading=pdfjs.getDocument({
     data:raw.slice(),
-    isEvalSupported:false,
     useSystemFonts:true,stopAtErrors:true
   })
   try{

@@ -207,3 +207,27 @@
  .cine-v8 .cine-work-citation-grid{gap:5px}
  .cine-v8 .cine-work-citation{padding:8px 22px 8px 7px}
 }
+
+
+/* v8.1 operator-density pass: action before the fold at standard desktop sizes. */
+@media(min-width:1060px){
+ .cine-mode-work .cine-work-panel{gap:11px;padding:17px clamp(20px,2vw,34px)}
+ .cine-mode-work .cine-work-kicker{padding-bottom:12px}
+ .cine-mode-work .cine-work-summary{gap:6px}
+ .cine-mode-work .cine-work-summary h1{font-size:clamp(32px,2.55vw,41px);line-height:1.04}
+ .cine-mode-work .cine-work-summary>p{font-size:11px;line-height:1.54}
+ .cine-mode-work .cine-work-context{margin-top:2px}
+ .cine-mode-work .cine-work-proof,.cine-mode-work .cine-work-decision{padding-top:12px}
+ .cine-mode-work .cine-work-section-line{margin-bottom:7px}
+ .cine-mode-work .cine-work-citation-grid{display:flex;overflow-x:auto;overflow-y:hidden;max-height:none;gap:6px}
+ .cine-mode-work .cine-work-citation{flex:0 0 151px;min-height:58px;padding:8px 23px 8px 9px}
+ .cine-mode-work .cine-work-quote{margin-top:6px;padding:8px 10px;max-height:76px;overflow:auto}
+ .cine-mode-work .cine-work-quote p{font-size:12px;line-height:1.42}
+ .cine-mode-work .cine-work-next{margin-bottom:8px;padding:9px 11px}
+ .cine-mode-work .cine-work-gates{margin-bottom:9px}
+ .cine-mode-work .cine-work-gates>span{padding:4px 7px;font-size:9px}
+ .cine-mode-work .cine-work-note textarea{min-height:46px;padding:7px 9px}
+ .cine-mode-work .cine-work-buttons{margin-top:7px}
+ .cine-mode-work .cine-work-buttons button{min-height:38px;padding:8px 11px}
+ .cine-mode-work .cine-work-tools{margin-top:9px}
+}

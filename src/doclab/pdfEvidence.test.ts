@@ -28,6 +28,18 @@ describe('PDF Evidence Engine — no oracle labels or automatic claim outcome',(
     expect(checkCitation(base,{...refs[0],page:57})).toBe(false)
     expect(checkCitation(base,{...refs[0],offset:-4})).toBe(false)
   })
+  it('keeps cinematic focus cues inside independently verified PDF source quotes',()=>{
+    const refs=createCitations(base)
+    const targeted=refs.find(c=>c.focusText)
+    expect(targeted).toBeDefined()
+    expect(targeted?.focusOffset).toBeGreaterThanOrEqual(targeted?.offset??0)
+    expect(targeted?.quote).toContain(targeted?.focusText)
+    expect(checkCitation(base,targeted!)).toBe(true)
+    expect(checkCitation(base,{...targeted!,focusText:'FORGED MATCH'})).toBe(false)
+    expect(checkCitation(base,{...targeted!,focusOffset:9999})).toBe(false)
+    const withInvalid=refs.map(c=>c.id===targeted?.id?{...c,focusText:'SYNTHETIC EVIDENCE'}:c)
+    expect(assessDossier(base,withInvalid).status).toBe('STOP_CITATION_INVALID')
+  })
   it('fails closed when invoice or coverage document missing',()=>{
     const without=base.filter(x=>x.role!=='invoice')
     const a=assessDossier(without,createCitations(without))

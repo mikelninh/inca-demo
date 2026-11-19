@@ -186,3 +186,24 @@
  .cine-v8 .cine-evidence-reveal .cine-story .cine-quote,.cine-v8 .cine-pdf-overlay{animation:none!important}
  .cine-v8 .cine-document-viewport{scroll-behavior:auto}
 }
+
+/* 320px handsets: the global wordmark/segmented toggle must fit the viewport. */
+@media(max-width:359px){
+ .cine-v8 .cine-topbar{padding:0 10px;gap:4px}
+ .cine-v8 .cine-wordmark{font-size:13px;gap:3px}
+ .cine-v8 .cine-symbol{font-size:18px}
+ .cine-v8 .cine-edition{display:none}
+ .cine-v8 .cine-top-actions{gap:5px}
+ .cine-v8 .cine-view-switch button{min-width:41px;min-height:29px;font-size:9px;padding:4px}
+ .cine-v8 .cine-queue-toggle{padding:5px;gap:4px;min-height:32px}
+ .cine-v8 .cine-queue-toggle>span:first-child{font-size:15px}
+ .cine-v8 .cine-queue-toggle b{min-width:17px;width:17px;height:17px;font-size:9px}
+ .cine-v8 .cine-crumbs>span:nth-child(2){display:none}
+ .cine-v8 .cine-meta{padding:0 12px}
+ .cine-v8 .cine-meta-right button{padding:6px 0;font-size:9px}
+ .cine-v8 .cine-main-stage{margin-left:9px;margin-right:9px}
+ .cine-v8 .cine-work-panel{padding-left:14px;padding-right:14px}
+ .cine-v8 .cine-work-section-line strong span{font-size:11px}
+ .cine-v8 .cine-work-citation-grid{gap:5px}
+ .cine-v8 .cine-work-citation{padding:8px 22px 8px 7px}
+}

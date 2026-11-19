@@ -129,7 +129,6 @@ export default function CinematicDesk(){
  const totals=useMemo(()=>summarizeDesk(cases),[cases])
  const narrative=selected?storyFor(selected):null
  const receipt=selected?narrativeReceipt(selected):null
- const preferred=selected?sceneCitation(selected):null
  const doc=selected?.documents.find(d=>d.id===documentId)??selected?.documents[0]??null
  const displayedPage=Math.max(1,Math.min(page,doc?.pages.length??1))
  const citation=selected?.citations.find(c=>c.id===citationId&&c.documentId===doc?.id&&c.page===displayedPage)??null

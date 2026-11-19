@@ -6,6 +6,7 @@ import OpsCockpit from './ops/OpsCockpit'
 const DocumentLab=lazy(()=>import('./doclab/DocumentLab'))
 const V4Workspace=lazy(()=>import('./v4/V4Workspace'))
 const OperatorDesk=lazy(()=>import('./desk/OperatorDesk'))
+const CinematicDesk=lazy(()=>import('./v7/CinematicDesk'))
 
 function Loading(){return <p style={{padding:24}}>CLAIM / OS lädt …</p>}
 
@@ -16,5 +17,6 @@ export default function App() {
   if(query.get('ops')==='1')return <OpsCockpit/>
   if(query.get('study')==='1')return <ResearchStudy/>
   if(query.get('legacy')==='1')return <ClaimsApp/>
-  return <Suspense fallback={<Loading/>}><OperatorDesk/></Suspense>
+  if(query.get('classic')==='1')return <Suspense fallback={<Loading/>}><OperatorDesk/></Suspense>
+  return <Suspense fallback={<Loading/>}><CinematicDesk/></Suspense>
 }

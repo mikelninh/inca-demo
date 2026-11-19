@@ -25,4 +25,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json
           git diff --cached --quiet || git commit -m "chore: lock Anthropic SDK for safe server-side inference"
+          git fetch origin feature/inca-mission-v04
+          git rebase origin/feature/inca-mission-v04
           git push origin HEAD:feature/inca-mission-v04

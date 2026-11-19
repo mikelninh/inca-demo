@@ -13,10 +13,18 @@ function downloadBlob(blob:Blob,name:string){
   a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove()
   window.setTimeout(()=>URL.revokeObjectURL(url),2000)
 }
-function PdfPreview({document,page}:{document:ParsedDocument|null;page:number}){
+function PdfPreview({document,page,citation,zoom}:{document:ParsedDocument|null;page:number;citation:PageCitation|null;zoom:number}){
   const canvas=useRef<HTMLCanvasElement>(null)
+  const holder=useRef<HTMLDivElement>(null)
   const [error,setError]=useState('')
   const [ready,setReady]=useState(false)
+  const pageInfo=document?.pages.find(p=>p.page===page)
+  const rects=useMemo(()=>{
+    if(!citation||!pageInfo||citation.documentId!==document?.id||citation.page!==page)return []
+    const from=citation.offset,to=from+citation.quote.length
+    if(pageInfo.text.slice(from,to)!==citation.quote)return []
+    return (pageInfo.rects??[]).filter(r=>r.start<to&&r.end>from).slice(0,12)
+  },[citation,document?.id,page,pageInfo])
   useEffect(()=>{
     let cancelled=false
     setReady(false);setError('')
@@ -27,12 +35,24 @@ function PdfPreview({document,page}:{document:ParsedDocument|null;page:number}){
       .catch(e=>{if(!cancelled)setError(e instanceof Error?e.message:'PDF-Vorschau fehlgeschlagen.')})
     return()=>{cancelled=true}
   },[document,page])
-  return <div className="doclab-preview-frame">
+  useEffect(()=>{
+    if(!ready||!rects.length||!holder.current)return
+    const container=holder.current,stage=container.querySelector('.doclab-pdf-stage')
+    if(!stage)return
+    const r=rects[0]
+    requestAnimationFrame(()=>{
+      container.scrollTo({left:Math.max(0,stage.clientWidth*(r.left+r.width/2)-container.clientWidth/2),
+        top:Math.max(0,stage.clientHeight*(r.top+r.height/2)-container.clientHeight/2),behavior:'smooth'})
+    })
+  },[ready,rects,zoom])
+  return <div className="doclab-preview-frame" ref={holder}>
     {!document&&<p>Keine PDF ausgewählt.</p>}
-    {document&&<><canvas ref={canvas} aria-label={'Gerenderte PDF-Seite '+page} className="doclab-pdf-canvas"/>
+    {document&&<div className="doclab-pdf-stage" style={{width:(zoom*100)+'%'}}>
+      <canvas ref={canvas} aria-label={'Gerenderte PDF-Seite '+page} className="doclab-pdf-canvas"/>
+      {ready&&rects.map((r,i)=><span key={i} className="doclab-page-anchor" role="img" aria-label="Original-PDF-Fundstelle, aus PDF-Textebene abgeleitet" style={{left:(r.left*100)+'%',top:(r.top*100)+'%',width:(r.width*100)+'%',height:(r.height*100)+'%'}}/>)}
       {!ready&&!error&&<div className="doclab-pdf-wait">PDF-Seite wird lokal gerendert …</div>}
       {error&&<p role="alert" className="doclab-error">{error}</p>}
-    </>}
+    </div>}
   </div>
 }
 const roleNames:Record<DocumentRole,string>={claim:'Schadenmeldung',policy:'Police / Vertrag',invoice:'Rechnung',unknown:'Noch zuordnen'}
@@ -67,6 +87,8 @@ export default function DocumentLab(){
   const [scenarioId,setScenarioId]=useState('parking')
   const [fault,setFault]=useState<Fault>('none')
   const [notice,setNotice]=useState('')
+  const [zoom,setZoom]=useState(1)
+  const [mobilePane,setMobilePane]=useState<'source'|'decision'|'files'>('source')
   const runCounter=useRef(0)
   const loadScenario=useCallback(async(id:string)=>{
     const run=++runCounter.current
@@ -79,7 +101,7 @@ export default function DocumentLab(){
         parsed.push(doc)
       }
       if(run!==runCounter.current)return
-      setDocs(parsed);setScenarioId(id);setActiveId(parsed[0]?.id??'');setActivePage(1);setActiveCitationId('')
+      setDocs(parsed);setScenarioId(id);setActiveId(parsed[0]?.id??'');setActivePage(1);setActiveCitationId(createCitations(parsed)[0]?.id??'');setMobilePane('source');setZoom(1)
     }catch(e){if(run===runCounter.current)setFailure(e instanceof Error?e.message:String(e))}
     finally{if(run===runCounter.current)setLoading(false)}
   },[])
@@ -124,10 +146,11 @@ export default function DocumentLab(){
   const exactCount=citations.filter(x=>checkCitation(effectiveDocs,x)).length
   function visitCitation(c:PageCitation){
     setActiveCitationId(c.id);setActiveId(c.documentId);setActivePage(c.page)
+    setMobilePane('source')
     setNotice('Fundstelle '+c.id+' auf Seite '+c.page+' geöffnet. Textanker: '+(checkCitation(effectiveDocs,c)?'wortgleich':'UNGUELTIG')+'.')
   }
   function chooseDoc(id:string){
-    setActiveId(id);setActivePage(1);setActiveCitationId('')
+    setActiveId(id);setActivePage(1);setActiveCitationId('');setMobilePane('source')
   }
   function changeRole(id:string,role:DocumentRole){
     setDocs(old=>old.map(x=>x.id===id?{...x,role}:x));setFault('none')
@@ -143,30 +166,30 @@ export default function DocumentLab(){
     const safe=Uint8Array.from(currentDoc.bytes)
     downloadBlob(new Blob([safe.buffer as ArrayBuffer],{type:'application/pdf'}),currentDoc.name)
   }
-  return <div className="doclab">
+  return <div className="doclab doclab-v5">
     <a className="doclab-skip" href="#doclab-workspace">Zum PDF-Arbeitsplatz</a>
     <header className="doclab-nav">
       <div className="doclab-nav-inner">
-        <a className="doclab-brand" href={import.meta.env.BASE_URL}><span className="doclab-brand-square">i</span>INCA <small>/ EVIDENCE LAB</small></a>
-        <div className="doclab-links"><a href={import.meta.env.BASE_URL+'?ops=1'}>Control Tower ↗</a><a href={import.meta.env.BASE_URL+'?study=1'}>Human Study ↗</a><span>v0.3 · RESEARCH PROTOTYPE</span></div>
+        <a className="doclab-brand" href={import.meta.env.BASE_URL}><span className="doclab-brand-square">⌁</span>CLAIM / OS <small>EVIDENCE WORKBENCH 5.0</small></a>
+        <div className="doclab-links"><a href={import.meta.env.BASE_URL+'?evaluation=1'}>Evaluation ↗</a><a href={import.meta.env.BASE_URL+'?ops=1'}>Control Tower ↗</a><a href={import.meta.env.BASE_URL+'?study=1'}>Human Study ↗</a><span>INDEPENDENT WORK SAMPLE</span></div>
       </div>
     </header>
     <main>
       <section className="doclab-hero">
         <div className="doclab-hero-inner">
-          <div><span className="doclab-overline"><i/> DOCUMENT-TO-DECISION / NEW</span>
-            <h1>Read the document.<br/><em>Show the evidence.</em></h1>
-            <p>Keine vorbereiteten Textfelder mehr: Diese Version erzeugt echte PDFs, liest deren Seiten im Browser und zeigt jeden überprüfbaren Textbeleg direkt neben dem Original.</p>
+          <div><span className="doclab-overline"><i/> SOURCE → VERIFY → HUMAN / WORKBENCH 05</span>
+            <h1>See the <em>evidence.</em></h1>
+            <p>Ein Fall, drei Dokumente, eine nachvollziehbare Handlung. Klicke eine Fundstelle an und sieh die markierte Originalpassage im PDF – direkt neben der Sicherheitsprüfung.</p>
           </div>
           <div className="doclab-hero-stamp"><span>PDF</span><strong>→</strong><span>PAGE</span><strong>→</strong><span>REVIEW</span><small>Kein Modellaufruf · Kein Cloud-Upload · Kein Zahlungsauftrag</small></div>
         </div>
       </section>
       <section className="doclab-limit" aria-label="Einsatzgrenzen">
         <strong>Forschungsmodus, nicht produktiv.</strong>
-        <span>PDF.js extrahiert Text; regelbasierte Prüfsignale sind keine KI-Entscheidung. Keine OCR, keine Police-Auslegung durch Expert:innen und keine Versichereranbindung.</span>
+        <span>Echte PDF-Bytes und unabhängige Textanker. Kein Live-KI-Modell, keine OCR bei Bild-PDFs, keine Fachentscheidung und keine Versichereranbindung.</span>
       </section>
       <section className="doclab-controls" id="doclab-workspace">
-        <div className="doclab-control-title"><span>01 / INPUT</span><h2>Ein Dossier einlesen</h2><p>Starte mit drei reproduzierbaren PDF-Fällen oder öffne eigene Unterlagen ausschliesslich lokal.</p></div>
+        <div className="doclab-control-title"><span>01 / INPUT</span><h2>Fall auswählen</h2><p>Drei synthetische Fälle · echte PDF-Verarbeitung · keine Übermittlung.</p></div>
         <div className="doclab-control-row">
           <div className="doclab-scenario-list">
             {scenarios.map(s=><button type="button" key={s.id} onClick={()=>void loadScenario(s.id)}
@@ -188,7 +211,12 @@ export default function DocumentLab(){
           <div><small>Autonome Auszahlungen</small><strong>0</strong></div>
         </div>
       </section>
-      <section className="doclab-workspace">
+      <div className="doclab-mobile-tabs" role="tablist" aria-label="Arbeitsbereich">
+        <button type="button" role="tab" aria-selected={mobilePane==='source'} className={mobilePane==='source'?'active':''} onClick={()=>setMobilePane('source')}>01 · Quelle</button>
+        <button type="button" role="tab" aria-selected={mobilePane==='decision'} className={mobilePane==='decision'?'active':''} onClick={()=>setMobilePane('decision')}>02 · Befund</button>
+        <button type="button" role="tab" aria-selected={mobilePane==='files'} className={mobilePane==='files'?'active':''} onClick={()=>setMobilePane('files')}>03 · Akte</button>
+      </div>
+      <section className={'doclab-workspace doclab-pane-'+mobilePane}>
         <aside className="doclab-files">
           <div className="doclab-panel-heading"><span>02 / DOCUMENTS</span><h3>Quellakte</h3></div>
           {effectiveDocs.map(d=><div className={'doclab-file '+(currentDoc?.id===d.id?'active':'')} key={d.id}>
@@ -210,17 +238,19 @@ export default function DocumentLab(){
           </div>
         </aside>
         <section className="doclab-reader">
-          <div className="doclab-panel-heading"><span>03 / PAGE VIEWER</span><h3>PDF + überprüfbarer Textanker</h3></div>
+          <div className="doclab-panel-heading"><span>01 / ORIGINALQUELLE</span><h3>Das Dokument. Der Beweis.</h3></div>
           <div className="doclab-reader-toolbar">
             <span>{currentDoc?.name??'Keine Quelle'}</span>
             <div><button type="button" disabled={safePage<=1} onClick={()=>{setActivePage(p=>p-1);setActiveCitationId('')}} aria-label="Vorherige Seite">←</button><strong>{safePage} / {currentDoc?.pages.length??0}</strong><button type="button" disabled={safePage>=(currentDoc?.pages.length??0)} onClick={()=>{setActivePage(p=>p+1);setActiveCitationId('')}} aria-label="Nächste Seite">→</button></div>
+            <div className="doclab-zoom"><button type="button" aria-label="PDF verkleinern" disabled={zoom<=0.75} onClick={()=>setZoom(x=>Math.max(.75,x-.25))}>−</button><output>{Math.round(zoom*100)}%</output><button type="button" aria-label="PDF vergrößern" disabled={zoom>=2.5} onClick={()=>setZoom(x=>Math.min(2.5,x+.25))}>+</button></div>
             <button type="button" onClick={downloadSample} disabled={!currentDoc||currentDoc.origin!=='generated_sample'}>PDF herunterladen ↓</button>
           </div>
-          <PdfPreview document={currentDoc} page={safePage}/>
+          <PdfPreview document={currentDoc} page={safePage} citation={isValid?activeAnchor:null} zoom={zoom}/>
           <div className="doclab-page-source">
             <div><span>EXTRAHIERTER SEITENTEXT</span><strong>{activeAnchor?'Fundstelle '+activeAnchor.id:isValid===false?'Ungültig':'Wähle einen Quellenanker'}</strong></div>
             <p><Highlight pageText={pageContent} citation={activeAnchor}/></p>
           </div>
+          <button type="button" className="doclab-go-review" onClick={()=>setMobilePane('decision')}>Befund & nächste Aktion ansehen →</button>
         </section>
         <aside className="doclab-review">
           <div className="doclab-panel-heading"><span>04 / CONTROL GATE</span><h3>Nachvollziehbare Übergabe</h3></div>
@@ -243,7 +273,7 @@ export default function DocumentLab(){
             <span>05 / STRESS TEST · FAIL CLOSED</span>
             <p>Unterbrich absichtlich die Quellenkette. Kein stilles Weiterlaufen.</p>
             <div>
-              {([{id:'none',label:'Normal'},{id:'drop_invoice',label:'Rechnung entfernen'},{id:'tamper_quote',label:'Zitat manipulieren'}] as {id:Fault,label:string}[]).map(x=><button type="button" key={x.id} aria-pressed={fault===x.id} className={fault===x.id?'active':''} onClick={()=>{setFault(x.id);setActiveCitationId('');setNotice('Sicherheitsprüfung auf veränderten Testdaten erneut ausgeführt.')}}>{x.label}</button>)}
+              {([{id:'none',label:'Normal'},{id:'drop_invoice',label:'Rechnung entfernen'},{id:'tamper_quote',label:'Zitat manipulieren'}] as {id:Fault,label:string}[]).map(x=><button type="button" key={x.id} aria-pressed={fault===x.id} className={fault===x.id?'active':''} onClick={()=>{setFault(x.id);setActiveCitationId('');setMobilePane('decision');setNotice('Sicherheitsprüfung auf veränderten Testdaten erneut ausgeführt.')}}>{x.label}</button>)}
             </div>
           </div>
           <button type="button" className="doclab-export" onClick={exportAudit}>Prüfquittung ohne Rohdaten exportieren <span>↓</span></button>

@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest'
-import {makeDeskCase,sortedQueue,allowedActions,recordReview,reopenCase,retagDocument,summarizeDesk,exportDeskAudit,safeFileGroup} from './deskCore'
+import {makeDeskCase,sortedQueue,allowedActions,recordReview,reopenCase,retagDocument,appendDocuments,summarizeDesk,exportDeskAudit,safeFileGroup} from './deskCore'
 import type {ParsedDocument,DocumentRole} from '../doclab/pdfEvidence'
 function doc(id:string,role:DocumentRole,text:string):ParsedDocument{
  return {id,role,name:'PRIVATE_CUSTOMER_'+role+'_Dokument.pdf',origin:'user_upload',
@@ -70,6 +70,16 @@ describe('operator daily workflow, no live claims',()=>{
   const reopened=reopenCase(c,'New documents supplied')
   expect(reopened.events).toHaveLength(2)
   expect(reopened.stage).toBe('open')
+ })
+ it('attaches newly submitted PDFs to a waiting claim and always reopens / re-triages it',()=>{
+  const waiting=recordReview(missing(),'request_documents','',3300)
+  const addition=doc('extra-01','invoice','Rechnung: Laptop 920 EUR.')
+  const updated=appendDocuments(waiting,[addition])
+  expect(updated.stage).toBe('open')
+  expect(updated.documents).toHaveLength(3)
+  expect(updated.assessment.status).toBe('REVIEW_READY')
+  expect(updated.events.map(x=>x.kind)).toEqual(['review','reopened'])
+  expect(()=>appendDocuments(updated,[addition])).toThrow(/Doppelte/)
  })
  it('groups uploads only with an explicit claim ID and never assumes from ordinary filename',()=>{
   expect(safeFileGroup('CASE-104__Schadenmeldung.pdf')).toBe('CASE-104')

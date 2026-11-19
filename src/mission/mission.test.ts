@@ -58,7 +58,7 @@ describe('v0.4 model contract, no unverified model output',()=>{
   expect(r.humanEffect).toBe(null)
   expect(r.criticalGateMisses).toBe(0)
   expect(r.passed).toBe(40)
-  expect(r.rows.filter(x=>x.expected.startsWith('STOP')).toHaveLength(20)
+  expect(r.rows.filter(x=>x.expected.startsWith('STOP'))).toHaveLength(20)
  })
  it('the diagnostic engine still refuses autonomous settlement on every authored scenario',()=>{
   for(const s of scenarios){

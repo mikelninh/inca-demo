@@ -1,0 +1,28 @@
+name: Lock bounded Claude provider SDK (one-shot)
+on:
+  push:
+    branches: [feature/inca-mission-v04]
+    paths: [.github/workflows/mission-sdk-lock.yml]
+permissions:
+  contents: write
+jobs:
+  lock:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/inca-mission-v04
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Install official Anthropic SDK and lock exact version
+        run: npm install --save-exact @anthropic-ai/sdk@latest
+      - name: Commit reproducible dependency lock
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git diff --cached --quiet || git commit -m "chore: lock Anthropic SDK for safe server-side inference"
+          git push origin HEAD:feature/inca-mission-v04

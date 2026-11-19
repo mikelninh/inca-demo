@@ -61,7 +61,7 @@ export function allowedActions(c:DeskCase):ReviewAction[]{
 }
 export function recordReview(c:DeskCase,action:ReviewAction,note:string,durationMs:number,at=new Date().toISOString()):DeskCase{
  if(!allowedActions(c).includes(action))throw Error('Die Quellenprüfung erlaubt diesen nächsten Schritt nicht.')
- if(c.stage==='reviewed')throw Error('Fall ist bereits an eine Fachprüfung übergeben. Zur Korrektur erneut öffnen.')
+ if(c.stage!=='open')throw Error('Der Fall wartet oder wurde übergeben. Vor einer neuen Aktion erst wieder öffnen.')
  if(!Number.isFinite(durationMs)||durationMs<0||durationMs>24*3600*1000)throw Error('Ungültige aktive Bearbeitungsdauer.')
  if(note.length>600)throw Error('Notiz zu lang (maximal 600 Zeichen).')
  const stage:DeskStage=action==='request_documents'?'waiting':'reviewed'
@@ -108,7 +108,7 @@ export function exportDeskAudit(cases:DeskCase[]){
    citations_valid:c.citations.filter(x=>checkCitation(c.documents,x)).length,
    citations_total:c.citations.length,
    transitions:c.events.map(e=>({
-    kind:e.kind,action:e.action??null,active_review_ms:e.durationMs,at:e.at,
+    kind:e.kind,action:e.action??null,case_open_to_action_ms:e.durationMs,at:e.at,
    }))
   })),
   privacy:'No uploaded file names, file bytes, raw PDF text, quotes, free-text notes or identifiers included.'

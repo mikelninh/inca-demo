@@ -28,7 +28,9 @@ describe('operator daily workflow, no live claims',()=>{
   const c=missing()
   expect(allowedActions(c)).not.toContain('ready_for_expert')
   expect(()=>recordReview(c,'ready_for_expert','',2200)).toThrow(/erlaubt/i)
-  expect(recordReview(c,'request_documents','Please send invoice',1200).stage).toBe('waiting')
+  const waiting=recordReview(c,'request_documents','Please send invoice',1200)
+  expect(waiting.stage).toBe('waiting')
+  expect(()=>recordReview(waiting,'request_documents','duplicate',300)).toThrow(/wieder öffnen/)
  })
  it('measures actual time in the desk but refuses to equate it with savings',()=>{
   const a=recordReview(ready(),'ready_for_expert','Looks fine',4300)

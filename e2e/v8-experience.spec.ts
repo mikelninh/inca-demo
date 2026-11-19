@@ -3,7 +3,7 @@ import {mkdir} from 'node:fs/promises'
 
 test('v8 story reveals an actual PDF proof, in three acts, without covering the next action',async({page})=>{
  await page.setViewportSize({width:1440,height:900})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?v8=1')
  await expect(page.getByRole('heading',{name:/Something doesn't add up/})).toBeVisible({timeout:30000})
  await expect(page.locator('.cine-view-switch')).toBeVisible()
  await expect(page.getByRole('button',{name:'Story',exact:true})).toHaveAttribute('aria-pressed','true')
@@ -26,7 +26,7 @@ test('v8 story reveals an actual PDF proof, in three acts, without covering the 
 
 test('v8 professional work mode exposes source, finding and human action simultaneously',async({page})=>{
  await page.setViewportSize({width:1440,height:900})
- await page.goto('/inca-demo/?mode=work')
+ await page.goto('/inca-demo/?v8=1&mode=work')
  await expect(page.locator('[data-testid="work-mode"]')).toBeVisible({timeout:30000})
  await expect(page.getByRole('button',{name:'Work',exact:true})).toHaveAttribute('aria-pressed','true')
  await expect(page.locator('.cine-work-summary')).toContainText('Zwei Geschichten')
@@ -46,7 +46,7 @@ test('v8 professional work mode exposes source, finding and human action simulta
 
 test('v8 mobile puts actual finding before small PDF preview and opens full-screen original',async({page})=>{
  await page.setViewportSize({width:390,height:844})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?v8=1')
  await expect(page.getByRole('heading',{name:/Something doesn't add up/})).toBeVisible({timeout:30000})
  const positions=await page.evaluate(()=>{
   const story=document.querySelector('.cine-stage-right')!.getBoundingClientRect()
@@ -77,7 +77,7 @@ test('v8 mobile puts actual finding before small PDF preview and opens full-scre
 
 test('v8 small phone work mode stays readable and preserves fail-closed review',async({page})=>{
  await page.setViewportSize({width:320,height:740})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?v8=1')
  await expect(page.getByRole('heading',{name:/Something doesn't add up/})).toBeVisible({timeout:30000})
  await page.getByRole('button',{name:'Work',exact:true}).click()
  await expect(page.locator('.cine-work-summary h1')).toBeVisible()

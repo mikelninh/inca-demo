@@ -71,6 +71,16 @@ export function reopenCase(c:DeskCase,reason:string):DeskCase{
  if(c.stage==='open')return c
  return {...c,stage:'open',events:[...c.events,{kind:'reopened',reason,durationMs:0,at:new Date().toISOString()}]}
 }
+export function appendDocuments(c:DeskCase,additional:ParsedDocument[]):DeskCase{
+ if(!additional.length)throw Error('Keine Dokumente zum Ergänzen gewählt.')
+ if(c.documents.length+additional.length>12)throw Error('Maximal 12 PDFs pro Dossier.')
+ if(additional.some(d=>c.documents.some(existing=>existing.id===d.id))||
+    new Set(additional.map(d=>d.id)).size!==additional.length)throw Error('Doppelte Dokumentkennung.')
+ const reopened=reopenCase(c,'Neue PDF-Unterlagen ergänzt; Belegkette und Reviewstatus neu berechnet.')
+ const documents=[...c.documents,...additional]
+ const citations=createCitations(documents)
+ return {...reopened,documents,citations,assessment:assessDossier(documents,citations),stage:'open'}
+}
 export function retagDocument(c:DeskCase,docId:string,role:DocumentRole):DeskCase{
  if(!c.documents.some(d=>d.id===docId))throw Error('Dokument nicht gefunden.')
  const documents=c.documents.map(d=>d.id===docId?{...d,role}:d)

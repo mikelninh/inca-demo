@@ -176,7 +176,7 @@ export default function Mission(){
     </div>
    </section>
    <section className="mission-numberline" aria-label="Nachprüfbare Projektdaten">
-     <div><strong>40<span>/40</span></strong><small>Bestehende synthetische Regeln im Regressionstest*</small></div>
+     <div><strong>{regression.passed}<span>/{regression.total}</span></strong><small>Bestehende synthetische Regeln im Regressionstest*</small></div>
      <div><strong>3</strong><small>Vollständige / unvollständige Beispiel-Dossiers</small></div>
      <div><strong>0</strong><small>Auszahlungen, externe Nachrichten oder echte Schadenfälle</small></div>
      <div><strong>?</strong><small>Reale Arbeitsersparnis – noch ungemessen</small></div>

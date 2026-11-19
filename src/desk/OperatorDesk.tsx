@@ -4,7 +4,7 @@ import {createScenarioPdfs,scenarios} from '../doclab/samples'
 import {MAX_PDF_BYTES,parsePdfBytes,drawPdfPage} from '../doclab/pdfReader'
 import {checkCitation,sniffRole} from '../doclab/pdfEvidence'
 import type {ParsedDocument,PageCitation,DocumentRole} from '../doclab/pdfEvidence'
-import {allowedActions,exportDeskAudit,makeDeskCase,recordReview,reopenCase,retagDocument,reviewLabels,safeFileGroup,severityLabels,sortedQueue,summarizeDesk} from './deskCore'
+import {allowedActions,appendDocuments,exportDeskAudit,makeDeskCase,recordReview,reopenCase,retagDocument,reviewLabels,safeFileGroup,severityLabels,sortedQueue,summarizeDesk} from './deskCore'
 import type {DeskCase,ReviewAction} from './deskCore'
 import './desk.css'
 
@@ -102,6 +102,7 @@ export default function OperatorDesk(){
  const openedAt=useRef(performance.now())
  const selectedRef=useRef(selectedId)
  const files=useRef<HTMLInputElement|null>(null)
+ const attachments=useRef<HTMLInputElement|null>(null)
  const loadDemo=useCallback(async()=>{
   const ticket=++pending.current
   setBusy(true);setError('');setMessage('')
@@ -191,6 +192,31 @@ export default function OperatorDesk(){
    changeCase(imported[0].id)
    setMessage(imported.length+' Dossier(s) lokal importiert. Dokumentarten prüfen: unbekannte Typen erfordern eine manuelle Zuordnung. Keine Daten übertragen.')
   }catch(e){if(ticket===pending.current)setError(e instanceof Error?e.message:'Import fehlgeschlagen.')}
+  finally{if(ticket===pending.current)setBusy(false)}
+ }
+ async function attachToSelected(event:ChangeEvent<HTMLInputElement>){
+  const chosen=Array.from(event.currentTarget.files??[])
+  event.currentTarget.value=''
+  if(!chosen.length||!selected)return
+  const caseId=selected.id,ticket=++pending.current
+  setBusy(true);setError('');setMessage('')
+  try{
+   if(chosen.length>4)throw Error('Bitte maximal 4 zusätzliche PDFs gleichzeitig auswählen.')
+   if(selected.documents.length+chosen.length>12)throw Error('Maximal 12 Dateien pro Dossier.')
+   const additions:ParsedDocument[]=[]
+   for(let i=0;i<chosen.length;i++){
+    const file=chosen[i]
+    if(file.size<10||file.size>MAX_PDF_BYTES)throw Error('PDF muss zwischen 10 Byte und 8 MB gross sein.')
+    if(!/\.pdf$/i.test(file.name)&&file.type!=='application/pdf')throw Error('Nur PDFs sind zulässig.')
+    const id='ATT-'+String(Date.now())+'-'+(i+1)
+    additions.push(await parsePdfBytes(new Uint8Array(await file.arrayBuffer()),id,file.name,sniffRole(file.name),'user_upload'))
+   }
+   if(ticket!==pending.current)return
+   setCases(current=>current.map(c=>c.id===caseId?appendDocuments(c,additions):c))
+   openedAt.current=performance.now()
+   setMessage(chosen.length+' neues/n PDF ergänzt. Vorprüfung läuft erneut; vorherige Review-Freigaben sind widerrufen.')
+   setPane('source')
+  }catch(e){if(ticket===pending.current)setError(e instanceof Error?e.message:'Anhänge konnten nicht geprüft werden.')}
   finally{if(ticket===pending.current)setBusy(false)}
  }
  function visitCitation(c:PageCitation){
@@ -336,6 +362,10 @@ export default function OperatorDesk(){
        <div><span className={selected.assessment.scannedOrEmptyPages?'fail':'pass'}>{selected.assessment.scannedOrEmptyPages?'×':'✓'}</span><p><b>Lesbarkeit</b><small>{selected.assessment.scannedOrEmptyPages?selected.assessment.scannedOrEmptyPages+' Seiten ohne Text':'Alle vorhandenen Seiten lesbar'}</small></p></div>
        <div><span className={selected.assessment.validCitations!==selected.assessment.totalCitations||!selected.assessment.totalCitations?'fail':'pass'}>{selected.assessment.validCitations!==selected.assessment.totalCitations||!selected.assessment.totalCitations?'×':'✓'}</span><p><b>Original-Fundstellen</b><small>{selected.assessment.validCitations} / {selected.assessment.totalCitations} exakt verifiziert</small></p></div>
        <div><span className="hold">→</span><p><b>Fachliche Prüfung</b><small>Bleibt beim Menschen; nicht automatisch entschieden</small></p></div>
+      </div>
+      <div className="desk-attach"><button type="button" disabled={busy} onClick={()=>attachments.current?.click()}>＋ Neue PDF-Belege zu diesem Fall</button>
+        <input ref={attachments} type="file" accept=".pdf,application/pdf" multiple hidden aria-label="Dokumente zu diesem Fall ergänzen" onChange={e=>void attachToSelected(e)}/>
+        <small>Neue Unterlagen werden lokal eingelesen. Status und Fundstellen werden neu berechnet.</small>
       </div>
       <div className="desk-role-editor"><details><summary>Dokumentarten korrigieren</summary><p>Eine Änderung startet die Vorprüfung neu und öffnet bereits bearbeitete Fälle wieder.</p>
        {selected.documents.map(d=><label key={d.id}><span title={d.name}>{d.name}</span><select value={d.role} aria-label={'Dokumentart für '+d.name} onChange={e=>changeRole(d.id,e.target.value as DocumentRole)}>

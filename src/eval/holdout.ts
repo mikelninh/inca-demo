@@ -9,7 +9,7 @@ export type HoldoutCase={
 const claimVariants=[
  ['Beim Ausparken bin ich leicht gegen eine Mauer gestossen. Die Stossstange wurde beschädigt.','Werkstattrechnung: Stossstange EUR 1.200, Heckklappe EUR 1.800 und Auspuffanlage EUR 1.200.'],
  ['Bei einem leichten Parkmanöver habe ich das Heck berührt.','Rechnung: Stoßstange hinten EUR 950, Heckklappe EUR 1.700, Abgasanlage EUR 900.'],
- ['Beim Rangieren hat das Fahrzeug die Mauer leicht touchiert.','Kostenvoranschlag: hintere Stoßstange EUR 1.000, Heckklappe EUR 2.000.'],
+ ['Beim Rangieren rollte das Fahrzeug sachte gegen eine Mauer; am Heck war nur ein Kratzer sichtbar.','Kostenvoranschlag: hintere Stoßstange EUR 1.000, Heckklappe EUR 2.000.'],
  ['Unfallmeldung: Bei geringfügiger Geschwindigkeit kam es zu einem Stoss.','Invoice: rear bumper 980 EUR, tailgate 1.750 EUR and exhaust 500 EUR.'],
  ['Beim Rückwärtsfahren leichter Rempler, Schaden laut Erstmeldung nur an der Stoßstange.','Rechnung: Stoßstange 700 EUR, Heckklappe 1400 EUR.'],
  ['I hit a wall while parking at low speed; only the bumper appeared damaged.','Invoice: rear bumper 1,000 EUR, tailgate 2,300 EUR, exhaust 900 EUR.']

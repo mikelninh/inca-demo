@@ -78,6 +78,8 @@ test('cinematic mobile 390 px: queue, evidence and action stay usable without ho
  await page.getByRole('button',{name:'Fallliste öffnen'}).click()
  await page.getByRole('dialog').getByRole('button',{name:/Einbruch/}).click()
  await expect(page.getByRole('heading',{name:'The missing piece.'})).toBeVisible()
+ await expect(page.locator('.cine-pdf-loading')).toHaveCount(0,{timeout:15000})
+ await expect(page.locator('.cine-paper canvas')).toHaveAttribute('aria-label',/HR-C09/)
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth)
  expect(overflow).toBeLessThanOrEqual(1)
  await mkdir('test-results/v7',{recursive:true})

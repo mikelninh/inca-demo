@@ -77,6 +77,17 @@ test('operator desk: multi-file real PDF intake and role-based fail-closed retag
  await expect(page.getByRole('button',{name:/Zur Fachprüfung/})).toHaveCount(0)
  await page.getByRole('combobox',{name:'Dokumentart für CASE-104__Rechnung.pdf'}).selectOption('invoice')
  await expect(page.locator('.desk-decision-card')).toContainText('Möglicher Widerspruch')
+ // Resume an incomplete claim in place when its missing invoice arrives.
+ await page.locator('.desk-case').filter({hasText:'Einbruch'}).click()
+ await expect(page.locator('.desk-decision-card')).toContainText('Fehlende Primärunterlagen')
+ await page.getByRole('button',{name:/Unterlagen nachfordern/}).click()
+ await expect(page.locator('.desk-review-history')).toContainText('Unterlagen nachfordern')
+ await page.locator('input[aria-label="Dokumente zu diesem Fall ergänzen"]').setInputFiles({
+  name:'Rechnung_Nachreichung.pdf',mimeType:'application/pdf',buffer:files[2].buffer
+ })
+ await expect(page.locator('.desk-document-strip button')).toHaveCount(3,{timeout:30000})
+ await expect(page.locator('.desk-decision-card')).toContainText('Fehlende Angabe im Einbruchfall')
+ await expect(page.locator('.desk-review-history')).toContainText('Wieder geöffnet')
 })
 test('operator desk: mobile case queue to original source to next action stays within screen',async({page})=>{
  await page.setViewportSize({width:390,height:844})

@@ -1,0 +1,149 @@
+{
+  "dataset": "synthetic_designed_not_independent",
+  "cases": [
+    {
+      "id": "B-001",
+      "expected": "review_discrepancy",
+      "critical": true,
+      "documents": [
+        {
+          "id": "C",
+          "role": "claim",
+          "page": 1,
+          "text": "Beim Ausparken beruehrte der Wagen die Mauer nur leicht. An der hinteren Stossstange war ein kleiner Kratzer sichtbar."
+        },
+        {
+          "id": "P",
+          "role": "policy",
+          "page": 1,
+          "text": "Vollkasko deckt unfallbedingte Reparaturen, aber keine Vorschaden."
+        },
+        {
+          "id": "I",
+          "role": "invoice",
+          "page": 1,
+          "text": "Werkstattrechnung: Stossstange 500 EUR, Heckklappe 1900 EUR, Auspuffanlage 750 EUR."
+        }
+      ]
+    },
+    {
+      "id": "B-002",
+      "expected": "request_evidence",
+      "critical": true,
+      "documents": [
+        {
+          "id": "C",
+          "role": "claim",
+          "page": 1,
+          "text": "Einbruchdiebstahl. Die Versicherte meldet einen Laptop und eine Kamera als gestohlen."
+        },
+        {
+          "id": "P",
+          "role": "policy",
+          "page": 1,
+          "text": "Einbruchdiebstahl versichert nach polizeilicher Anzeige und Nachweis des Aktenzeichens."
+        }
+      ]
+    },
+    {
+      "id": "B-003",
+      "expected": "routine_review",
+      "critical": false,
+      "documents": [
+        {
+          "id": "C",
+          "role": "claim",
+          "page": 1,
+          "text": "In der Kueche ist ein Zulaufschlauch gerissen. Der Laminatboden wurde nass."
+        },
+        {
+          "id": "P",
+          "role": "policy",
+          "page": 1,
+          "text": "Leitungswasser ist unter vereinbarten Bedingungen versichert, Selbstbeteiligung 150 EUR."
+        },
+        {
+          "id": "I",
+          "role": "invoice",
+          "page": 1,
+          "text": "Rechnung fuer Laminatboden Material und Verlegung: 1350 EUR."
+        }
+      ]
+    },
+    {
+      "id": "B-004",
+      "expected": "review_discrepancy",
+      "critical": true,
+      "documents": [
+        {
+          "id": "C",
+          "role": "claim",
+          "page": 1,
+          "text": "Eine Kundin meldet einen Glasschaden nach Steinschlag. Es ist nur die Frontscheibe betroffen."
+        },
+        {
+          "id": "P",
+          "role": "policy",
+          "page": 1,
+          "text": "Teilkasko umfasst Glasbruch. Alle Reparaturpositionen muessen auf Schadenereignis bezogen sein."
+        },
+        {
+          "id": "I",
+          "role": "invoice",
+          "page": 1,
+          "text": "Rechnung: Windschutzscheibe 650 EUR. Zusaetzlich ohne Begruendung Ersatz von Reifen und Navigationssystem 2200 EUR."
+        }
+      ]
+    },
+    {
+      "id": "B-005",
+      "expected": "request_evidence",
+      "critical": true,
+      "documents": [
+        {
+          "id": "C",
+          "role": "claim",
+          "page": 1,
+          "text": "Schaden durch Starkregen und Ueberflutung der Wohnung gemeldet."
+        },
+        {
+          "id": "P",
+          "role": "policy",
+          "page": 1,
+          "text": "Hausrat versichert Leitungswasser. Ueberflutung ist nur bei gebuchtem Elementarbaustein versichert; dieser Vertragsauszug nennt keinen Baustein."
+        },
+        {
+          "id": "I",
+          "role": "invoice",
+          "page": 1,
+          "text": "Rechnung fuer Boden- und Wandarbeiten 3200 EUR."
+        }
+      ]
+    },
+    {
+      "id": "B-006",
+      "expected": "routine_review",
+      "critical": false,
+      "documents": [
+        {
+          "id": "C",
+          "role": "claim",
+          "page": 1,
+          "text": "Ein kleiner Parkschaden, Stossstange hinten sichtbar geschaedigt."
+        },
+        {
+          "id": "P",
+          "role": "policy",
+          "page": 1,
+          "text": "Vollkasko umfasst selbstverschuldete Kollisionen, Selbstbeteiligung 500 EUR."
+        },
+        {
+          "id": "I",
+          "role": "invoice",
+          "page": 1,
+          "text": "Rechnung ausschliesslich Stossstange hinten einschliesslich Lackierung 800 EUR."
+        }
+      ]
+    }
+  ]
+}

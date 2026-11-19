@@ -38,7 +38,7 @@ function PageView({document,page}:{document:ParsedDocument|null;page:number}){
   {document?<><canvas ref={ref} className="mission-canvas" aria-label={'PDF Vorschau Seite '+page}/>
     {state==='working'&&<span className="mission-page-loading">PDF wird lokal gerendert …</span>}
     {state==='error'&&<span role="alert">PDF-Seite konnte nicht angezeigt werden.</span>}
-   </>:<span>Die PDF-Akte wird vorbereitet …</>}
+   </>:<span>Die PDF-Akte wird vorbereitet …</span>}
  </div>
 }
 function ShortStatus({status}:{status:DossierStatus}){

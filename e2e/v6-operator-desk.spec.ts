@@ -8,7 +8,7 @@ test('operator desk: triage three real PDF dossiers, handle exceptions and expor
   if(!r.url().startsWith(origin+'/'))external.push(r.url())
   if(['POST','PATCH','PUT','DELETE'].includes(r.method()))writes.push(r.url())
  })
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?classic=1')
  await expect(page.getByRole('heading',{name:/Cases in/})).toBeVisible()
  await expect(page.locator('.desk-case')).toHaveCount(3,{timeout:30000})
  await expect(page.locator('.desk-source')).toContainText('Original & Belege')
@@ -65,7 +65,7 @@ test('operator desk: multi-file real PDF intake and role-based fail-closed retag
   expect(buffer.subarray(0,5).toString()).toBe('%PDF-')
   files.push({name:'CASE-104__'+role+'.pdf',mimeType:'application/pdf',buffer})
  }
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?classic=1')
  await expect(page.locator('.desk-case')).toHaveCount(3,{timeout:30000})
  await page.locator('input[aria-label="Mehrere PDFs importieren"]').setInputFiles(files)
  await expect(page.locator('.desk-case')).toHaveCount(4,{timeout:30000})
@@ -91,7 +91,7 @@ test('operator desk: multi-file real PDF intake and role-based fail-closed retag
 })
 test('operator desk: mobile case queue to original source to next action stays within screen',async({page})=>{
  await page.setViewportSize({width:390,height:844})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?classic=1')
  await expect(page.locator('.desk-case')).toHaveCount(3,{timeout:30000})
  await expect(page.getByRole('tab',{name:/Beleg/})).toHaveAttribute('aria-selected','true')
  await expect(page.locator('.desk-preview')).toBeVisible()

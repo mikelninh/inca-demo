@@ -42,4 +42,5 @@ jobs:
           path: |
             rsi/study/out/latest.json
             dist/
+            test-results/v7/*.png
           if-no-files-found: warn

@@ -266,3 +266,26 @@
 @media(prefers-reduced-motion:reduce){
  .quiet *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Quiet finishing pass: enough editorial air without hiding the actual next action. */
+@media(min-width:1180px){
+ .quiet-findings{padding-top:17px;padding-bottom:15px}
+ .quiet-findings>h2{font-size:clamp(24px,1.9vw,31px);line-height:1.2;margin:12px 0 9px}
+ .quiet-finding-context{font-size:11px;line-height:1.5}
+ .quiet-detail-separator{margin:12px 0 10px}
+ .quiet-section-title{margin-bottom:8px}
+ .quiet-citations{max-height:118px;gap:5px}
+ .quiet-citation{padding:7px 8px}
+ .quiet-quote{margin-top:8px;padding:8px 10px}
+ .quiet-quote p{font-size:11px;line-height:1.45;max-height:45px}
+ .quiet-next-step{font-size:12px;line-height:1.45}
+ .quiet-gate-checks{margin-top:8px}
+ .quiet-gate-checks span{padding:4px 7px;font-size:9px}
+ .quiet-note-label{margin-top:9px}
+ .quiet-note{min-height:47px;padding:8px 10px;margin-top:5px}
+ .quiet-actions{margin-top:8px}
+ .quiet-primary-action{min-height:43px;padding:9px 12px}
+ .quiet-secondary-action{padding:7px 10px}
+ .quiet-extra{margin-top:7px}
+ .quiet-disclaimer{margin-top:8px}
+}

@@ -113,10 +113,10 @@ export async function createScenarioPdfs(id:string):Promise<{
    // Warm editorial document specimen: precise document hierarchy, no legacy lab teal.
    p.drawRectangle({x:0,y:0,width:w,height:h,color:rgb(.99,.988,.981)})
    p.drawRectangle({x:0,y:h-9,width:w,height:9,color:paperInk})
-   p.drawText('MUSTERAKTE',{x:42,y:h-44,font:bold,size:12,color:paperInk,characterSpacing:1.1})
+   p.drawText('MUSTERAKTE',{x:42,y:h-44,font:bold,size:12,color:paperInk})
    p.drawText('NICHT RECHTSVERBINDLICH',{x:385,y:h-42,font:bold,size:7.5,color:accent})
    p.drawLine({start:{x:42,y:h-57},end:{x:w-42,y:h-57},thickness:.8,color:lineGrey})
-   p.drawText(sectionName,{x:42,y:h-91,font:bold,size:9,color:accent,characterSpacing:.6})
+   p.drawText(sectionName,{x:42,y:h-91,font:bold,size:9,color:accent})
    p.drawText('DOKUMENT '+String(fileIndex+1).padStart(2,'0'),{x:424,y:h-91,font:bold,size:9,color:stone})
    p.drawText(typeName,{x:42,y:h-131,font:bold,size:29,color:paperInk})
    p.drawText(section.heading,{x:43,y:h-162,font:regular,size:12,color:stone,maxWidth:480})
@@ -137,7 +137,7 @@ export async function createScenarioPdfs(id:string):Promise<{
     }
    }else{
     const sub=source.role==='policy'?'VERSICHERUNGSUMFANG UND HINWEISE':'ANGABEN ZUM SCHADENEREIGNIS'
-    p.drawText(sub,{x:43,y:h-225,font:bold,size:9,color:accent,characterSpacing:.6})
+    p.drawText(sub,{x:43,y:h-225,font:bold,size:9,color:accent})
     let y=h-258
     for(let i=0;i<section.lines.length;i++){
      const entry=section.lines[i]
@@ -150,7 +150,7 @@ export async function createScenarioPdfs(id:string):Promise<{
    }
    p.drawLine({start:{x:42,y:113},end:{x:w-42,y:113},thickness:1,color:lineGrey})
    p.drawRectangle({x:42,y:62,width:w-84,height:38,color:rgb(.958,.946,.919)})
-   p.drawText('FIKTIVES TESTDOKUMENT',{x:53,y:85,font:bold,size:8.2,color:accent,characterSpacing:.5})
+   p.drawText('FIKTIVES TESTDOKUMENT',{x:53,y:85,font:bold,size:8.2,color:accent})
    p.drawText('Alle Angaben sind frei erfunden. Keine echten Kundendaten.',{x:53,y:71,font:regular,size:8,color:stone})
    p.drawText('CLAIM / OS   ·   UNABHAENGIGE ARBEITSPROBE',{x:43,y:30,font:bold,size:7.5,color:stone})
    p.drawText('SEITE '+(pageIndex+1)+' / '+source.pages.length,{x:473,y:30,font:bold,size:7.5,color:stone})

@@ -25,7 +25,7 @@ test('operator desk: triage three real PDF dossiers, handle exceptions and expor
  // A source-backed mismatch can only be sent to a human specialist.
  await page.locator('.desk-case').filter({hasText:'Parkrempler'}).click()
  await expect(page.locator('.desk-decision-card')).toContainText('Möglicher Widerspruch')
- await page.locator('.desk-citation-list button').filter({hasText:'Deckungsgrenze'}).click()
+ await page.locator('.desk-citation-list button').filter({hasText:'Deckungsgrenze'}).last().click()
  await expect(page.locator('.desk-page-controls')).toContainText('2 / 2')
  await expect(page.locator('.desk-anchor-rect').first()).toBeVisible()
  await page.getByRole('button',{name:/An Spezialist:in/}).click()

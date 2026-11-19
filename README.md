@@ -1,6 +1,6 @@
-# CLAIM / OS 7.0 — Cinematic Evidence Workbench
+# CLAIM / OS 8.0 — Story & Work · Evidence Experience
 
-**[Open the live Cinematic Workbench](https://mikelninh.github.io/inca-demo/)** · [Classic v6 Operator Desk](https://mikelninh.github.io/inca-demo/?classic=1) · [PDF Evidence Reader](https://mikelninh.github.io/inca-demo/?lab=1) · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
+**[Open the live Story Mode](https://mikelninh.github.io/inca-demo/)** · [Work Mode](https://mikelninh.github.io/inca-demo/?mode=work) · [Classic v6 Operator Desk](https://mikelninh.github.io/inca-demo/?classic=1) · [PDF Evidence Reader](https://mikelninh.github.io/inca-demo/?lab=1) · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
 
 > A claim is not a confident answer. It is a defensible next action.
 
@@ -11,6 +11,18 @@ Independent AI Operations work sample by Michael Ninh (Berlin) for an AI-first c
 **Can we correctly advance a claim, cite the supporting documents, and reduce human work without introducing critical mistakes?**
 
 This repo contains the **public, privacy-preserving React research interface**, with a downloadable PDF workspace, a transparent 36-case adversarial regression suite, reviewer-study instrumentation, and a **server-side opt-in Claude evaluation CLI**. There is **no LLM backend attached to public GitHub Pages**. A separate local CLAIM / OS 5.0 package also contains the earlier Python multimodal Responses API adapter, Tesseract/OCR readback, five PDF/PNG cases and its own 40 backend tests.
+
+## v8 — Two experiences, one validated source engine
+
+**Story Mode** retains the editorial three-shot discovery, but now reveals a real PDF source with a restrained amber spotlight, scroll-to-citation and a non-blocking transition (fully disabled by reduced-motion preferences). Its mobile layout shows the actual finding **before** a deliberately compact document preview; users can open a real full-screen PDF viewer with page, document and zoom controls.
+
+**Work Mode** is shareable at `?mode=work` and eliminates repeated scene progression for daily claims work. The operator sees the original PDF, the case finding, an independently checked source list, the human next action and note/reopen controls together. Switching modes does not erase the active case, its role corrections, page selection or audit.
+
+**PDF specimens** now resemble modest, legible, fictional insurance correspondence: distinct document types, warm white paper, structured headings, invoice rows and clear **FIKTIVES TESTDOKUMENT** labelling. The source files remain actual generated PDFs, so exact text-spans and source highlights can still be checked.
+
+**Safety and limits:** No paid AI call is made from the public demo, no customer data is transmitted by its React workflow, no real claim gets paid/denied, and the audit export excludes document raw text and notes. The source-highlighting gate checks **literal PDF character spans**, not the substantive truth of a claim. Work and Story both use the same deterministic assessment and human-only action constraints. Not production ready.
+
+**Validation:** Existing v5/v6/v7 tests remain. New tests exercise a clickable reveal CTA, story and work modes, original-PDF fullscreen at 390 px, safety gating at 320 px and 7 actual browser screenshots in `test-results/v8/` archived by CI.
 
 ## v7 — The cinematic three-shot experience
 

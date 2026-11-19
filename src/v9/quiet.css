@@ -289,3 +289,18 @@
  .quiet-extra{margin-top:7px}
  .quiet-disclaimer{margin-top:8px}
 }
+
+/* Laptop view: show the first human action together with its original source. */
+@media(min-width:1180px) and (max-height:950px){
+ .quiet-findings>h2{margin-top:10px;margin-bottom:7px}
+ .quiet-findings{padding-top:15px}
+ .quiet-finding-context{line-height:1.45}
+ .quiet-detail-separator{margin:9px 0 8px}
+ .quiet-citations{max-height:92px}
+ .quiet-quote{padding:6px 9px;margin-top:7px}
+ .quiet-quote p{max-height:29px;line-height:1.4}
+ .quiet-gate-checks{margin-top:7px}
+ .quiet-note-label{margin-top:7px}
+ .quiet-note{min-height:43px;padding:6px 9px}
+ .quiet-primary-action{min-height:41px}
+}

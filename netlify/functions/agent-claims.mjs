@@ -63,7 +63,10 @@ export default async (request)=>{
  if(Number(request.headers.get('content-length')??0)>256)
   return respond({code:'PAYLOAD_TOO_LARGE'},413)
  let body
- try{body=await request.json()}catch{return respond({code:'INVALID_JSON'},400)}
+ let raw
+ try{raw=await request.text()}catch{return respond({code:'INVALID_BODY'},400)}
+ if(raw.length>256)return respond({code:'PAYLOAD_TOO_LARGE'},413)
+ try{body=JSON.parse(raw)}catch{return respond({code:'INVALID_JSON'},400)}
  if(!body||typeof body!=='object'||Array.isArray(body)||
     Object.keys(body).length!==1||typeof body.caseId!=='string')
    return respond({code:'ONLY_PUBLIC_SAMPLES_ALLOWED'},422)

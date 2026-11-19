@@ -75,7 +75,7 @@ export function checkAgentDraft(data:unknown,packets:SourcePacket[]):AgentCheck{
     const packet=packets.find(p=>p.documentId===c.documentId&&p.page===c.page)
     // Require an exact span within a single originally-authored line. This
     // prevents a model from stitching together unrelated passages.
-    const supported=packet?.lines.some(line=>line.includes(c.quote))
+    const supported=packet?.lines.some(line=>line.includes(c.quote as string))
     if(!supported){
       errors.push('Finding '+(i+1)+' cites text that does not occur on the referenced page.')
       continue

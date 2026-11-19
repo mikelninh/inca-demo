@@ -77,7 +77,7 @@ describe('operator daily workflow, no live claims',()=>{
   const updated=appendDocuments(waiting,[addition])
   expect(updated.stage).toBe('open')
   expect(updated.documents).toHaveLength(3)
-  expect(updated.assessment.status).toBe('REVIEW_READY')
+  expect(updated.assessment.status).toBe('REQUEST_EVIDENCE') // Invoice arrived, but burglary police reference is still missing.
   expect(updated.events.map(x=>x.kind)).toEqual(['review','reopened'])
   expect(()=>appendDocuments(updated,[addition])).toThrow(/Doppelte/)
  })

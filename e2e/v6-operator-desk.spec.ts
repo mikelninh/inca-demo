@@ -30,7 +30,7 @@ test('operator desk: triage three real PDF dossiers, handle exceptions and expor
  await expect(page.locator('.desk-anchor-rect').first()).toBeVisible()
  await page.getByRole('button',{name:/An Spezialist:in/}).click()
  await expect(page.locator('.desk-review-history')).toContainText('An Fachprüfung übergeben')
- await page.locator('.desk-case').filter({hasText:'Leitungswasser'}).click()
+ await page.getByRole('button',{name:/Nächsten offenen Fall/}).click()
  await expect(page.locator('.desk-decision-card')).toContainText('Prüfung vorbereiten')
  await page.getByRole('button',{name:/Zur Fachprüfung/}).click()
  await expect(page.locator('.desk-review-history')).toContainText('Zur regulären Fachprüfung')

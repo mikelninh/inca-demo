@@ -18,7 +18,7 @@ export async function parsePdfBytes(
     throw Error('PDF muss zwischen 10 Byte und 8 MB gross sein.')
   const pdfBytes=raw.slice()
   const loading=pdfjs.getDocument({
-    data:pdfBytes,isEvalSupported:false,
+    data:pdfBytes,
     useSystemFonts:true,stopAtErrors:true
   })
   try{

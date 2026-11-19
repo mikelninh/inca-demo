@@ -1,6 +1,6 @@
 import type {DeskCase} from '../desk/deskCore'
 import {checkCitation} from '../doclab/pdfEvidence'
-import type {PageCitation,ParsedDocument} from '../doclab/pdfEvidence'
+import type {PageCitation} from '../doclab/pdfEvidence'
 export type QuietTone='warning'|'ready'|'blocked'|'waiting'|'done'
 export function caseTone(c:DeskCase):QuietTone{
  if(c.stage==='reviewed')return 'done'

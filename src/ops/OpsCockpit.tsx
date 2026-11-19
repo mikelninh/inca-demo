@@ -58,7 +58,7 @@ export default function OpsCockpit(){
   <header className="tower-topbar">
    <div className="tower-topbar-inner">
     <a href={import.meta.env.BASE_URL} className="tower-logo"><span className="tower-logomark">i</span><strong>INCA</strong><small>/ CONTROL TOWER</small></a>
-    <div className="tower-navlinks"><a href={import.meta.env.BASE_URL+'?study=1'}>Reviewer-Studie ↗</a><a href="https://github.com/mikelninh/inca-demo" target="_blank" rel="noopener noreferrer">Quellcode ↗</a><span className="tower-version">Research prototype · v0.2</span></div>
+    <div className="tower-navlinks"><a href={import.meta.env.BASE_URL+'?lab=1'}>PDF Evidence Lab ↗</a><a href={import.meta.env.BASE_URL+'?study=1'}>Reviewer-Studie ↗</a><a href="https://github.com/mikelninh/inca-demo" target="_blank" rel="noopener noreferrer">Quellcode ↗</a><span className="tower-version">Research prototype · v0.2</span></div>
    </div>
   </header>
   <main>

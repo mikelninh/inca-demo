@@ -19,6 +19,12 @@ jobs:
         run: npm ci
       - name: Test source provenance, randomisation and existing claim logic
         run: npx vitest run
+      - name: Production dependency audit
+        run: npm audit --omit=dev --audit-level=high
+      - name: Verify and bundle guarded Claude backend
+        run: |
+          node --check netlify/functions/agent-claims.mjs
+          npx esbuild netlify/functions/agent-claims.mjs --bundle --platform=node --format=esm --packages=external --outfile=/tmp/inca-claims-agent.mjs
       - name: Typecheck and build review interface
         run: |
           npx tsc --noEmit

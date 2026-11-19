@@ -38,9 +38,10 @@ test('v8 professional work mode exposes source, finding and human action simulta
  await page.getByRole('button',{name:/An Spezialist:in/}).click()
  await expect(page.locator('.cine-work-finished')).toContainText('An Fachprüfung übergeben.')
  await page.getByRole('button',{name:/Nächster offener Fall/}).click()
- await expect(page.locator('.cine-work-summary')).toContainText('Die Akte ist prüffähig')
+ await expect(page.locator('.cine-work-summary')).toContainText('Ohne Quelle keine Freigabe')
+ await expect(page.getByRole('button',{name:/Zur Fachprüfung/})).toHaveCount(0)
  await page.getByRole('button',{name:'Story',exact:true}).click()
- await expect(page.getByRole('heading',{name:'Ready for the human eye.'})).toBeVisible()
+ await expect(page.getByRole('heading',{name:'The missing piece.'})).toBeVisible()
 })
 
 test('v8 mobile puts actual finding before small PDF preview and opens full-screen original',async({page})=>{

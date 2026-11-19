@@ -6,7 +6,8 @@
  */
 export type DocumentRole='claim'|'policy'|'invoice'|'unknown'
 export type DocumentOrigin='generated_sample'|'user_upload'
-export type PageText={page:number;text:string}
+export type PageText={page:number;text:string;rects?:TextRect[]}
+export type TextRect={start:number;end:number;left:number;top:number;width:number;height:number}
 export type ParsedDocument={
   id:string;name:string;role:DocumentRole;origin:DocumentOrigin;
   pages:PageText[];sizeBytes:number;bytes:Uint8Array

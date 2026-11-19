@@ -29,9 +29,30 @@ export async function parsePdfBytes(
     for(let i=1;i<=pdf.numPages;i++){
       const page=await pdf.getPage(i)
       const content=await page.getTextContent()
-      const text=content.items.map(item=>('str' in item?item.str:''))
-        .filter(Boolean).join(' ').replace(/\s+/g,' ').trim()
-      pages.push({page:i,text})
+      const viewport=page.getViewport({scale:1})
+      let text=''
+      const rects:NonNullable<PageText['rects']>=[]
+      for(const item of content.items){
+        if(!('str' in item)||!item.str)continue
+        const value=item.str.replace(/\s+/g,' ').trim()
+        if(!value)continue
+        if(text)text+=' '
+        const start=text.length
+        text+=value
+        const t=item.transform
+        const height=Math.abs(t[3])||Math.abs(t[0])||12
+        const matrix=viewport.transform
+        const project=(x:number,y:number)=>[matrix[0]*x+matrix[2]*y+matrix[4],matrix[1]*x+matrix[3]*y+matrix[5]]
+        const [x0,y0]=project(t[4],t[5])
+        const [x1,y1]=project(t[4]+item.width,t[5]+height)
+        const left=Math.min(x0,x1)/viewport.width,top=Math.min(y0,y1)/viewport.height
+        const width=Math.abs(x1-x0)/viewport.width,boxHeight=Math.abs(y1-y0)/viewport.height
+        if([left,top,width,boxHeight].every(Number.isFinite)&&width>0&&boxHeight>0&&
+           left>=0&&top>=0&&left+width<=1.02&&top+boxHeight<=1.02){
+          rects.push({start,end:start+value.length,left,top,width,height:boxHeight})
+        }
+      }
+      pages.push({page:i,text,rects})
     }
     return {id,name,role,origin,pages,sizeBytes:raw.byteLength,bytes:raw.slice()}
   }finally{

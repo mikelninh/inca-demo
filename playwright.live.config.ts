@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: './e2e',
-  testMatch: ['research-study.spec.ts', 'control-tower.spec.ts', 'document-lab.spec.ts', 'v4-workspace.spec.ts'],
+  testMatch: ['research-study.spec.ts', 'control-tower.spec.ts', 'document-lab.spec.ts', 'v4-workspace.spec.ts', 'v5-reader.spec.ts'],
   timeout: 90_000,
   retries: 1,
   reporter: 'line',

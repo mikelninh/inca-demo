@@ -7,7 +7,7 @@ test('CLAIM/OS 4.0: transparent stress set, clickable failure and no simulated p
   if(!r.url().startsWith(origin+'/'))requests.push(r.url())
   if(['POST','PUT','PATCH','DELETE'].includes(r.method()))writes.push(r.url())
  })
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?evaluation=1')
  await expect(page.getByRole('heading',{name:/Every decision/})).toBeVisible()
  await expect(page.getByText('36-case stress test')).toBeVisible()
  await expect(page.getByText('LIVE AI EVALUATIONS')).toBeVisible()
@@ -28,7 +28,7 @@ test('CLAIM/OS 4.0: transparent stress set, clickable failure and no simulated p
 })
 test('mobile: shows working overview and evidence links without horizontal overflow',async({page})=>{
  await page.setViewportSize({width:390,height:844})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?evaluation=1')
  await expect(page.getByRole('heading',{name:/Every decision/})).toBeVisible()
  await expect(page.getByRole('link',{name:/Echte PDF-Belege prüfen/})).toBeVisible()
  await expect(page.getByRole('button',{name:/Evidenz & Tests ansehen/})).toBeVisible()

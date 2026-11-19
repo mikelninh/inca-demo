@@ -19,6 +19,7 @@ This repo contains the **public, privacy-preserving React research interface**, 
 - **Queue and prioritisation:** critical source/document problems appear first, followed by mismatch review and routine expert-ready cases.
 - **Actual intake:** import up to 12 local PDF files per batch (8 MB each, 12 pages maximum). To separate cases, name *every* document with a shared prefix such as \`CASE-104__Schadenmeldung.pdf\`, \`CASE-104__Vertrag.pdf\`, \`CASE-104__Rechnung.pdf\`. Without a case prefix, all selected files deliberately form **one** dossier. Mixed conventions are blocked rather than silently merging customers.
 - **Local triage:** PDFs are parsed inside the browser and grouped by explicitly supplied filename case keys; document type is only inferred from names. An operator can correct each role and retrigger triage.
+- **Resume awaiting cases:** attach newly received PDFs to the selected case in the browser. It reopens automatically, preserves prior audit events and recalculates the source gate. No repeated external message is sent.
 - **Document proof:** a clicked source quote highlights only matching text coordinates from the original PDF, never fabricated geometry. A text-only PDF without usable text is blocked; no image OCR is claimed by the public interface.
 - **One-step human handoff:** record a request for more documents, refer to a specialist, or queue for regular *expert* review (only when the technical source gate allows it). **No e-mail is actually sent, no insurance claim is paid or denied.**
 - **Review history:** actions, reopenings and elapsed time-to-action are tracked **in memory** for the browser session, not in an insurer system. Time includes possible idle time and is **not** a productivity measurement.
@@ -40,7 +41,7 @@ The original **CLAIM / OS 3.0 Python project** (distributed in a separate comple
 
 ## Observed validations
 
-- **47 Vitest tests passed** including source-value gates and the 36-case behavioural regression framework.
+- **48 Vitest tests passed** including source-value gates and the 36-case behavioural regression framework.
 - **10 Chromium browser flows passed** on the application code: v4 dashboard (desktop/mobile), real local PDF generation/reupload, Control Tower, and 8-case reviewer experiment.
 - CLI provider adapter: mock transport tested for strict schema, source quote integrity, HTTP errors and no-key guards. **0 successful real paid model calls** verified here.
 - Original bundled Python runtime: **40 backend tests passed locally**, including real OCR/PDF source readback and a simulated provider request, plus the 5-case replay evaluation. **0 real paid provider calls**.

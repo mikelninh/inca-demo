@@ -49,8 +49,11 @@ function PdfStage({document,page,citation,zoom,caseId}:{document:ParsedDocument|
  const pageInfo=document?.pages.find(x=>x.page===page)
  const marks=useMemo(()=>{
   if(!document||!citation||!pageInfo||citation.documentId!==document.id||citation.page!==page||!checkCitation([document],citation))return []
-  const start=citation.offset,finish=start+citation.quote.length
-  return (pageInfo.rects??[]).filter(r=>r.start<finish&&r.end>start).slice(0,14)
+  // Spotlight only the exact literal cue, not the entire contextual quotation.
+  // PDF coordinates still come solely from PDF.js's original text runs.
+  const start=citation.focusOffset??citation.offset
+  const finish=start+(citation.focusText?.length??citation.quote.length)
+  return (pageInfo.rects??[]).filter(r=>r.start<finish&&r.end>start).slice(0,8)
  },[document,citation,page,pageInfo])
  useEffect(()=>{
   let discarded=false

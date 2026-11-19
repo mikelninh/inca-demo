@@ -119,5 +119,6 @@ test('Quiet Workspace: responsive mobile source viewer, queue drawer and no hori
  await page.setViewportSize({width:320,height:740})
  await expect(page.getByRole('heading',{name:'Eine Unterlage fehlt.'})).toBeVisible()
  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1)
+ await expect(page.locator('.quiet-pdf-loading')).toHaveCount(0,{timeout:15000})
  await page.screenshot({path:'test-results/v9/05-narrow-mobile.png',animations:'disabled',fullPage:true})
 })

@@ -246,3 +246,6 @@
  .desk-footer{margin:0 12px;flex-wrap:wrap;padding:13px 0 21px;font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.desk *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.desk-action-locked button.desk-next-case{background:#205a48;border-color:#205a48;color:#fff;margin-left:7px}
+.desk-action-locked button.desk-next-case:hover{background:#2c765d}

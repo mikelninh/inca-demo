@@ -18,11 +18,12 @@ type Props={
  onNext:()=>void;
  hasNext:boolean;
  onAdd:()=>void;
+ onViewPdf:()=>void;
  onRole:(id:string,value:DocumentRole)=>void;
  onExport:()=>void;
 }
 export default function WorkPanel({
- current,citationId,note,onNote,onCitation,onAction,onReopen,onNext,hasNext,onAdd,onRole,onExport
+ current,citationId,note,onNote,onCitation,onAction,onReopen,onNext,hasNext,onAdd,onViewPdf,onRole,onExport
 }:Props){
  const story=storyFor(current)
  const proof=narrativeReceipt(current)
@@ -39,6 +40,7 @@ export default function WorkPanel({
    <h1>{story.findingTitle}</h1>
    <p>{current.assessment.rationale}</p>
    <div className="cine-work-context"><span>{severityLabels[current.assessment.status]}</span><span>{current.documents.length} Dokumente</span><span>{proof.count}/{proof.total} Textbelege</span></div>
+   <button type="button" className="cine-work-source-cta" onClick={onViewPdf}>Original-PDF mit Fundstelle öffnen <span>↗</span></button>
   </div>
   <div className="cine-work-proof">
    <div className="cine-work-section-line"><strong>01 <span>Quellenprüfung</span></strong><small>Wörtliche Originalfundstellen</small></div>

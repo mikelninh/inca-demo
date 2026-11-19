@@ -104,6 +104,7 @@ export default function CinematicDesk(){
  const startedAt=useRef(performance.now())
  const inputFiles=useRef<HTMLInputElement|null>(null)
  const attachFiles=useRef<HTMLInputElement|null>(null)
+ const sourcesRef=useRef<HTMLDivElement>(null)
  const readCase=useCallback(async()=>{
   const run=++activeRun.current
   setBusy(true);setError('');setNotice('')
@@ -250,6 +251,13 @@ export default function CinematicDesk(){
   finally{if(run===activeRun.current)setBusy(false)}
  }
  useEffect(()=>{
+  if(scene!==1||!citationId)return
+  const rail=sourcesRef.current,active=rail?.querySelector<HTMLElement>('button.active')
+  if(!rail||!active)return
+  const relative=active.offsetLeft-rail.offsetLeft
+  rail.scrollLeft=Math.max(0,relative-rail.clientWidth/2+active.clientWidth/2)
+ },[scene,citationId,caseId])
+ useEffect(()=>{
   const handler=(event:KeyboardEvent)=>{
    const target=event.target as HTMLElement|null
    if(target?.closest('input,textarea,select,[contenteditable="true"]'))return
@@ -338,7 +346,7 @@ export default function CinematicDesk(){
         <p className="cine-lede">{narrative.findingSubtitle}</p>
         <div className="cine-evidence-section">
          <div className="cine-section-name"><span>SELECT A SOURCE</span><b>{receipt?.count}/{receipt?.total} EXACT</b></div>
-         <div className="cine-evidence-list">
+         <div className="cine-evidence-list" ref={sourcesRef}>
           {selected.citations.length?selected.citations.map(c=><button type="button" key={c.id} className={valid?.id===c.id?'active':''} onClick={()=>visit(c)}>
            <span className="cine-evidence-index">{c.id}</span><span className="cine-evidence-name"><strong>{c.label}</strong><small>{roles[c.role]} · Seite {c.page}</small></span><span className={'cine-evidence-valid '+(checkCitation(selected.documents,c)?'yes':'no')}>{checkCitation(selected.documents,c)?'↗':'!'}</span>
           </button>):<p className="cine-empty-citations">Keine lesbaren Quellenanker. Fachprüfung erforderlich.</p>}

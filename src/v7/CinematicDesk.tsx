@@ -101,7 +101,6 @@ export default function CinematicDesk(){
  const [notice,setNotice]=useState('')
  const [reloadKey,setReloadKey]=useState(0)
  const activeRun=useRef(0)
- const loaded=useRef(false)
  const startedAt=useRef(performance.now())
  const inputFiles=useRef<HTMLInputElement|null>(null)
  const attachFiles=useRef<HTMLInputElement|null>(null)
@@ -119,8 +118,6 @@ export default function CinematicDesk(){
   finally{if(run===activeRun.current)setBusy(false)}
  },[])
  useEffect(()=>{
-  if(loaded.current)return
-  loaded.current=true
   void readCase()
   return()=>{activeRun.current++}
  },[readCase])

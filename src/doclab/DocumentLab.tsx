@@ -122,7 +122,6 @@ export default function DocumentLab(){
   const pageContent=currentDoc?.pages.find(x=>x.page===safePage)?.text??''
   const isValid=activeAnchor?checkCitation(effectiveDocs,activeAnchor):null
   const exactCount=citations.filter(x=>checkCitation(effectiveDocs,x)).length
-  const activeScenario=scenarios.find(s=>s.id===scenarioId)
   function visitCitation(c:PageCitation){
     setActiveCitationId(c.id);setActiveId(c.documentId);setActivePage(c.page)
     setNotice('Fundstelle '+c.id+' auf Seite '+c.page+' geöffnet. Textanker: '+(checkCitation(effectiveDocs,c)?'wortgleich':'UNGUELTIG')+'.')

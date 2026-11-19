@@ -7,7 +7,7 @@ test('CLAIM/OS 4.0: transparent stress set, clickable failure and no simulated p
   if(!r.url().startsWith(origin+'/'))requests.push(r.url())
   if(['POST','PUT','PATCH','DELETE'].includes(r.method()))writes.push(r.url())
  })
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?evaluation=1')
  await expect(page.getByRole('heading',{name:/Every decision/})).toBeVisible()
  await expect(page.getByText('36-case stress test')).toBeVisible()
  await expect(page.getByText('LIVE AI EVALUATIONS')).toBeVisible()

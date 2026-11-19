@@ -133,3 +133,138 @@
 @media(max-width:1130px){.doclab-workspace{grid-template-columns:minmax(200px,.7fr) minmax(350px,1.5fr)}.doclab-review{grid-column:span 2}.doclab-hero-stamp{display:none}.doclab-control-row{grid-template-columns:1fr}.doclab-upload{min-height:95px}}
 @media(max-width:750px){.doclab-nav-inner{padding:14px 17px;min-height:58px}.doclab-links{gap:10px}.doclab-links a:last-of-type,.doclab-links>span{display:none}.doclab-brand{font-size:16px}.doclab-brand small{font-size:9px}.doclab-hero-inner{padding:42px 18px}.doclab-hero h1{font-size:39px}.doclab-hero p{font-size:12.5px}.doclab-limit{padding:13px 18px;flex-direction:column;gap:4px}.doclab-controls{padding:34px 12px 0}.doclab-scenario-list{grid-template-columns:1fr}.doclab-scenario-list button{min-height:73px;padding:14px}.doclab-stats{grid-template-columns:repeat(2,1fr)}.doclab-stats>div:nth-child(2){border-right:none}.doclab-stats>div:nth-child(-n+2){border-bottom:1px solid #e5ebef}.doclab-workspace{grid-template-columns:1fr;padding:0 12px 42px}.doclab-review{grid-column:auto}.doclab-citation-list{max-height:170px}.doclab-preview-frame{height:420px;padding:12px 6px}.doclab-reader-toolbar>span{max-width:100%;flex:0 0 100%}.doclab-method{grid-template-columns:1fr;padding:42px 18px;gap:26px}.doclab-footer{padding:18px;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.doclab *{transition:none!important;animation:none!important}}
+
+
+/* CLAIM / OS 5.0 — Evidence-first public workbench */
+.doclab-v5{--navy:#112334;--ink:#192f42;--muted:#708697;--line:#dfe8ec;--teal:#375de9;background:#f3f6f6;color:#192f42;font-size:14px}
+.doclab-v5 .doclab-nav{background:#12263a;border-color:#223e55}
+.doclab-v5 .doclab-nav-inner{min-height:59px;max-width:1720px;padding:0 26px}
+.doclab-v5 .doclab-brand{font-size:18px;letter-spacing:-.05em}
+.doclab-v5 .doclab-brand-square{background:#d1f1c0;color:#213f3b;width:29px;height:29px}
+.doclab-v5 .doclab-brand small{color:#a6b9c6;font-size:9px;letter-spacing:.13em}
+.doclab-v5 .doclab-links{gap:19px}
+.doclab-v5 .doclab-links>span{font-size:8px;color:#d9e2da;background:#28455a}
+.doclab-v5 .doclab-hero{background:#f3f6f6;color:#172b42}
+.doclab-v5 .doclab-hero-inner{max-width:1720px;padding:26px 27px 13px;gap:16px}
+.doclab-v5 .doclab-overline{font-size:9px;color:#4961e6;letter-spacing:.15em}
+.doclab-v5 .doclab-overline i{background:#546ff1;box-shadow:none}
+.doclab-v5 .doclab-hero h1{font-size:clamp(33px,3.8vw,54px);font-weight:800;letter-spacing:-.065em;line-height:1.06;margin:9px 0}
+.doclab-v5 .doclab-hero h1 em{color:#4c60ee}
+.doclab-v5 .doclab-hero p{color:#667d8a;font-size:12px;max-width:780px;line-height:1.6}
+.doclab-v5 .doclab-hero-stamp{padding:13px 15px;border-radius:11px;background:#fff;border-color:#dfe8eb;min-width:295px;max-width:330px;gap:7px}
+.doclab-v5 .doclab-hero-stamp span{padding:7px 9px;background:#eff3fc;color:#3d59a2;font-size:9px}
+.doclab-v5 .doclab-hero-stamp strong{font-size:16px;color:#a9b8c5}
+.doclab-v5 .doclab-hero-stamp small{font-size:8px;color:#8395a0;margin:4px 0 0}
+.doclab-v5 .doclab-limit{padding:9px max(27px,calc((100vw - 1666px)/2));font-size:10px;background:#eaf3ed;border-color:#d7e6dc;color:#617b76;align-items:center}
+.doclab-v5 .doclab-limit strong{color:#286b58}
+.doclab-v5 .doclab-controls{max-width:1720px;padding:17px 27px 0}
+.doclab-v5 .doclab-control-title>span{font-size:9px;color:#496be0}
+.doclab-v5 .doclab-control-title h2{font-size:21px;margin:3px 0;letter-spacing:-.04em}
+.doclab-v5 .doclab-control-title p{font-size:11px}
+.doclab-v5 .doclab-control-row{margin-top:12px;grid-template-columns:minmax(0,1fr) 244px;gap:9px}
+.doclab-v5 .doclab-scenario-list{gap:8px}
+.doclab-v5 .doclab-scenario-list button{min-height:76px;padding:11px 13px;gap:3px;border-radius:9px}
+.doclab-v5 .doclab-scenario-list button.active,.doclab-v5 .doclab-scenario-list button:hover{border-color:#90a7f5;box-shadow:inset 3px 0 #4e6bed;background:#f0f3ff}
+.doclab-v5 .doclab-scenario-list strong{font-size:11px;color:#28415b}
+.doclab-v5 .doclab-scenario-list span{font-size:10px;color:#7f94a1}
+.doclab-v5 .doclab-upload{padding:10px 14px;gap:2px;background:#f3f6fd;border-color:#afc4f1}
+.doclab-v5 .doclab-upload>span{color:#566fb4;font-size:9px}
+.doclab-v5 .doclab-upload strong{font-size:11px;color:#3454a4}
+.doclab-v5 .doclab-upload small{font-size:9px;color:#8799b5}
+.doclab-v5 .doclab-stats{margin:11px 0 13px;border-radius:9px}
+.doclab-v5 .doclab-stats>div{padding:8px 17px;gap:1px}
+.doclab-v5 .doclab-stats small{font-size:9px}
+.doclab-v5 .doclab-stats strong{font-size:19px;color:#29485f}
+.doclab-v5 .doclab-workspace{max-width:1720px;grid-template-columns:minmax(185px,.48fr) minmax(465px,1.66fr) minmax(320px,1fr);gap:11px;align-items:stretch;padding:0 27px 55px}
+.doclab-v5 .doclab-files,.doclab-v5 .doclab-reader,.doclab-v5 .doclab-review{border-color:#dfe8ec;border-radius:13px;box-shadow:0 10px 35px #173b4a0b;min-width:0}
+.doclab-v5 .doclab-reader{order:0}
+.doclab-v5 .doclab-panel-heading{padding:16px 18px 13px}
+.doclab-v5 .doclab-panel-heading>span{font-size:9px;color:#4b689f}
+.doclab-v5 .doclab-panel-heading h3{font-size:18px;color:#20374b;letter-spacing:-.045em}
+.doclab-v5 .doclab-file{padding:9px;margin:9px 10px}
+.doclab-v5 .doclab-file.active{background:#f1f4ff;border-color:#b5c5fa}
+.doclab-v5 .doclab-file-icon{background:#ecf0fb;color:#5474ab}
+.doclab-v5 .doclab-file button strong{font-size:11px}
+.doclab-v5 .doclab-file button small{font-size:10px}
+.doclab-v5 .doclab-citation-list{max-height:500px}
+.doclab-v5 .doclab-citation-list button{padding:10px 11px}
+.doclab-v5 .doclab-citation-list button.active,.doclab-v5 .doclab-citation-list button:hover{background:#f0f4ff;border-color:#becdf6}
+.doclab-v5 .doclab-citation-list button span{color:#5a75b6}
+.doclab-v5 .doclab-citation-list button strong{font-size:11px}
+.doclab-v5 .doclab-reader-toolbar{padding:11px 16px;flex-wrap:wrap}
+.doclab-v5 .doclab-reader-toolbar>span{font-size:11px;font-weight:740}
+.doclab-v5 .doclab-reader-toolbar button{font-size:10px;padding:7px 10px}
+.doclab-v5 .doclab-zoom{display:flex;align-items:center;gap:5px;border:1px solid #dfe7e9;background:#f3f6f7;border-radius:7px;padding:3px}
+.doclab-v5 .doclab-zoom button{border:none;background:#fff;color:#34506a;font-size:15px;line-height:1;min-width:25px;min-height:25px}
+.doclab-v5 .doclab-zoom output{font-size:10px;color:#627d8c;font-weight:750;min-width:37px;text-align:center}
+.doclab-v5 .doclab-preview-frame{height:min(71vh,775px);min-height:610px;background:#e9edef;padding:16px;align-items:flex-start;scrollbar-width:thin}
+.doclab-v5 .doclab-pdf-stage{position:relative;flex:none;min-width:0;max-width:none;margin:0 auto;background:#fff;box-shadow:0 11px 32px #152c3e22;line-height:0}
+.doclab-v5 .doclab-pdf-canvas{max-width:none;width:100%;height:auto;display:block;box-shadow:none}
+.doclab-v5 .doclab-page-anchor{position:absolute;pointer-events:none;z-index:2;border:2px solid #ed9b25;box-shadow:0 0 0 3px #f6c75c5c,0 0 14px #ebac3a3d;background:#f5bd5947;border-radius:3px;min-height:6px;min-width:7px}
+.doclab-v5 .doclab-page-anchor:first-of-type::before{content:'BELEG IM ORIGINAL';position:absolute;bottom:calc(100% + 6px);left:0;background:#172d3d;color:#fff;font-size:9px;line-height:1.15;font-weight:800;letter-spacing:.07em;padding:6px 9px;border-radius:5px;white-space:nowrap}
+.doclab-v5 .doclab-page-source{padding:17px;background:#fff}
+.doclab-v5 .doclab-page-source>div span{color:#5274a0}
+.doclab-v5 .doclab-page-source>p{font-size:12px;color:#4d6777}
+.doclab-v5 .doclab-page-source mark{background:#ffe0a2;color:#6c4a16}
+.doclab-v5 .doclab-status{margin:15px;border-radius:9px;padding:16px}
+.doclab-v5 .doclab-reason,.doclab-v5 .doclab-checklist,.doclab-v5 .doclab-next,.doclab-v5 .doclab-fault{font-size:11px}
+.doclab-v5 .doclab-go-review,.doclab-v5 .doclab-mobile-tabs{display:none}
+.doclab-v5 .doclab-footer{font-size:10px}
+@media(max-width:1290px){
+ .doclab-v5 .doclab-workspace{grid-template-columns:minmax(165px,.45fr) minmax(400px,1.5fr) minmax(300px,1.08fr);gap:8px;padding-left:17px;padding-right:17px}
+ .doclab-v5 .doclab-preview-frame{min-height:570px}
+ .doclab-v5 .doclab-nav-inner{padding:0 18px}
+ .doclab-v5 .doclab-controls{padding-left:18px;padding-right:18px}
+}
+@media(max-width:1050px){
+ .doclab-v5 .doclab-hero-stamp{display:none}
+ .doclab-v5 .doclab-workspace{grid-template-columns:minmax(160px,.35fr) minmax(400px,1.3fr)}
+ .doclab-v5 .doclab-files{grid-column:1;grid-row:1/span 2}
+ .doclab-v5 .doclab-reader{grid-column:2;grid-row:1}
+ .doclab-v5 .doclab-review{grid-column:2;grid-row:2}
+ .doclab-v5 .doclab-preview-frame{height:620px;min-height:530px}
+ .doclab-v5 .doclab-stats>div{padding:9px}
+}
+@media(max-width:760px){
+ .doclab-v5 .doclab-nav-inner{min-height:57px;padding:0 13px}
+ .doclab-v5 .doclab-brand{font-size:17px}
+ .doclab-v5 .doclab-brand small{display:none}
+ .doclab-v5 .doclab-links{gap:12px}
+ .doclab-v5 .doclab-links a:nth-child(n+2),.doclab-v5 .doclab-links>span{display:none}
+ .doclab-v5 .doclab-hero-inner{padding:22px 16px 14px}
+ .doclab-v5 .doclab-overline{font-size:9px}
+ .doclab-v5 .doclab-hero h1{font-size:36px;margin:9px 0}
+ .doclab-v5 .doclab-hero p{font-size:12px;line-height:1.6}
+ .doclab-v5 .doclab-limit{padding:10px 16px;display:block}
+ .doclab-v5 .doclab-limit strong{display:block}
+ .doclab-v5 .doclab-controls{padding:14px 12px 0}
+ .doclab-v5 .doclab-control-title h2{font-size:20px}
+ .doclab-v5 .doclab-control-title p{font-size:10px}
+ .doclab-v5 .doclab-control-row{display:block;margin-top:10px}
+ .doclab-v5 .doclab-scenario-list{display:flex;overflow:auto;gap:8px;padding-bottom:4px}
+ .doclab-v5 .doclab-scenario-list button{min-width:155px;flex:0 0 155px;padding:11px;min-height:92px}
+ .doclab-v5 .doclab-upload{margin-top:7px;padding:9px 14px}
+ .doclab-v5 .doclab-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:9px 0 12px}
+ .doclab-v5 .doclab-stats>div{padding:9px 6px;text-align:center}
+ .doclab-v5 .doclab-stats small{font-size:8px;line-height:1.35;min-height:25px}
+ .doclab-v5 .doclab-stats strong{font-size:17px}
+ .doclab-v5 .doclab-mobile-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:0 12px 10px;padding:4px;border-radius:9px;background:#e3e9ee;position:sticky;top:0;z-index:40;box-shadow:0 4px 17px #152b3917}
+ .doclab-v5 .doclab-mobile-tabs button{background:transparent;border:0;border-radius:7px;font-size:11px;color:#627c8e;font-weight:780;padding:11px 4px}
+ .doclab-v5 .doclab-mobile-tabs button.active{background:#fff;box-shadow:0 1px 6px #152f3920;color:#294ca5}
+ .doclab-v5 .doclab-workspace{display:block;padding:0 12px 35px}
+ .doclab-v5 .doclab-workspace>.doclab-files,.doclab-v5 .doclab-workspace>.doclab-reader,.doclab-v5 .doclab-workspace>.doclab-review{display:none}
+ .doclab-v5 .doclab-pane-source>.doclab-reader{display:block}
+ .doclab-v5 .doclab-pane-decision>.doclab-review{display:block}
+ .doclab-v5 .doclab-pane-files>.doclab-files{display:block}
+ .doclab-v5 .doclab-panel-heading{padding:14px 14px}
+ .doclab-v5 .doclab-panel-heading h3{font-size:17px}
+ .doclab-v5 .doclab-reader-toolbar{padding:9px 10px;gap:7px}
+ .doclab-v5 .doclab-reader-toolbar>span{flex:0 0 100%}
+ .doclab-v5 .doclab-preview-frame{min-height:350px;height:54vh;max-height:660px;padding:10px;overflow:auto}
+ .doclab-v5 .doclab-page-anchor:first-of-type::before{font-size:8px;padding:5px 6px}
+ .doclab-v5 .doclab-page-source{padding:14px}
+ .doclab-v5 .doclab-go-review{display:flex;justify-content:space-between;background:#142f45;color:#fff;width:100%;border:0;padding:16px;font-size:12px;font-weight:780;min-height:46px}
+ .doclab-v5 .doclab-citation-list{max-height:none}
+ .doclab-v5 .doclab-method{margin-top:0}
+}
+@media(prefers-reduced-motion:reduce){.doclab-v5 .doclab-page-anchor{transition:none}}

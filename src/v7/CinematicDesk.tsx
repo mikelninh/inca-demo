@@ -317,7 +317,7 @@ export default function CinematicDesk(){
        <button type="button" aria-label="PDF vergrößern" disabled={zoom>=2} onClick={()=>setZoom(z=>Math.min(2,z+.25))}>+</button>
       </div>
      </div>
-     <PdfStage document={doc} page={displayedPage} citation={scene>0?valid:null} zoom={zoom} caseId={caseId}/>
+     <PdfStage key={caseId+'-'+(doc?.id??'none')+'-'+displayedPage} document={doc} page={displayedPage} citation={scene>0?valid:null} zoom={zoom} caseId={caseId}/>
      <div className="cine-source-foot">
       <div className="cine-foot-ident"><span aria-hidden="true">↗</span><span>PDF-Original · lokal gerendert</span></div>
       <span>{valid&&scene>0?'Fundstelle wortgleich verifiziert':'Original ohne KI-Interpretation'}</span>

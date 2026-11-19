@@ -346,13 +346,11 @@ export default function OperatorDesk(){
        <label htmlFor="desk-review-note">OPERATOREN-NOTIZ <span>· optional, nur in dieser Sitzung</span></label>
        <textarea id="desk-review-note" rows={3} value={note} maxLength={600} onChange={e=>setNote(e.target.value)} placeholder="Was muss der nächste Mensch wissen?"/>
        {selected.stage==='reviewed'?<div className="desk-action-locked"><strong>✓ An Fachprüfung übergeben</strong><p>Keine Zahlung oder Ablehnung erfolgt. Du kannst die Akte für Korrekturen erneut öffnen.</p><button type="button" onClick={openAgain}>Fall erneut öffnen</button>{nextOpen&&<button type="button" className="desk-next-case" onClick={()=>changeCase(nextOpen.id)}>Nächsten offenen Fall →</button>}</div>:<>
-        {selected.stage==='waiting'&&<p className="desk-action-waiting">Auf Unterlagen wartend · Bei neuen Dokumenten wieder öffnen und nachprüfen.</p>}
-        <div className="desk-action-buttons">
+        {selected.stage==='waiting'?<div className="desk-action-locked"><strong>⏳ Wartet auf weitere Unterlagen</strong><p>Die Dokumentenanforderung ist nur lokal protokolliert. Wurde Material ergänzt, öffne den Fall erneut.</p><button type="button" onClick={openAgain}>Fall erneut öffnen</button>{nextOpen&&<button type="button" className="desk-next-case" onClick={()=>changeCase(nextOpen.id)}>Nächsten offenen Fall →</button>}</div>:<div className="desk-action-buttons">
          {actions.includes('ready_for_expert')&&<button type="button" className="desk-action-primary" onClick={()=>submit('ready_for_expert')}>✓ Zur Fachprüfung <span>↗</span></button>}
          {actions.includes('refer_specialist')&&<button type="button" className="desk-action-primary" onClick={()=>submit('refer_specialist')}>→ An Spezialist:in <span>↗</span></button>}
          {actions.includes('request_documents')&&<button type="button" className="desk-action-secondary" onClick={()=>submit('request_documents')}>＋ Unterlagen nachfordern</button>}
-         {selected.stage==='waiting'&&<button type="button" className="desk-action-secondary" onClick={openAgain}>Fall erneut öffnen</button>}
-        </div>
+        </div>}
        </>}
        <small className="desk-action-safety">Keine E-Mail wird versendet. Es findet keine automatisierte Regulierung statt.</small>
       </div>

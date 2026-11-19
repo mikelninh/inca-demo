@@ -279,3 +279,8 @@
 @media(prefers-reduced-motion:reduce){
  .cine *,.cine *:before,.cine *:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}
 }
+
+/* The story body must never overlap the scene CTA when its source list grows.
+   Let the right pane scroll naturally; keep the action physically after evidence. */
+.cine-story .cine-story-body{flex:1 0 auto;min-height:auto}
+.cine-story .cine-story-actions{flex:0 0 auto}

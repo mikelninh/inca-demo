@@ -74,60 +74,88 @@ export const scenarios:Scenario[]=[
     ]
   }
 ]
-const pageColor=rgb(.11,.21,.25)
-const muted=rgb(.45,.54,.58)
-const green=rgb(.16,.45,.40)
+const paperInk=rgb(.18,.22,.27)
+const stone=rgb(.46,.49,.52)
+const lineGrey=rgb(.83,.84,.83)
+const accent=rgb(.49,.39,.28)
+const pale=rgb(.965,.958,.941)
 function lineWrap(s:string,font:any,size:number,maxWidth:number){
-  const out:string[]=[]
-  const words=s.split(' ')
-  let cur=''
-  for(const word of words){
-    const next=cur?cur+' '+word:word
-    if(font.widthOfTextAtSize(next,size)>maxWidth&&cur){out.push(cur);cur=word}
-    else cur=next
-  }
-  if(cur)out.push(cur)
-  return out
+ const lines:string[]=[],words=s.split(' ');let current=''
+ for(const word of words){
+  const next=current?current+' '+word:word
+  if(font.widthOfTextAtSize(next,size)>maxWidth&&current){lines.push(current);current=word}
+  else current=next
+ }
+ if(current)lines.push(current)
+ return lines
 }
-/** The PDFs here are GENERATED IN BROWSER. Their labels are not external truth. */
+/** Real browser-generated text-based PDF specimens; all details fictional.
+ * Their exact source text is preserved for independent page-span verification. */
 export async function createScenarioPdfs(id:string):Promise<{
-  scenario:Scenario;docs:{id:string;name:string;role:DocumentRole;bytes:Uint8Array}[]
+ scenario:Scenario;docs:{id:string;name:string;role:DocumentRole;bytes:Uint8Array}[]
 }>{
  const scenario=scenarios.find(s=>s.id===id)
  if(!scenario)throw Error('Unknown synthetic scenario.')
  const docs=[]
- for(let index=0;index<scenario.files.length;index++){
-   const source=scenario.files[index]
-   const pdf=await PDFDocument.create()
-   pdf.setTitle(source.name+' - fictional INCA work sample')
-   pdf.setAuthor('Independent research prototype')
-   const regular=await pdf.embedFont(StandardFonts.Helvetica)
-   const bold=await pdf.embedFont(StandardFonts.HelveticaBold)
-   for(let pageIndex=0;pageIndex<source.pages.length;pageIndex++){
-     const section=source.pages[pageIndex],p=pdf.addPage([595,842])
-     const {width,height}=p.getSize()
-     p.drawRectangle({x:0,y:height-112,width,height:112,color:pageColor})
-     p.drawText('INCA  /  DOCUMENT EVIDENCE LAB',{x:42,y:height-46,font:bold,size:11,color:rgb(.7,.91,.85)})
-     p.drawText('INDEPENDENT WORK SAMPLE - FICTITIOUS DOCUMENT',{x:42,y:height-70,font:regular,size:8,color:rgb(.68,.81,.82)})
-     p.drawText(section.heading,{x:43,y:height-160,font:bold,size:19,color:pageColor,maxWidth:510})
-     p.drawLine({start:{x:43,y:height-177},end:{x:width-43,y:height-177},color:rgb(.86,.90,.90)})
-     let y=height-216
-     for(const line of section.lines){
-       const wrapped=lineWrap(line,regular,11.7,width-90)
-       for(const text of wrapped){
-         p.drawText(text,{x:46,y,font:regular,size:11.7,color:pageColor})
-         y-=21
-       }
-       y-=12
-     }
-     p.drawRectangle({x:44,y:45,width:width-88,height:48,color:rgb(.92,.96,.94)})
-     p.drawText('BEISPIELDOKUMENT - KEINE ECHTE VERSICHERUNGSUNTERLAGE',
-       {x:57,y:72,font:bold,size:9,color:green})
-     p.drawText('All data is authored for tests. No customer records.',{x:57,y:57,font:regular,size:8,color:muted})
-     p.drawText('Document '+(index+1)+' / '+scenario.files.length+'   |   Page '+(pageIndex+1)+' / '+source.pages.length,
-       {x:43,y:24,font:regular,size:8,color:muted})
+ for(let fileIndex=0;fileIndex<scenario.files.length;fileIndex++){
+  const source=scenario.files[fileIndex]
+  const pdf=await PDFDocument.create()
+  pdf.setTitle(source.name+' — Fictional sample')
+  pdf.setAuthor('CLAIM / OS — Independent research demonstration')
+  pdf.setSubject('Invented test material, not an official contract or invoice')
+  const regular=await pdf.embedFont(StandardFonts.Helvetica)
+  const bold=await pdf.embedFont(StandardFonts.HelveticaBold)
+  const typeName=source.role==='claim'?'SCHADENANZEIGE':source.role==='policy'?'VERTRAGSAUSZUG':source.role==='invoice'?'RECHNUNGSBELEG':'UNTERLAGE'
+  const sectionName=source.role==='claim'?'01 / MELDUNG':source.role==='policy'?'02 / VERTRAG':source.role==='invoice'?'03 / POSITIONEN':'04 / ANHANG'
+  for(let pageIndex=0;pageIndex<source.pages.length;pageIndex++){
+   const section=source.pages[pageIndex]
+   const p=pdf.addPage([595,842]),{width:w,height:h}=p.getSize()
+   // Warm editorial document specimen: precise document hierarchy, no legacy lab teal.
+   p.drawRectangle({x:0,y:0,width:w,height:h,color:rgb(.99,.988,.981)})
+   p.drawRectangle({x:0,y:h-9,width:w,height:9,color:paperInk})
+   p.drawText('MUSTERAKTE',{x:42,y:h-44,font:bold,size:12,color:paperInk})
+   p.drawText('NICHT RECHTSVERBINDLICH',{x:385,y:h-42,font:bold,size:7.5,color:accent})
+   p.drawLine({start:{x:42,y:h-57},end:{x:w-42,y:h-57},thickness:.8,color:lineGrey})
+   p.drawText(sectionName,{x:42,y:h-91,font:bold,size:9,color:accent})
+   p.drawText('DOKUMENT '+String(fileIndex+1).padStart(2,'0'),{x:424,y:h-91,font:bold,size:9,color:stone})
+   p.drawText(typeName,{x:42,y:h-131,font:bold,size:29,color:paperInk})
+   p.drawText(section.heading,{x:43,y:h-162,font:regular,size:12,color:stone,maxWidth:480})
+   p.drawLine({start:{x:42,y:h-186},end:{x:w-42,y:h-186},thickness:1,color:paperInk})
+   // A structured document body retains the original, test-verifiable line text.
+   if(source.role==='invoice'){
+    p.drawRectangle({x:42,y:h-239,width:w-84,height:30,color:paperInk})
+    p.drawText('LEISTUNGSBESCHREIBUNG',{x:54,y:h-229,font:bold,size:9,color:rgb(.96,.95,.91)})
+    p.drawText('BELEG / EUR',{x:465,y:h-229,font:bold,size:8,color:rgb(.96,.95,.91)})
+    let y=h-271
+    for(let i=0;i<section.lines.length;i++){
+     const entry=section.lines[i]
+     const wrapped=lineWrap(entry,regular,11.1,w-119)
+     if(i%2===0)p.drawRectangle({x:42,y:y-11,width:w-84,height:Math.max(34,wrapped.length*19+11),color:pale})
+     for(const part of wrapped){p.drawText(part,{x:54,y,font:regular,size:11.1,color:paperInk});y-=19}
+     p.drawLine({start:{x:42,y:y-3},end:{x:w-42,y:y-3},thickness:.5,color:lineGrey})
+     y-=23
+    }
+   }else{
+    const sub=source.role==='policy'?'VERSICHERUNGSUMFANG UND HINWEISE':'ANGABEN ZUM SCHADENEREIGNIS'
+    p.drawText(sub,{x:43,y:h-225,font:bold,size:9,color:accent})
+    let y=h-258
+    for(let i=0;i<section.lines.length;i++){
+     const entry=section.lines[i]
+     const wrapped=lineWrap(entry,regular,11.35,w-126)
+     p.drawText(String(i+1).padStart(2,'0'),{x:43,y,font:bold,size:9,color:rgb(.57,.60,.61)})
+     for(const part of wrapped){p.drawText(part,{x:75,y,font:regular,size:11.35,color:paperInk});y-=19}
+     y-=18
+     if(i===0||i===section.lines.length-1)p.drawLine({start:{x:75,y:y+8},end:{x:w-42,y:y+8},thickness:.45,color:lineGrey})
+    }
    }
-   docs.push({id:'DOC-'+(index+1),name:source.name,role:source.role,bytes:await pdf.save()})
+   p.drawLine({start:{x:42,y:113},end:{x:w-42,y:113},thickness:1,color:lineGrey})
+   p.drawRectangle({x:42,y:62,width:w-84,height:38,color:rgb(.958,.946,.919)})
+   p.drawText('FIKTIVES TESTDOKUMENT',{x:53,y:85,font:bold,size:8.2,color:accent})
+   p.drawText('Alle Angaben sind frei erfunden. Keine echten Kundendaten.',{x:53,y:71,font:regular,size:8,color:stone})
+   p.drawText('CLAIM / OS   ·   UNABHAENGIGE ARBEITSPROBE',{x:43,y:30,font:bold,size:7.5,color:stone})
+   p.drawText('SEITE '+(pageIndex+1)+' / '+source.pages.length,{x:473,y:30,font:bold,size:7.5,color:stone})
+  }
+  docs.push({id:'DOC-'+(fileIndex+1),name:source.name,role:source.role,bytes:await pdf.save()})
  }
  return {scenario,docs}
 }

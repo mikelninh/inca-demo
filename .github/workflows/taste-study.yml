@@ -43,4 +43,5 @@ jobs:
             rsi/study/out/latest.json
             dist/
             test-results/v7/*.png
+            test-results/v8/*.png
           if-no-files-found: warn

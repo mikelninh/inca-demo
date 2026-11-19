@@ -8,7 +8,9 @@ import {allowedActions,appendDocuments,exportDeskAudit,makeDeskCase,recordReview
 import type {DeskCase,ReviewAction} from '../desk/deskCore'
 import {narrativeReceipt,sceneCitation,sceneLabels,storyFor} from './story'
 import type {Scene} from './story'
+import WorkPanel from '../v8/WorkPanel'
 import './cinematic.css'
+import '../v8/experience.css'
 
 const roles:Record<DocumentRole,string>={
  claim:'Schadenmeldung',policy:'Police',invoice:'Rechnung',unknown:'Nicht zugeordnet'
@@ -47,8 +49,11 @@ function PdfStage({document,page,citation,zoom,caseId}:{document:ParsedDocument|
  const pageInfo=document?.pages.find(x=>x.page===page)
  const marks=useMemo(()=>{
   if(!document||!citation||!pageInfo||citation.documentId!==document.id||citation.page!==page||!checkCitation([document],citation))return []
-  const start=citation.offset,finish=start+citation.quote.length
-  return (pageInfo.rects??[]).filter(r=>r.start<finish&&r.end>start).slice(0,14)
+  // Spotlight only the exact literal cue, not the entire contextual quotation.
+  // PDF coordinates still come solely from PDF.js's original text runs.
+  const start=citation.focusOffset??citation.offset
+  const finish=start+(citation.focusText?.length??citation.quote.length)
+  return (pageInfo.rects??[]).filter(r=>r.start<finish&&r.end>start).slice(0,8)
  },[document,citation,page,pageInfo])
  useEffect(()=>{
   let discarded=false
@@ -88,6 +93,8 @@ export default function CinematicDesk(){
  const [cases,setCases]=useState<DeskCase[]>([])
  const [caseId,setCaseId]=useState('KFZ-A17')
  const [scene,setScene]=useState<Scene>(0)
+ const [mode,setMode]=useState<'story'|'work'>(()=>new URLSearchParams(window.location.search).get('mode')==='work'?'work':'story')
+ const [fullPdf,setFullPdf]=useState(false)
  const [documentId,setDocumentId]=useState('')
  const [page,setPage]=useState(1)
  const [citationId,setCitationId]=useState('')
@@ -105,13 +112,14 @@ export default function CinematicDesk(){
  const inputFiles=useRef<HTMLInputElement|null>(null)
  const attachFiles=useRef<HTMLInputElement|null>(null)
  const sourcesRef=useRef<HTMLDivElement>(null)
+ const fullPdfClose=useRef<HTMLButtonElement>(null)
  const readCase=useCallback(async()=>{
   const run=++activeRun.current
   setBusy(true);setError('');setNotice('')
   try{
    const docs=await generateCases()
    if(run!==activeRun.current)return
-   setCases(docs);setCaseId('KFZ-A17');setScene(0);setDrawer(false)
+   setCases(docs);setCaseId('KFZ-A17');setScene(0);setDrawer(false);setFullPdf(false)
    setSearch('');setFilter('all');setNote('');setReloadKey(k=>k+1)
    setDocumentId('');setPage(1);setCitationId('');setZoom(1)
    startedAt.current=performance.now()
@@ -146,12 +154,13 @@ export default function CinematicDesk(){
  useEffect(()=>{
   if(!selected)return
   const original=selected.documents[0]
-  setDocumentId(original?.id??'');setPage(1);setCitationId('');setZoom(1)
+  const initial=mode==='work'?sceneCitation(selected):null
+  setDocumentId(initial?.documentId??original?.id??'');setPage(initial?.page??1);setCitationId(initial?.id??'');setZoom(1)
   setNote('');startedAt.current=performance.now()
  },[caseId,selected?.documents])
  function selectCase(id:string){
   if(id===caseId){setDrawer(false);return}
-  setCaseId(id);setScene(0);setDocumentId('');setCitationId('')
+  setCaseId(id);setScene(0);setDocumentId('');setCitationId('');setFullPdf(false)
   startedAt.current=performance.now();setDrawer(false);setNotice('')
  }
  function openScene(nextScene:Scene){
@@ -162,7 +171,20 @@ export default function CinematicDesk(){
   }
  }
  function visit(c:PageCitation){
-  setScene(1);setDocumentId(c.documentId);setPage(c.page);setCitationId(c.id)
+  if(mode==='story')setScene(1)
+  setDocumentId(c.documentId);setPage(c.page);setCitationId(c.id)
+ }
+ function chooseMode(nextMode:'story'|'work'){
+  setMode(nextMode)
+  const url=new URL(window.location.href)
+  if(nextMode==='work')url.searchParams.set('mode','work')
+  else url.searchParams.delete('mode')
+  window.history.replaceState(null,'',url.pathname+url.search+url.hash)
+  if(nextMode==='work'&&selected){
+   const highlight=sceneCitation(selected)
+   if(highlight){setDocumentId(highlight.documentId);setPage(highlight.page);setCitationId(highlight.id)}
+  }
+  setFullPdf(false)
  }
  function chooseDoc(id:string){
   setDocumentId(id);setPage(1)
@@ -261,8 +283,8 @@ export default function CinematicDesk(){
   const handler=(event:KeyboardEvent)=>{
    const target=event.target as HTMLElement|null
    if(target?.closest('input,textarea,select,[contenteditable="true"]'))return
-   if(event.key==='Escape'){setDrawer(false);return}
-   if(drawer||event.metaKey||event.ctrlKey||event.altKey)return
+   if(event.key==='Escape'){setDrawer(false);setFullPdf(false);return}
+   if(drawer||fullPdf||mode==='work'||event.metaKey||event.ctrlKey||event.altKey)return
    if(event.key==='1'||event.key==='2'||event.key==='3'){
     event.preventDefault();openScene((Number(event.key)-1) as Scene)
    }
@@ -270,14 +292,21 @@ export default function CinematicDesk(){
   window.addEventListener('keydown',handler)
   return()=>window.removeEventListener('keydown',handler)
  // Keyboard transition uses currently selected case's verified citation.
- },[drawer,selected])
- return <div className="cine">
+ },[drawer,selected,fullPdf,mode])
+ useEffect(()=>{
+  if(fullPdf)fullPdfClose.current?.focus()
+ },[fullPdf])
+ return <div className={'cine cine-v8 cine-mode-'+mode}>
   <a href="#cine-stage" className="cine-skip">Zur Fallansicht</a>
   <header className="cine-topbar">
-   <a className="cine-wordmark" href={import.meta.env.BASE_URL}><span className="cine-symbol" aria-hidden="true">◈</span> CLAIM<span className="cine-slash">/</span>OS <span className="cine-edition">7</span></a>
+   <a className="cine-wordmark" href={import.meta.env.BASE_URL}><span className="cine-symbol" aria-hidden="true">◈</span> CLAIM<span className="cine-slash">/</span>OS <span className="cine-edition">8</span></a>
    <div className="cine-top-center" aria-label="Demo-Modus"><span className="cine-pulse"/> An independent evidence workspace <span className="cine-top-separator">/</span> LOCAL DEMO</div>
    <div className="cine-top-actions">
-    <a href={import.meta.env.BASE_URL+'?classic=1'} className="cine-quiet-link">Classic v6</a>
+    <div className="cine-view-switch" role="group" aria-label="Ansicht wählen">
+     <button type="button" aria-pressed={mode==='story'} onClick={()=>chooseMode('story')}>Story</button>
+     <button type="button" aria-pressed={mode==='work'} onClick={()=>chooseMode('work')}>Work</button>
+    </div>
+    <a href={import.meta.env.BASE_URL+'?classic=1'} className="cine-quiet-link">v6</a>
     <button type="button" className="cine-queue-toggle" onClick={()=>setDrawer(true)} aria-label="Fallliste öffnen">
      <span aria-hidden="true">☷</span> <span>Fälle</span> <b>{totals.unresolved}</b>
     </button>
@@ -289,18 +318,21 @@ export default function CinematicDesk(){
     <div className="cine-meta-right"><span>{cases.length} Dossiers</span><span aria-hidden="true">·</span><span>{totals.exceptions} Ausnahmen</span><span aria-hidden="true">·</span><button type="button" disabled={busy} onClick={()=>inputFiles.current?.click()}>+ PDF importieren</button></div>
    </div>
    <input ref={inputFiles} key={reloadKey} type="file" accept=".pdf,application/pdf" multiple hidden aria-label="Mehrere PDFs importieren" onChange={e=>void importBatch(e)}/>
+   <input ref={attachFiles} type="file" multiple accept=".pdf,application/pdf" hidden aria-label="Dokumente zu diesem Fall ergänzen" onChange={e=>void appendBatch(e)}/>
    {error&&<div role="alert" className="cine-alert">{error}<button type="button" aria-label="Fehler schließen" onClick={()=>setError('')}>×</button></div>}
    {notice&&<div role="status" className="cine-toast">{notice}<button type="button" aria-label="Meldung schließen" onClick={()=>setNotice('')}>×</button></div>}
-   <nav className="cine-scene-nav" role="tablist" aria-label="Drei Szenen der Prüfung">
+   {mode==='story'&&<nav className="cine-scene-nav" role="tablist" aria-label="Drei Szenen der Prüfung">
     {sceneLabels.map((name,i)=><button type="button" role="tab" key={name} aria-selected={scene===i} className={scene===i?'current':''}
      onClick={()=>openScene(i as Scene)}><span>0{i+1}</span><strong>{name}</strong>{i===scene&&<span className="cine-current-marker"/>}</button>)}
     <span className="cine-scenes-counter">SHOT 0{scene+1}<span> / 03</span></span>
-   </nav>
-   <section className="cine-main-stage" id="cine-stage" aria-label="Filmischer Beleg-Arbeitsplatz">
+   </nav>}
+   <section className={'cine-main-stage '+(mode==='work'?'cine-work-stage':'')+(mode==='story'&&scene===1?' cine-evidence-reveal':'')} id="cine-stage" aria-label="Filmischer Beleg-Arbeitsplatz">
     <div className="cine-stage-left">
      <div className="cine-stage-header">
-      <div><span className="cine-overline">ORIGINAL SOURCE</span><strong>{scene===0?'Das Geschehene.':scene===1?'Der Beweis.':'Der Kontext.'}</strong></div>
-      <span className="cine-document-number">{doc?.name??'PDF wird vorbereitet'}</span>
+      <div><span className="cine-overline">ORIGINAL SOURCE</span><strong>{mode==='work'?'Quelle & Nachweis':scene===0?'Das Geschehene.':scene===1?'Der Beweis.':'Der Kontext.'}</strong></div>
+      <div className="cine-stage-header-actions"><span className="cine-document-number">{doc?.name??'PDF wird vorbereitet'}</span>
+       <button type="button" className="cine-open-pdf" aria-label="Original-PDF im Vollbild öffnen" onClick={()=>setFullPdf(true)}>Vollbild ↗</button>
+      </div>
      </div>
      <div className="cine-document-tools">
       <div className="cine-document-tabs" role="group" aria-label="Originaldokument auswählen">
@@ -317,14 +349,20 @@ export default function CinematicDesk(){
        <button type="button" aria-label="PDF vergrößern" disabled={zoom>=2} onClick={()=>setZoom(z=>Math.min(2,z+.25))}>+</button>
       </div>
      </div>
-     <PdfStage key={caseId+'-'+(doc?.id??'none')+'-'+displayedPage} document={doc} page={displayedPage} citation={scene>0?valid:null} zoom={zoom} caseId={caseId}/>
+     <PdfStage key={caseId+'-'+(doc?.id??'none')+'-'+displayedPage} document={doc} page={displayedPage} citation={mode==='work'||scene>0?valid:null} zoom={zoom} caseId={caseId}/>
+     <button type="button" className="cine-mobile-fullscreen" onClick={()=>setFullPdf(true)} aria-label="Originaldokument gross ansehen">Originaldokument öffnen <span>↗</span></button>
      <div className="cine-source-foot">
       <div className="cine-foot-ident"><span aria-hidden="true">↗</span><span>PDF-Original · lokal gerendert</span></div>
       <span>{valid&&scene>0?'Fundstelle wortgleich verifiziert':'Original ohne KI-Interpretation'}</span>
      </div>
     </div>
-    <div className={'cine-stage-right cine-scene-'+scene} key={scene+'-'+caseId}>
-     {selected&&narrative?<div className="cine-story">
+    <div className={'cine-stage-right cine-scene-'+scene} key={mode+'-'+scene+'-'+caseId}>
+     {mode==='work'&&selected?<WorkPanel current={selected} citationId={citationId} note={note}
+        onNote={setNote} onCitation={visit} onAction={commit} onReopen={reopen}
+        onNext={()=>{if(next)selectCase(next.id)}} hasNext={!!next}
+        onAdd={()=>attachFiles.current?.click()} onViewPdf={()=>setFullPdf(true)} onRole={changeRole}
+        onExport={()=>downloadSession(exportDeskAudit(cases))}/>
+      :selected&&narrative?<div className="cine-story">
       <div className="cine-story-top"><div className="cine-story-dot"/><span>{scene===0?'THE CASE':scene===1?'THE EVIDENCE':'THE HUMAN DECISION'}</span><span>0{scene+1} / 03</span></div>
       {scene===0&&<>
        <div className="cine-story-body">
@@ -337,6 +375,7 @@ export default function CinematicDesk(){
        <div className="cine-story-actions">
         <button type="button" className="cine-primary" onClick={()=>openScene(1)}>Beleg entdecken <span>↗</span></button>
         <p>Die nächste Szene zeigt eine tatsächlich auffindbare Textstelle – keine behauptete KI-Gewissheit.</p>
+        <button type="button" className="cine-mobile-source-link" onClick={()=>setFullPdf(true)}>Originaldokument als Vollbild ansehen ↗</button>
        </div>
       </>}
       {scene===1&&<>
@@ -355,6 +394,7 @@ export default function CinematicDesk(){
           <span>{valid?'WORTGLEICH IM ORIGINAL':'KEIN GÜLTIGER BELEG'}</span>
           <p>{valid?'“'+valid.quote+'”':'Ohne gültige Originalfundstelle wird keine Quellenbestätigung angezeigt.'}</p>
          </div>
+         <button type="button" className="cine-mobile-source-link" onClick={()=>setFullPdf(true)}>Fundstelle im Original-PDF sehen ↗</button>
         </div>
        </div>
        <div className="cine-story-actions">
@@ -388,7 +428,7 @@ export default function CinematicDesk(){
         </div>}
         <div className="cine-technical-tools">
          <button type="button" disabled={busy} onClick={()=>attachFiles.current?.click()}>＋ Neue Dokumente ergänzen</button>
-         <input ref={attachFiles} type="file" multiple accept=".pdf,application/pdf" hidden aria-label="Dokumente zu diesem Fall ergänzen" onChange={e=>void appendBatch(e)}/>
+
          <details><summary>Dokumentarten prüfen & korrigieren</summary>
           {selected.documents.map(d=><label key={d.id}><span title={d.name}>{d.name}</span><select value={d.role} aria-label={'Dokumentart für '+d.name} onChange={e=>changeRole(d.id,e.target.value as DocumentRole)}>{Object.entries(roles).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label>)}
          </details>
@@ -406,6 +446,29 @@ export default function CinematicDesk(){
      </div>:<div className="cine-story-loading">{busy?'Die Akte wird vorbereitet …':'Kein Fall geladen.'}</div>}
     </div>
    </section>
+   {fullPdf&&<div className="cine-pdf-overlay" role="dialog" aria-modal="true" aria-label="Originaldokument Vollbild">
+    <div className="cine-pdf-modal">
+     <div className="cine-pdf-modal-top">
+      <div><span>ORIGINAL / {caseId}</span><strong>{doc?.name??'Keine Datei'}</strong></div>
+      <button ref={fullPdfClose} type="button" className="cine-pdf-dismiss" onClick={()=>setFullPdf(false)}>Schließen ×</button>
+     </div>
+     <div className="cine-pdf-modal-tools">
+      <div className="cine-document-tabs" role="group" aria-label="Dokumente im Vollbild">
+       {selected?.documents.map(d=><button key={d.id} type="button" className={doc?.id===d.id?'selected':''} onClick={()=>chooseDoc(d.id)}>{roles[d.role]}</button>)}
+      </div>
+      <div className="cine-page-controls">
+       <button type="button" aria-label="Vollbild vorherige Seite" disabled={displayedPage<=1} onClick={()=>{setPage(p=>p-1);setCitationId('')}}>‹</button>
+       <output>{displayedPage} / {doc?.pages.length??0}</output>
+       <button type="button" aria-label="Vollbild nächste Seite" disabled={displayedPage>=(doc?.pages.length??0)} onClick={()=>{setPage(p=>p+1);setCitationId('')}}>›</button>
+       <button type="button" aria-label="Vollbild PDF verkleinern" disabled={zoom<=.75} onClick={()=>setZoom(z=>Math.max(.75,z-.25))}>−</button>
+       <output>{Math.round(zoom*100)}%</output>
+       <button type="button" aria-label="Vollbild PDF vergrößern" disabled={zoom>=2} onClick={()=>setZoom(z=>Math.min(2,z+.25))}>+</button>
+      </div>
+     </div>
+     <PdfStage key={'full-'+caseId+'-'+(doc?.id??'none')+'-'+displayedPage} document={doc} page={displayedPage} citation={mode==='work'||scene>0?valid:null} zoom={zoom} caseId={caseId}/>
+     <p className="cine-pdf-modal-note">Original-PDF · lokale Textprüfung · keine automatische Deckungsentscheidung</p>
+    </div>
+   </div>}
    <div className="cine-bottom-rail">
     <div><span className="cine-bottom-orbit"/> THE EVIDENCE REMAINS THE HERO</div>
     <div><button type="button" onClick={()=>setDrawer(true)}>Alle Fälle ansehen <span>↗</span></button><span>1 / 2 / 3: Szene wechseln</span></div>

@@ -138,8 +138,8 @@ export default function OperatorDesk(){
   setCitationId(selected.citations.find(c=>c.documentId===first?.id)?.id??'')
   setNote('')
   openedAt.current=performance.now()
- },[selectedId,selected])
- // Changes to this case object (e.g. a review note) must not reset the review clock.
+ },[selectedId,selected?.documents])
+ // Review events must not reset page selection or the review clock; reclassifying a document intentionally does.
  // A separate effect triggered solely by selection handles opening time.
  const changeCase=(id:string)=>{
   if(id===selectedRef.current)return
@@ -152,6 +152,7 @@ export default function OperatorDesk(){
  const anchor=selected?.citations.find(c=>c.id===citationId&&c.documentId===doc?.id&&c.page===safePage)??null
  const validAnchor=selected&&anchor&&checkCitation(selected.documents,anchor)?anchor:null
  const actions=selected?allowedActions(selected):[]
+ const nextOpen=ordered.find(c=>c.id!==selectedId&&c.stage==='open')??null
  async function ingest(event:ChangeEvent<HTMLInputElement>){
   const selectedFiles=Array.from(event.currentTarget.files??[])
   event.currentTarget.value=''
@@ -344,7 +345,7 @@ export default function OperatorDesk(){
       <div className="desk-action-form">
        <label htmlFor="desk-review-note">OPERATOREN-NOTIZ <span>· optional, nur in dieser Sitzung</span></label>
        <textarea id="desk-review-note" rows={3} value={note} maxLength={600} onChange={e=>setNote(e.target.value)} placeholder="Was muss der nächste Mensch wissen?"/>
-       {selected.stage==='reviewed'?<div className="desk-action-locked"><strong>✓ An Fachprüfung übergeben</strong><p>Keine Zahlung oder Ablehnung erfolgt. Du kannst die Akte für Korrekturen erneut öffnen.</p><button type="button" onClick={openAgain}>Fall erneut öffnen</button></div>:<>
+       {selected.stage==='reviewed'?<div className="desk-action-locked"><strong>✓ An Fachprüfung übergeben</strong><p>Keine Zahlung oder Ablehnung erfolgt. Du kannst die Akte für Korrekturen erneut öffnen.</p><button type="button" onClick={openAgain}>Fall erneut öffnen</button>{nextOpen&&<button type="button" className="desk-next-case" onClick={()=>changeCase(nextOpen.id)}>Nächsten offenen Fall →</button>}</div>:<>
         {selected.stage==='waiting'&&<p className="desk-action-waiting">Auf Unterlagen wartend · Bei neuen Dokumenten wieder öffnen und nachprüfen.</p>}
         <div className="desk-action-buttons">
          {actions.includes('ready_for_expert')&&<button type="button" className="desk-action-primary" onClick={()=>submit('ready_for_expert')}>✓ Zur Fachprüfung <span>↗</span></button>}

@@ -7,7 +7,7 @@ import type {DocumentRole,ParsedDocument,PageCitation} from '../doclab/pdfEviden
 import {allowedActions,appendDocuments,exportDeskAudit,makeDeskCase,recordReview,reopenCase,retagDocument,reviewLabels,safeFileGroup,severityLabels,sortedQueue,summarizeDesk} from '../desk/deskCore'
 import type {DeskCase,ReviewAction} from '../desk/deskCore'
 import QuietPdf from './QuietPdf'
-import {caseCopy,caseTone,firstSource} from './quietCopy'
+import {caseCopy,caseTone,firstSource,displaySources} from './quietCopy'
 import './quiet.css'
 
 const roles:Record<DocumentRole,string>={claim:'Schadenmeldung',policy:'Vertrag',invoice:'Rechnung',unknown:'Ohne Zuordnung'}
@@ -91,10 +91,11 @@ export default function QuietWorkspace(){
  const counts=useMemo(()=>summarizeDesk(cases),[cases])
  const selected=cases.find(c=>c.id===caseId)??null
  const intro=selected?caseCopy(selected):null
+ const shownCitations=useMemo(()=>selected?displaySources(selected):[],[selected])
  const tone=selected?caseTone(selected):'waiting'
  const selectedDoc=selected?.documents.find(d=>d.id===docId)??selected?.documents[0]??null
  const currentPage=Math.max(1,Math.min(page,selectedDoc?.pages.length??1))
- const active=selected?.citations.find(c=>c.id===citationId&&c.documentId===selectedDoc?.id&&c.page===currentPage)??null
+ const active=shownCitations.find(c=>c.id===citationId&&c.documentId===selectedDoc?.id&&c.page===currentPage)??null
  const valid=selected&&active&&checkCitation(selected.documents,active)?active:null
  const available=selected?allowedActions(selected):[]
  const next=queue.find(c=>c.id!==caseId&&c.stage==='open')??null
@@ -128,7 +129,7 @@ export default function QuietWorkspace(){
  }
  function chooseDocument(id:string){
   setDocId(id);setPage(1)
-  const cite=selected?.citations.find(c=>c.documentId===id&&checkCitation(selected.documents,c))
+  const cite=shownCitations.find(c=>c.documentId===id&&selected&&checkCitation(selected.documents,c))
   setCitationId(cite?.id??'')
  }
  function chooseSource(c:PageCitation){
@@ -281,13 +282,13 @@ export default function QuietWorkspace(){
       <div className="quiet-docfoot"><span><i className="quiet-source-mark"/> PDF-Original · lokal verarbeitet</span><span>{valid?'Textstelle im Original gefunden':'Keine Textstelle ausgewählt'}</span></div>
      </section>
      <section className="quiet-findings" aria-label="Befund und nächste Handlung">
-      <div className="quiet-findings-top"><span className="quiet-overline">FACHLICHE VORPRÜFUNG</span><span className={'quiet-finding-tag '+tone}>{intro.label}</span></div>
+      <div className="quiet-findings-top"><span className="quiet-overline">DOKUMENTENPRÜFUNG</span><span className={'quiet-finding-tag '+tone}>{intro.label}</span></div>
       <h2>{intro.finding}</h2>
       <div className="quiet-finding-context">{selected.assessment.rationale}</div>
       <div className="quiet-detail-separator"/>
-      <div className="quiet-section-title"><h3>Originalfundstellen</h3><span>{selected.citations.filter(c=>checkCitation(selected.documents,c)).length} / {selected.citations.length} Textanker</span></div>
+      <div className="quiet-section-title"><h3>Originalfundstellen</h3><span>{shownCitations.filter(c=>checkCitation(selected.documents,c)).length} / {shownCitations.length} Textanker</span></div>
       <div className="quiet-citations" aria-label="Prüfbare Textstellen">
-       {selected.citations.length?selected.citations.map(c=><button type="button" key={c.id}
+       {shownCitations.length?shownCitations.map(c=><button type="button" key={c.id}
         className={'quiet-citation '+(valid?.id===c.id?'is-active':'')}
         onClick={()=>chooseSource(c)}>
         <span className="quiet-citation-icon" aria-hidden="true">▤</span>

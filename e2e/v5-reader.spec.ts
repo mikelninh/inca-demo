@@ -4,7 +4,7 @@ test('v5: a verified quote is highlighted in the actual rendered PDF, and tamper
  const external:string[]=[]
  const origin=new URL(test.info().project.use.baseURL??'http://127.0.0.1:4173').origin
  page.on('request',r=>{if(!r.url().startsWith(origin+'/'))external.push(r.url())})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?lab=1')
  await expect(page.getByRole('heading',{name:/See the evidence/})).toBeVisible()
  await expect(page.locator('.doclab-file')).toHaveCount(3,{timeout:30000})
  await expect.poll(async()=>page.locator('.doclab-pdf-canvas').evaluate((e:HTMLCanvasElement)=>e.width),{timeout:30000}).toBeGreaterThan(200)
@@ -23,7 +23,7 @@ test('v5: a verified quote is highlighted in the actual rendered PDF, and tamper
 
 test('v5 mobile: source/befund/akte tabs, document zoom and citation-to-original navigation',async({page})=>{
  await page.setViewportSize({width:390,height:844})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?lab=1')
  await expect(page.locator('.doclab-file')).toHaveCount(3,{timeout:30000})
  await expect(page.getByRole('tab',{name:/Quelle/})).toHaveAttribute('aria-selected','true')
  await expect(page.locator('.doclab-pdf-canvas')).toBeVisible()

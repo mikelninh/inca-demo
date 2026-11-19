@@ -151,7 +151,8 @@ export default function CinematicDesk(){
  useEffect(()=>{
   if(!selected)return
   const original=selected.documents[0]
-  setDocumentId(original?.id??'');setPage(1);setCitationId('');setZoom(1)
+  const initial=mode==='work'?sceneCitation(selected):null
+  setDocumentId(initial?.documentId??original?.id??'');setPage(initial?.page??1);setCitationId(initial?.id??'');setZoom(1)
   setNote('');startedAt.current=performance.now()
  },[caseId,selected?.documents])
  function selectCase(id:string){

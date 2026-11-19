@@ -1,6 +1,6 @@
-# CLAIM / OS 4.0 — Evidence Intelligence
+# CLAIM / OS 5.0 — Evidence Workbench
 
-**[Open the live work sample](https://mikelninh.github.io/inca-demo/)** · [PDF Evidence Lab](https://mikelninh.github.io/inca-demo/?lab=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
+**[Open the live Evidence Workbench](https://mikelninh.github.io/inca-demo/)** · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
 
 > A claim is not a confident answer. It is a series of defensible next actions.
 
@@ -10,14 +10,14 @@ Independent AI Operations work sample by Michael Ninh (Berlin) for an AI-first c
 
 **Can we correctly advance a claim, cite the supporting documents, and reduce human work without introducing critical mistakes?**
 
-This repo contains the **public, privacy-preserving React research interface**, with a downloadable PDF workspace, a transparent 36-case adversarial regression suite, reviewer-study instrumentation, and a **server-side opt-in Claude evaluation CLI**. There is **no LLM backend attached to public GitHub Pages**. A separate local CLAIM / OS 4.0 package also contains the earlier Python multimodal Responses API adapter, Tesseract/OCR readback, five PDF/PNG cases and its own 40 backend tests.
+This repo contains the **public, privacy-preserving React research interface**, with a downloadable PDF workspace, a transparent 36-case adversarial regression suite, reviewer-study instrumentation, and a **server-side opt-in Claude evaluation CLI**. There is **no LLM backend attached to public GitHub Pages**. A separate local CLAIM / OS 5.0 package also contains the earlier Python multimodal Responses API adapter, Tesseract/OCR readback, five PDF/PNG cases and its own 40 backend tests.
 
 ## Three proof paths
 
 | Proof path | What truly runs | What it does NOT prove |
 |---|---|---|
-| **[PDF Evidence Lab](https://mikelninh.github.io/inca-demo/?lab=1)** | Generates/downloads real fictional PDFs, parses PDF.js pages, verifies exact page/character spans, accepts browser-local uploads, stops on missing/mutated evidence | No OCR on uploads, no real multimodal AI, no insurance domain decision |
-| **[36-case stress suite](https://mikelninh.github.io/inca-demo/)** | Six authored scenario families including ambiguous paraphrases, unreadable pages, missing sources, forged quotes, routine and missing police references; inspect every mismatch | Not a blinded external dataset, not LLM model accuracy, not expert ground truth |
+| **[Public Evidence Workbench](https://mikelninh.github.io/inca-demo/)** | Generates/downloads real fictional PDFs, parses PDF.js pages, highlights verified source-derived text-run rectangles directly on rendered PDF pages, verifies exact page/character spans, accepts browser-local uploads, stops on missing/mutated evidence | No OCR on uploads, no real multimodal AI, no insurance domain decision |
+| **[36-case stress suite](https://mikelninh.github.io/inca-demo/?evaluation=1)** | Six authored scenario families including ambiguous paraphrases, unreadable pages, missing sources, forged quotes, routine and missing police references; inspect every mismatch | Not a blinded external dataset, not LLM model accuracy, not expert ground truth |
 | **Local model evaluation** | `scripts/claude-eval.mjs` sends 6 fictional text dossiers to the Claude Messages API only with explicit opt-in; independently validates each returned quote and records latency/tokens | Provider run **not executed** in this repo; no secret supplied, no model performance claim |
 
 The original **CLAIM / OS 3.0 Python project** (distributed in a separate complete local package) additionally reads PDFs with PyMuPDF, invoice images with Tesseract, and can send documents via OpenAI Responses API from a local server *if* a server-side key is explicitly configured. Its independently re-run tests in the packaged version are distinct from the GitHub Pages client-side checks. **Do not conflate the two runtimes or claim they are a single deployed API.**
@@ -25,7 +25,7 @@ The original **CLAIM / OS 3.0 Python project** (distributed in a separate comple
 ## Observed validations
 
 - **39 Vitest tests passed** including source-value gates and the 36-case behavioural regression framework.
-- **5 Chromium browser flows passed** on the application code: v4 dashboard (desktop/mobile), real local PDF generation/reupload, Control Tower, and 8-case reviewer experiment.
+- **7 Chromium browser flows passed** on the application code: v4 dashboard (desktop/mobile), real local PDF generation/reupload, Control Tower, and 8-case reviewer experiment.
 - CLI provider adapter: mock transport tested for strict schema, source quote integrity, HTTP errors and no-key guards. **0 successful real paid model calls** verified here.
 - Original bundled Python runtime: **40 backend tests passed locally**, including real OCR/PDF source readback and a simulated provider request, plus the 5-case replay evaluation. **0 real paid provider calls**.
 - **0 real insurers, 0 production transactions, 0 independently established minutes saved.**
@@ -73,3 +73,13 @@ npm run eval:claude
 Independent unseen cases with expert-adjudicated labels; accessible true OCR and box-level visual citations; source authenticity and permission controls; measured end-to-end human work (including escalations); provider cost and latency; independent security and privacy review; domain-approved action rules and insurer authorisation.
 
 **No fake AI. No fabricated savings. No automatic settlement.**
+
+## Visual v5 release gates
+
+- **Above the fold:** the live homepage opens the source reader, not an abstract evaluation dashboard.
+- **Original highlight:** a quote must exactly match the PDF.js page text before any visual rectangle is shown; bounds derive solely from PDF text transforms, not guesses or model output.
+- **Mobile:** Source, Decision and Documents are separate interactive panes with an adjustable PDF zoom. Selecting a citation reveals its source pane.
+- **Fail closed:** deliberately forged source quotes remove the visual anchor and stop further review readiness.
+- **Distinct runtimes:** the separate downloadable offline/local Python package supports Tesseract invoice-photo source boxes; the browser-only GitHub Pages edition supports text-based PDFs but **does not OCR images**.
+
+The old evaluation dashboard remains at `?evaluation=1`; the legacy claim loop, Control Tower and Research Study remain available via their query routes.

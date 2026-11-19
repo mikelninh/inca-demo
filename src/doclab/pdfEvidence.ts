@@ -15,6 +15,8 @@ export type ParsedDocument={
 export type PageCitation={
   id:string;documentId:string;page:number;offset:number;quote:string;
   label:string;role:DocumentRole;origin:DocumentOrigin;
+  /** The specific literal cue used for the reveal; always inside the verified quote. */
+  focusOffset?:number;focusText?:string;
 }
 export type DossierStatus='STOP_MISSING_SOURCE'|'STOP_UNREADABLE'|'STOP_CITATION_INVALID'|
   'REVIEW_DISCREPANCY'|'REQUEST_EVIDENCE'|'REVIEW_READY'
@@ -65,6 +67,7 @@ export function createCitations(docs:ParsedDocument[],max=24):PageCitation[]{
           id:'S'+(result.length+1).toString().padStart(2,'0'),
           documentId:doc.id,page:pg.page,offset:start,
           quote:pg.text.slice(start,end),
+          focusOffset:match.index,focusText:match[0],
           label:cue.name,role:doc.role,origin:doc.origin
         })
         if(++hits>=2||result.length>=max)break
@@ -87,7 +90,12 @@ export function checkCitation(docs:ParsedDocument[],c:PageCitation):boolean{
   const page=doc?.pages.find(x=>x.page===c.page)
   return !!page && c.offset>=0 && c.quote.length>0 &&
     doc?.role===c.role && doc.origin===c.origin &&
-    page.text.slice(c.offset,c.offset+c.quote.length)===c.quote
+    page.text.slice(c.offset,c.offset+c.quote.length)===c.quote &&
+    (c.focusOffset===undefined&&c.focusText===undefined ||
+      typeof c.focusOffset==='number'&&typeof c.focusText==='string'&&
+      c.focusText.length>0&&c.focusOffset>=c.offset&&
+      c.focusOffset+c.focusText.length<=c.offset+c.quote.length&&
+      page.text.slice(c.focusOffset,c.focusOffset+c.focusText.length)===c.focusText)
 }
 export function assessDossier(docs:ParsedDocument[],citations:PageCitation[]):DossierAssessment{
   const missing=needs.filter(role=>!docs.some(x=>x.role===role))

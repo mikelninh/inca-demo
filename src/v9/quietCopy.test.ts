@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest'
-import {caseCopy,caseTone,firstSource} from './quietCopy'
+import {caseCopy,caseTone,firstSource,displaySources} from './quietCopy'
 import {makeDeskCase,recordReview} from '../desk/deskCore'
 import type {ParsedDocument,DocumentRole} from '../doclab/pdfEvidence'
 import {checkCitation} from '../doclab/pdfEvidence'
@@ -22,7 +22,9 @@ describe('v9 Quiet Workspace: conservative presentation',()=>{
  it('opens the actual invoice source and checks its literal span',()=>{
   const c=parking(),best=firstSource(c)
   expect(best?.role).toBe('invoice')
-  expect(best?.label).toBe('Reparaturumfang')
+  expect(best?.label).toBe('Zusatzposition: Heckklappe')
+  expect(best?.focusText).toBe('Heckklappe')
+  expect(displaySources(c)[0]?.id).toBe(best?.id)
   expect(best&&checkCitation(c.documents,best)).toBe(true)
  })
  it('shows a proper stop if invoice is absent, never an expert-ready verdict',()=>{

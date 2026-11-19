@@ -44,4 +44,5 @@ jobs:
             dist/
             test-results/v7/*.png
             test-results/v8/*.png
+            test-results/v9/*.png
           if-no-files-found: warn

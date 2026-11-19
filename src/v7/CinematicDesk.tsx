@@ -10,6 +10,7 @@ import {narrativeReceipt,sceneCitation,sceneLabels,storyFor} from './story'
 import type {Scene} from './story'
 import WorkPanel from '../v8/WorkPanel'
 import './cinematic.css'
+import '../v8/experience.css'
 
 const roles:Record<DocumentRole,string>={
  claim:'Schadenmeldung',policy:'Police',invoice:'Rechnung',unknown:'Nicht zugeordnet'
@@ -355,7 +356,7 @@ export default function CinematicDesk(){
      {mode==='work'&&selected?<WorkPanel current={selected} citationId={citationId} note={note}
         onNote={setNote} onCitation={visit} onAction={commit} onReopen={reopen}
         onNext={()=>{if(next)selectCase(next.id)}} hasNext={!!next}
-        onAdd={()=>attachFiles.current?.click()} onRole={changeRole}
+        onAdd={()=>attachFiles.current?.click()} onViewPdf={()=>setFullPdf(true)} onRole={changeRole}
         onExport={()=>downloadSession(exportDeskAudit(cases))}/>
       :selected&&narrative?<div className="cine-story">
       <div className="cine-story-top"><div className="cine-story-dot"/><span>{scene===0?'THE CASE':scene===1?'THE EVIDENCE':'THE HUMAN DECISION'}</span><span>0{scene+1} / 03</span></div>
@@ -370,6 +371,7 @@ export default function CinematicDesk(){
        <div className="cine-story-actions">
         <button type="button" className="cine-primary" onClick={()=>openScene(1)}>Beleg entdecken <span>↗</span></button>
         <p>Die nächste Szene zeigt eine tatsächlich auffindbare Textstelle – keine behauptete KI-Gewissheit.</p>
+        <button type="button" className="cine-mobile-source-link" onClick={()=>setFullPdf(true)}>Originaldokument als Vollbild ansehen ↗</button>
        </div>
       </>}
       {scene===1&&<>
@@ -388,6 +390,7 @@ export default function CinematicDesk(){
           <span>{valid?'WORTGLEICH IM ORIGINAL':'KEIN GÜLTIGER BELEG'}</span>
           <p>{valid?'“'+valid.quote+'”':'Ohne gültige Originalfundstelle wird keine Quellenbestätigung angezeigt.'}</p>
          </div>
+         <button type="button" className="cine-mobile-source-link" onClick={()=>setFullPdf(true)}>Fundstelle im Original-PDF sehen ↗</button>
         </div>
        </div>
        <div className="cine-story-actions">

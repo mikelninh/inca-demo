@@ -1,6 +1,6 @@
-# CLAIM / OS 8.0 — Story & Work · Evidence Experience
+# CLAIM / OS 9.0 — Quiet Workspace
 
-**[Open the live Story Mode](https://mikelninh.github.io/inca-demo/)** · [Work Mode](https://mikelninh.github.io/inca-demo/?mode=work) · [Classic v6 Operator Desk](https://mikelninh.github.io/inca-demo/?classic=1) · [PDF Evidence Reader](https://mikelninh.github.io/inca-demo/?lab=1) · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
+**[Open Quiet Workspace](https://mikelninh.github.io/inca-demo/)** · [Previous cinematic v8](https://mikelninh.github.io/inca-demo/?v8=1) · [Previous Work Mode](https://mikelninh.github.io/inca-demo/?v8=1&mode=work) · [Classic v6 Operator Desk](https://mikelninh.github.io/inca-demo/?classic=1) · [PDF Evidence Reader](https://mikelninh.github.io/inca-demo/?lab=1) · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
 
 > A claim is not a confident answer. It is a defensible next action.
 
@@ -12,6 +12,19 @@ Independent AI Operations work sample by Michael Ninh (Berlin) for an AI-first c
 
 This repo contains the **public, privacy-preserving React research interface**, with a downloadable PDF workspace, a transparent 36-case adversarial regression suite, reviewer-study instrumentation, and a **server-side opt-in Claude evaluation CLI**. There is **no LLM backend attached to public GitHub Pages**. A separate local CLAIM / OS 5.0 package also contains the earlier Python multimodal Responses API adapter, Tesseract/OCR readback, five PDF/PNG cases and its own 40 backend tests.
 
+## v9 — Quiet Workspace: daily claims review, without dashboard theatre
+
+Selected visual direction: **Quiet Workspace** for its legibility and predictable daily workflow, with a light touch of **Editorial Minimalism** for typography and calm hierarchy. This is a genuinely different UI from v8, not another recolour of the cinematic product.
+
+**One screen, three zones:** (1) searchable, filterable priority queue; (2) original text-backed PDF rendered in place with source highlighting, page and zoom controls; (3) source-backed observation, proof-list, operator note and guarded next human action. The extra chrome, enormous headlines, dark surfaces and dramatic spotlights are gone. On mobile the observation comes first and an accessible full-screen original PDF is available.
+
+**Working flows:** batch import of locally selected genuine PDFs (case group convention `CASE-321__...pdf`), role corrections, adding late evidence, requesting missing sources, referral to specialist, human-only technical-review handoff for strictly source-complete cases, reopening, next case, locally recorded review history, and privacy-preserving audit export. Original documents stay within the browser. Sample PDFs are clearly fictional.
+
+**No live AI:** source matching is a deterministic, literal PDF text check, not independent legal or semantic validation. No real insurance integration, outgoing email, settlement, claim coverage determination, or proven worker-time saving.
+
+**Earlier designs remain available:** `?v8=1` (cinematic Story Mode), `?v8=1&mode=work` (v8 Work Mode), `?classic=1` (v6), `?lab=1` (PDF lab).
+
+**Release gates:** Unit tests on copy/status/source selection; Playwright tests for actual PDF content and highlights, specialist/blocked-case handoff, privacy-safe JSON audit, real multiple PDF import and retagging, 390 px/320 px mobile overflow, and actual browser desktop/mobile screenshots saved under `test-results/v9/`.
 ## v8 — Two experiences, one validated source engine
 
 **Story Mode** retains the editorial three-shot discovery, but now reveals a real PDF source with a restrained amber spotlight, scroll-to-citation and a non-blocking transition (fully disabled by reduced-motion preferences). Its mobile layout shows the actual finding **before** a deliberately compact document preview; users can open a real full-screen PDF viewer with page, document and zoom controls.

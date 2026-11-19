@@ -7,6 +7,7 @@ const DocumentLab=lazy(()=>import('./doclab/DocumentLab'))
 const V4Workspace=lazy(()=>import('./v4/V4Workspace'))
 const OperatorDesk=lazy(()=>import('./desk/OperatorDesk'))
 const CinematicDesk=lazy(()=>import('./v7/CinematicDesk'))
+const QuietWorkspace=lazy(()=>import('./v9/QuietWorkspace'))
 
 function Loading(){return <p style={{padding:24}}>CLAIM / OS lädt …</p>}
 
@@ -18,5 +19,6 @@ export default function App() {
   if(query.get('study')==='1')return <ResearchStudy/>
   if(query.get('legacy')==='1')return <ClaimsApp/>
   if(query.get('classic')==='1')return <Suspense fallback={<Loading/>}><OperatorDesk/></Suspense>
-  return <Suspense fallback={<Loading/>}><CinematicDesk/></Suspense>
+  if(query.get('v8')==='1')return <Suspense fallback={<Loading/>}><CinematicDesk/></Suspense>
+  return <Suspense fallback={<Loading/>}><QuietWorkspace/></Suspense>
 }

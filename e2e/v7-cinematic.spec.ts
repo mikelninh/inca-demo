@@ -9,7 +9,7 @@ test('cinematic scenes: initial story, source-verified reveal, safe human handof
   if(['POST','PUT','PATCH','DELETE'].includes(r.method()))writes.push(r.url())
  })
  await page.setViewportSize({width:1440,height:900})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?v8=1')
  await expect(page.getByRole('heading',{name:/Something doesn't add up/})).toBeVisible({timeout:30000})
  await expect(page.locator('.cine-document-tabs button')).toHaveCount(3)
  await expect.poll(async()=>page.locator('.cine-paper canvas').evaluate((c:HTMLCanvasElement)=>c.width),{timeout:30000}).toBeGreaterThan(100)
@@ -47,7 +47,7 @@ test('cinematic scenes: initial story, source-verified reveal, safe human handof
  expect(writes).toEqual([])
 })
 test('cinematic scene switch and queue: unsafe missing source cannot become expert-ready',async({page})=>{
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?v8=1')
  await expect(page.getByRole('heading',{name:/Something doesn't add up/})).toBeVisible({timeout:30000})
  await page.getByRole('button',{name:'Fallliste öffnen'}).click()
  await expect(page.getByRole('dialog',{name:'Fallliste'})).toBeVisible()
@@ -67,7 +67,7 @@ test('cinematic scene switch and queue: unsafe missing source cannot become expe
 })
 test('cinematic mobile 390 px: queue, evidence and action stay usable without horizontal overflow',async({page})=>{
  await page.setViewportSize({width:390,height:844})
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?v8=1')
  await expect(page.getByRole('heading',{name:/Something doesn't add up/})).toBeVisible({timeout:30000})
  await page.getByRole('tab',{name:/Die Fundstelle/}).click()
  await expect(page.locator('.cine-source-highlight').first()).toBeVisible({timeout:10000})
@@ -96,7 +96,7 @@ test('cinematic imports genuine multi-document PDF and reclassifies file type fa
   const buffer=await readFile(await (await d).path() as string)
   files.push({name:'CASE-123__'+['Schadenmeldung','Vertrag','Rechnung'][i]+'.pdf',mimeType:'application/pdf',buffer})
  }
- await page.goto('/inca-demo/')
+ await page.goto('/inca-demo/?v8=1')
  await expect(page.getByRole('heading',{name:/Something doesn't add up/})).toBeVisible({timeout:30000})
  await page.locator('input[aria-label="Mehrere PDFs importieren"]').setInputFiles(files)
  await expect(page.locator('.cine-crumbs')).toContainText('LOCAL-', {timeout:30000})

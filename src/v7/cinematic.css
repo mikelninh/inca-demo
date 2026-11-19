@@ -284,3 +284,19 @@
    Let the right pane scroll naturally; keep the action physically after evidence. */
 .cine-story .cine-story-body{flex:1 0 auto;min-height:auto}
 .cine-story .cine-story-actions{flex:0 0 auto}
+
+/* Evidence is an editorial filmstrip, not a vertical table that hides the CTA. */
+.cine-evidence-section{margin-top:21px}
+.cine-evidence-list{display:flex;gap:8px;max-height:none;overflow-x:auto;overflow-y:hidden;padding-bottom:7px;scrollbar-width:thin}
+.cine-evidence-list button{flex:0 0 178px;min-width:0;max-width:178px;min-height:64px;display:flex;align-items:center;gap:8px;border:1px solid #3a454f;background:#1b222c;border-radius:3px;padding:11px 9px}
+.cine-evidence-list button.active{border-color:#d5ae74;background:#30302f}
+.cine-evidence-name strong{font-size:11px}
+.cine-evidence-name small{font-size:9px;white-space:nowrap}
+.cine-evidence-index{min-width:19px;font-size:9px}
+.cine-quote{margin-top:10px;padding:11px 13px}
+.cine-scene-1 .cine-story-body{padding-top:19px}
+.cine-scene-1 .cine-story-body h1{margin:14px 0 13px}
+@media(max-width:600px){
+ .cine-evidence-list button{flex-basis:160px;max-width:160px}
+ .cine-scene-1 .cine-story-body{padding-top:17px}
+}

@@ -1,6 +1,6 @@
-# CLAIM / OS 6.0 — Daily Operator Desk
+# CLAIM / OS 7.0 — Cinematic Evidence Workbench
 
-**[Open the live Operator Desk](https://mikelninh.github.io/inca-demo/)** · [PDF Evidence Reader](https://mikelninh.github.io/inca-demo/?lab=1) · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
+**[Open the live Cinematic Workbench](https://mikelninh.github.io/inca-demo/)** · [Classic v6 Operator Desk](https://mikelninh.github.io/inca-demo/?classic=1) · [PDF Evidence Reader](https://mikelninh.github.io/inca-demo/?lab=1) · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
 
 > A claim is not a confident answer. It is a defensible next action.
 
@@ -12,6 +12,19 @@ Independent AI Operations work sample by Michael Ninh (Berlin) for an AI-first c
 
 This repo contains the **public, privacy-preserving React research interface**, with a downloadable PDF workspace, a transparent 36-case adversarial regression suite, reviewer-study instrumentation, and a **server-side opt-in Claude evaluation CLI**. There is **no LLM backend attached to public GitHub Pages**. A separate local CLAIM / OS 5.0 package also contains the earlier Python multimodal Responses API adapter, Tesseract/OCR readback, five PDF/PNG cases and its own 40 backend tests.
 
+## v7 — The cinematic three-shot experience
+
+The public default tells a claim's story in **three real, accessible scenes** rather than another KPI-heavy administrative dashboard.
+
+1. **01 · Der Fall:** A real PDF on a warm-paper canvas, a grounded finding in editorial type, a minimal inventory and one invitation to inspect the source.
+2. **02 · Die Fundstelle:** Verified literal source quotes highlighted on the original PDF, with real document/page navigation. A word-for-word quote check is **not** independent semantic verification or legal expert review.
+3. **03 · Die Handlung:** Human-only next steps, guarded referral/request actions, source-role correction, extra PDFs attached to an existing waiting case, and a privacy-safe audit download.
+
+**Design system:** graphite, paper, amber, restrained editorial serif, source-led composition, subtle animations (respects reduced-motion), accessible scene tabs (keyboard shortcuts 1/2/3), case drawer, and 390px mobile layout.
+
+The v6 original work queue remains at `?classic=1`, v5 PDF lab at `?lab=1`, evaluation at `?evaluation=1`. This public interface is **browser-only**, operates on fictional or locally imported PDFs, does **not** call a live AI model, interpret coverage, OCR scanned-image PDFs, send actual emails, write to insurer systems or make payout decisions. Time-to-action is not proven time saved. Uploaded raw texts and reviewer notes are excluded from the audit export.
+
+**Visual release gates:** The Playwright suite writes actual Chromium screenshots into `test-results/v7/`: `01-the-case.png`, `02-the-evidence.png`, `03-the-action.png`, and `04-mobile-case.png`. CI attaches these to the `inca-research-taste-evidence` job artifact for design review.
 ## What's operational in v6?
 
 **A daily queue, rather than another marketing dashboard.** The default route loads and PDF-parses three fictional dossiers and prioritises them by a deterministic source-gate policy. Every state transition is an explicit human action.

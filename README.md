@@ -1,4 +1,4 @@
-# CLAIM / OS 9.0 — Quiet Workspace
+# CLAIM / OS — Quiet Workspace
 
 **[Open Quiet Workspace](https://mikelninh.github.io/inca-demo/)** · [Previous cinematic v8](https://mikelninh.github.io/inca-demo/?v8=1) · [Previous Work Mode](https://mikelninh.github.io/inca-demo/?v8=1&mode=work) · [Classic v6 Operator Desk](https://mikelninh.github.io/inca-demo/?classic=1) · [PDF Evidence Reader](https://mikelninh.github.io/inca-demo/?lab=1) · [36-case Evaluation](https://mikelninh.github.io/inca-demo/?evaluation=1) · [Reviewer Study](https://mikelninh.github.io/inca-demo/?study=1)
 
@@ -12,11 +12,9 @@ Independent AI Operations work sample by Michael Ninh (Berlin) for an AI-first c
 
 This repo contains the **public, privacy-preserving React research interface**, with a downloadable PDF workspace, a transparent 36-case adversarial regression suite, reviewer-study instrumentation, and a **server-side opt-in Claude evaluation CLI**. There is **no LLM backend attached to public GitHub Pages**. A separate local CLAIM / OS 5.0 package also contains the earlier Python multimodal Responses API adapter, Tesseract/OCR readback, five PDF/PNG cases and its own 40 backend tests.
 
-## v9 — Quiet Workspace: daily claims review, without dashboard theatre
+## Quiet Workspace
 
-Selected visual direction: **Quiet Workspace** for its legibility and predictable daily workflow, with a light touch of **Editorial Minimalism** for typography and calm hierarchy. This is a genuinely different UI from v8, not another recolour of the cinematic product.
-
-**One screen, three zones:** (1) searchable, filterable priority queue; (2) original text-backed PDF rendered in place with source highlighting, page and zoom controls; (3) source-backed observation, proof-list, operator note and guarded next human action. The extra chrome, enormous headlines, dark surfaces and dramatic spotlights are gone. On mobile the observation comes first and an accessible full-screen original PDF is available.
+The selected case opens with a concrete finding, up to two source shortcuts, and one recommended action. On desktop the original PDF opens alongside the action. On a phone each shortcut opens the marked page in a full-screen reader. Search, notes, document correction and the audit are available from the corresponding disclosure controls.
 
 **Working flows:** batch import of locally selected genuine PDFs (case group convention `CASE-321__...pdf`), role corrections, adding late evidence, requesting missing sources, referral to specialist, human-only technical-review handoff for strictly source-complete cases, reopening, next case, locally recorded review history, and privacy-preserving audit export. Original documents stay within the browser. Sample PDFs are clearly fictional.
 

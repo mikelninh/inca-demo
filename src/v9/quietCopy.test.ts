@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest'
-import {caseCopy,caseTone,firstSource,displaySources} from './quietCopy'
+import {caseCopy,caseTone,firstSource,displaySources,keySources} from './quietCopy'
 import {makeDeskCase,recordReview} from '../desk/deskCore'
 import type {ParsedDocument,DocumentRole} from '../doclab/pdfEvidence'
 import {checkCitation} from '../doclab/pdfEvidence'
@@ -10,13 +10,13 @@ describe('v9 Quiet Workspace: conservative presentation',()=>{
  const parking=()=>makeDeskCase('KFZ-A17','Parking',[
   doc('claim','claim','Beim Ausparken leicht gestossen.'),
   doc('policy','policy','Vorschaden und nicht unfallbedingte Reparaturen sind ausgeschlossen.'),
-  doc('invoice','invoice','Rechnung: Heckklappe und Auspuffanlage.')
+  doc('invoice','invoice','Position 2: Heckklappe - 1.800 EUR. Position 3: Auspuffanlage.')
  ])
  it('shows an unresolved question for a discrepancy; never an automatic fraud or coverage verdict',()=>{
   const c=parking()
   expect(c.assessment.status).toBe('REVIEW_DISCREPANCY')
-  expect(caseCopy(c).heading).toBe('Ein Detail verdient Aufmerksamkeit.')
-  expect(caseCopy(c).finding).toContain('könnte')
+  expect(caseCopy(c).heading).toBe('Heckklappe für 1.800 € berechnet')
+  expect(caseCopy(c).next).toContain('Reparaturen zu prüfen')
   expect(caseTone(c)).toBe('warning')
  })
  it('opens the actual invoice source and checks its literal span',()=>{
@@ -25,6 +25,7 @@ describe('v9 Quiet Workspace: conservative presentation',()=>{
   expect(best?.label).toBe('Zusatzposition: Heckklappe')
   expect(best?.focusText).toBe('Heckklappe')
   expect(displaySources(c)[0]?.id).toBe(best?.id)
+  expect(keySources(c,displaySources(c)).map(source=>source.role)).toEqual(['invoice','claim'])
   expect(best&&checkCitation(c.documents,best)).toBe(true)
  })
  it('shows a proper stop if invoice is absent, never an expert-ready verdict',()=>{
@@ -33,7 +34,7 @@ describe('v9 Quiet Workspace: conservative presentation',()=>{
    doc('policy','policy','Ein polizeiliches Aktenzeichen ist notwendig.')
   ])
   expect(c.assessment.status).toBe('STOP_MISSING_SOURCE')
-  expect(caseCopy(c).heading).toBe('Eine Unterlage fehlt.')
+  expect(caseCopy(c).heading).toBe('Fehlt in der Akte: Rechnung')
   expect(caseTone(c)).toBe('blocked')
   expect(firstSource(c)).not.toBeNull()
  })
@@ -44,7 +45,7 @@ describe('v9 Quiet Workspace: conservative presentation',()=>{
    doc('invoice','invoice','Rechnung Reparatur')
   ])
   expect(c.assessment.status).toBe('REVIEW_READY')
-  expect(caseCopy(c).description).toContain('Noch keine Entscheidung')
+  expect(caseCopy(c).heading).toBe('Alle benötigten Dokumente liegen vor')
   const done=recordReview(c,'ready_for_expert','',1500)
   expect(caseTone(done)).toBe('done')
   expect(done.assessment.autonomousSettlementAllowed).toBe(false)

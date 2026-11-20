@@ -1,6 +1,7 @@
 import type {DeskCase} from '../desk/deskCore'
 import {checkCitation} from '../doclab/pdfEvidence'
-import type {PageCitation} from '../doclab/pdfEvidence'
+import type {DocumentRole,PageCitation} from '../doclab/pdfEvidence'
+export const roles:Record<DocumentRole,string>={claim:'Schadenmeldung',policy:'Vertrag',invoice:'Rechnung',unknown:'Ohne Zuordnung'}
 export type QuietTone='warning'|'ready'|'blocked'|'waiting'|'done'
 export function caseTone(c:DeskCase):QuietTone{
  if(c.stage==='reviewed')return 'done'
@@ -10,36 +11,34 @@ export function caseTone(c:DeskCase):QuietTone{
  return 'warning'
 }
 export function caseCopy(c:DeskCase){
- const status=c.assessment.status
- if(status==='REVIEW_DISCREPANCY')return {
-  heading:'Ein Detail verdient Aufmerksamkeit.',
-  description:'Die Schadenmeldung beschreibt einen kleineren Vorfall. Weitere Positionen der Reparaturrechnung sollten fachlich geprüft werden.',
-  finding:'Der Reparaturumfang könnte über die Schilderung des Schadenereignisses hinausgehen.',
-  label:'Mögliche Abweichung'
- }
- if(status==='STOP_MISSING_SOURCE')return {
-  heading:'Eine Unterlage fehlt.',
-  description:'Die Akte enthält noch nicht alle benötigten Dokumentarten. Eine weitergehende Prüfung wäre verfrüht.',
-  finding:'Es fehlen erforderliche Originaldokumente. Ohne diese ist die Vorprüfung unvollständig.',
-  label:'Quellenlücke'
- }
- if(status==='STOP_UNREADABLE'||status==='STOP_CITATION_INVALID')return {
-  heading:'Die Quelle muss geprüft werden.',
-  description:'Mindestens eine Seite ist nicht lesbar oder eine angegebene Textstelle lässt sich nicht exakt nachweisen.',
-  finding:'Die technische Belegkette ist unvollständig. Eine manuelle Sichtprüfung ist erforderlich.',
-  label:'Belegproblem'
- }
- if(status==='REQUEST_EVIDENCE')return {
-  heading:'Ein Nachweis ist noch offen.',
-  description:'Die Dokumentarten liegen vor; für die weitere Prüfung fehlt jedoch eine wichtige Angabe.',
-  finding:'Ein zusätzlicher Nachweis oder eine Rückfrage ist erforderlich.',
-  label:'Rückfrage'
- }
- return {
-  heading:'Bereit für die Fachprüfung.',
-  description:'Die benötigten Dokumentarten sind lesbar, und die Textstellen lassen sich im Original finden. Noch keine Entscheidung zum Versicherungsschutz.',
-  finding:'Die technische Dokumentenprüfung ist abgeschlossen; jetzt ist eine fachliche Bewertung nötig.',
-  label:'Vorprüfung vollständig'
+ const {status,missingRoles}=c.assessment
+ const demo=c.source==='synthetic'&&c.documents.every(d=>d.origin==='generated_sample')
+ switch(status){
+  case 'REVIEW_DISCREPANCY': {
+   const parkingDemo=demo&&c.id==='KFZ-A17'&&c.documents.some(d=>d.role==='invoice'&&d.pages.some(p=>p.text.includes('Heckklappe - 1.800 EUR')))
+   return {
+    heading:parkingDemo?'Heckklappe für 1.800 € berechnet':'Reparaturumfang prüfen',
+    description:parkingDemo
+     ?'Laut Schadenmeldung war die hintere Stoßstange betroffen.'
+     :'Schadenmeldung und Rechnung zusammen prüfen.',
+    next:'Fachperson bitten, die zusätzlichen Reparaturen zu prüfen.'
+   }
+  }
+  case 'STOP_MISSING_SOURCE':
+   if(demo&&c.id==='HR-C09'&&missingRoles.length===1&&missingRoles[0]==='invoice')return {
+    heading:'Wertbelege fehlen',
+    description:'Laut Schadenmeldung ist die Polizeianzeige noch offen.',
+    next:'Wertbelege und das polizeiliche Aktenzeichen anfragen.'
+   }
+   return {heading:`Fehlt in der Akte: ${missingRoles.map(role=>roles[role]).join(', ')}`,description:'',next:'Fehlende Dokumente anfragen oder die Dokumentart korrigieren.'}
+  case 'STOP_UNREADABLE':
+   return {heading:'Eine PDF-Seite lässt sich nicht als Text lesen',description:'',next:'Eine lesbare Fassung anfragen.'}
+  case 'STOP_CITATION_INVALID':
+   return {heading:'Fundstelle im PDF prüfen',description:'Die Fundstelle konnte nicht bestätigt werden.',next:'Original öffnen und die Stelle prüfen.'}
+  case 'REQUEST_EVIDENCE':
+   return {heading:'Polizeiliches Aktenzeichen prüfen',description:'In der Meldung ist kein eindeutiges Aktenzeichen auffindbar.',next:'Aktenzeichen anfragen oder im Original prüfen.'}
+  case 'REVIEW_READY':
+   return {heading:'Alle benötigten Dokumente liegen vor',description:'Die PDFs sind lesbar und die Fundstellen auffindbar.',next:'Eine Fachperson prüft den Schaden anhand der Unterlagen.'}
  }
 }
 
@@ -68,6 +67,14 @@ export function additionalInvoiceSource(c:DeskCase):PageCitation|null{
 export function displaySources(c:DeskCase):PageCitation[]{
  const supplemental=additionalInvoiceSource(c)
  return supplemental?[supplemental,...c.citations]:c.citations
+}
+export function keySources(c:DeskCase,sources:PageCitation[]):PageCitation[]{
+ const first=firstSource(c)
+ if(!first)return []
+ const comparisonRole=c.assessment.status==='REVIEW_DISCREPANCY'?'claim':
+  c.assessment.status==='STOP_MISSING_SOURCE'||c.assessment.status==='REQUEST_EVIDENCE'?'policy':null
+ const comparison=sources.find(s=>s.role===comparisonRole&&s.documentId!==first.documentId&&checkCitation(c.documents,s))
+ return comparison?[first,comparison]:[first]
 }
 export function firstSource(c:DeskCase):PageCitation|null{
  const valid=c.citations.filter(x=>checkCitation(c.documents,x))

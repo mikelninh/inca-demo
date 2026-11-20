@@ -174,3 +174,7 @@
   .quiet-modal .quiet-pdf-viewport { padding: 9px; }
   .quiet-modal-header button, .quiet-modal-toolbar button { min-height: 38px; }
 }
+@media (max-width: 350px) {
+  .quiet-citations { grid-template-columns: minmax(0, 1fr); }
+  .quiet-citation { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+}
